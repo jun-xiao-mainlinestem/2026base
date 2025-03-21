@@ -8,7 +8,7 @@ float to_rad(float angle_deg);
 
 float to_deg(float angle_rad);
 
-float clamp(float input, float min, float max);
+float threshold(float input, float min, float max);
 
 float to_volt(float percent);
 

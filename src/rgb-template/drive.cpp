@@ -1,9 +1,9 @@
 #include "vex.h"
 
-Drive::Drive(motor_group LDrive, motor_group RDrive, inertial gyro, float wheel_diameter, float wheel_ratio):
+Drive::Drive(motor_group LDrive, motor_group RDrive, inertial gyro, float wheel_diameter, float gear_ratio):
   wheel_diameter(wheel_diameter),
-  wheel_ratio(wheel_ratio),
-  drive_in_to_deg_ratio(wheel_ratio / 360.0 * M_PI * wheel_diameter),
+  gear_ratio(gear_ratio),
+  drive_in_to_deg_ratio(gear_ratio / 360.0 * M_PI * wheel_diameter),
   LDrive(LDrive),
   RDrive(RDrive),
   //Every device below is passed by port rather than passing the object.
@@ -31,12 +31,10 @@ void Drive::set_drive_constants(float drive_max_voltage, float drive_kp, float d
   this -> drive_starti = drive_starti;
 }
 
-void Drive::set_heading_constants(float heading_max_voltage, float heading_kp, float heading_ki, float heading_kd, float heading_starti) {
+void Drive::set_heading_constants(float heading_max_voltage, float heading_kp, float heading_kd) {
   this -> heading_max_voltage = heading_max_voltage;
   this -> heading_kp = heading_kp;
-  this -> heading_ki = heading_ki;
   this -> heading_kd = heading_kd;
-  this -> heading_starti = heading_starti;
 }
 
 // Settle error and settle time work together to check whether the desired position was achieved, but
@@ -57,12 +55,12 @@ void Drive::set_drive_exit_conditions(float drive_settle_error, float drive_sett
 }
 
 void Drive::set_heading(float orientation_deg) {
-  Gyro.setRotation(orientation_deg * gyro_scale / 360.0, deg);
+  Gyro.setRotation(orientation_deg, deg);
   desired_heading = orientation_deg;
 }
 
 float Drive::get_absolute_heading() {
-  return (reduce_0_to_360(Gyro.rotation() * 360.0 / gyro_scale));
+  return (reduce_0_to_360(Gyro.rotation()));
 }
 
 float Drive::get_left_position_in() {
@@ -85,47 +83,27 @@ void Drive::turn_to_heading(float heading) {
 
 void Drive::turn_to_heading(float heading, float turn_max_voltage) {
   desired_heading = reduce_0_to_360(heading);
-  // Desired heading carries over the angle from one movement to another. That way, if the robot doesn't
-  // finish a turn movement, it will still drive at the angle that was specified in the turn movement.
-  PID turnPID(reduce_negative_180_to_180(heading - get_absolute_heading()), turn_kp, turn_ki, turn_kd, turn_starti, turn_settle_error, turn_settle_time, turn_timeout);
-  while (turnPID.is_done() == false) {
-    float error = reduce_negative_180_to_180(heading - get_absolute_heading());
-    // Reducing the angle to a value between -180 and 180 degrees ensures that the robot always takes the 
-    // shorter path when making a turn.
+  PID turnPID(reduce_negative_180_to_180(desired_heading - get_absolute_heading()), turn_kp, turn_ki, turn_kd, turn_starti, turn_settle_error, turn_settle_time, turn_timeout);
+  while (!turnPID.is_done()) {
+    float error = reduce_negative_180_to_180(desired_heading - get_absolute_heading());
     float output = turnPID.compute(error);
-    output = clamp(output, -turn_max_voltage, turn_max_voltage);
+    output = threshold(output, -turn_max_voltage, turn_max_voltage);
     drive_with_voltage(output, -output);
     task::sleep(10);
   }
-    LDrive.stop(hold);
-    RDrive.stop(hold);
+  LDrive.stop(hold);
+  RDrive.stop(hold);
 }
 
-void Drive::turn_to_heading(float heading, float turn_max_voltage, bool nonestop) {
+void Drive::turn_to_heading_nonstop(float heading, float turn_max_voltage) {
   desired_heading = reduce_0_to_360(heading);
-  // Desired heading carries over the angle from one movement to another. That way, if the robot doesn't
-  // finish a turn movement, it will still drive at the angle that was specified in the turn movement.
-  double se = turn_settle_error;
-  double st = turn_settle_time;
-  if (nonestop)  
-  {
-    se = k_cutoff_angle;
-    st = k_cutoff_time;
-  }
-  PID turnPID(reduce_negative_180_to_180(heading - get_absolute_heading()), turn_kp, turn_ki, turn_kd, turn_starti, se, st, turn_timeout);
-  while (turnPID.is_done() == false) {
+  PID turnPID(reduce_negative_180_to_180(heading - get_absolute_heading()), turn_kp, turn_ki, turn_kd, turn_starti, nonstop_turn_settle_error, nonstop_turn_settle_time, turn_timeout);
+  while (!turnPID.is_done()) {
     float error = reduce_negative_180_to_180(heading - get_absolute_heading());
-    // Reducing the angle to a value between -180 and 180 degrees ensures that the robot always takes the 
-    // shorter path when making a turn.
     float output = turnPID.compute(error);
-    output = clamp(output, -turn_max_voltage, turn_max_voltage);
+    output = threshold(output, -turn_max_voltage, turn_max_voltage);
     drive_with_voltage(output, -output);
     task::sleep(10);
-  }
-  if (!nonestop)
-  {
-    LDrive.stop(hold);
-    RDrive.stop(hold);
   }
 }
 
@@ -143,25 +121,24 @@ void Drive::drive_distance(float distance, float drive_max_voltage, float headin
 
 void Drive::drive_distance(float distance, float drive_max_voltage, float heading, float heading_max_voltage) {
   desired_heading = reduce_0_to_360(heading);
-  desired_distance = distance;
 
-  PID drivePID(desired_distance, drive_kp, drive_ki, drive_kd, drive_starti, drive_settle_error, drive_settle_time, drive_timeout);
-  PID headingPID(reduce_negative_180_to_180(heading - get_absolute_heading()), heading_kp, heading_ki, heading_kd, heading_starti);
+  PID drivePID(distance, drive_kp, drive_ki, drive_kd, drive_starti, drive_settle_error, drive_settle_time, drive_timeout);
+  PID headingPID(reduce_negative_180_to_180(heading - get_absolute_heading()), heading_kp, heading_kd);
   float start_average_position = (get_left_position_in() + get_right_position_in()) / 2.0;
   // Rather than resetting the drive position , this function just notes what the drive position started at
   // and determines error relative to that value.
   float average_position = start_average_position;
   while (drivePID.is_done() == false && !DrivetrainNeedsToBeStopped) {
     average_position = (get_left_position_in() + get_right_position_in()) / 2.0;
-    float drive_error = desired_distance + start_average_position - average_position;
+    float drive_error = distance + start_average_position - average_position;
     float heading_error = reduce_negative_180_to_180(heading - get_absolute_heading());
     // Just like for turns, reducing from -180 to 180 degrees ensures that the robot takes the 
     // quickest path to the desired heading.
     float drive_output = drivePID.compute(drive_error);
     float heading_output = headingPID.compute(heading_error);
 
-    drive_output = clamp(drive_output, -drive_max_voltage, drive_max_voltage);
-    heading_output = clamp(heading_output, -heading_max_voltage, heading_max_voltage);
+    drive_output = threshold(drive_output, -drive_max_voltage, drive_max_voltage);
+    heading_output = threshold(heading_output, -heading_max_voltage, heading_max_voltage);
 
     drive_with_voltage(drive_output + heading_output, drive_output - heading_output);
     task::sleep(10);
@@ -173,25 +150,24 @@ void Drive::drive_distance(float distance, float drive_max_voltage, float headin
 
 void Drive::drive_distance(float distance, float drive_max_voltage, float heading, float heading_max_voltage, float drive_settle_error, float drive_settle_time) {
   desired_heading = reduce_0_to_360(heading);
-  desired_distance = distance;
 
-  PID drivePID(desired_distance, drive_kp, drive_ki, drive_kd, drive_starti, drive_settle_error, drive_settle_time, drive_timeout);
-  PID headingPID(reduce_negative_180_to_180(heading - get_absolute_heading()), heading_kp, heading_ki, heading_kd, heading_starti);
+  PID drivePID(distance, drive_kp, drive_ki, drive_kd, drive_starti, drive_settle_error, drive_settle_time, drive_timeout);
+  PID headingPID(reduce_negative_180_to_180(heading - get_absolute_heading()), heading_kp, heading_kd);
   float start_average_position = (get_left_position_in() + get_right_position_in()) / 2.0;
   // Rather than resetting the drive position , this function just notes what the drive position started at
   // and determines error relative to that value.
   float average_position = start_average_position;
   while (drivePID.is_done() == false && !DrivetrainNeedsToBeStopped) {
     average_position = (get_left_position_in() + get_right_position_in()) / 2.0;
-    float drive_error = desired_distance + start_average_position - average_position;
+    float drive_error = distance + start_average_position - average_position;
     float heading_error = reduce_negative_180_to_180(heading - get_absolute_heading());
     // Just like for turns, reducing from -180 to 180 degrees ensures that the robot takes the 
     // quickest path to the desired heading.
     float drive_output = drivePID.compute(drive_error);
     float heading_output = headingPID.compute(heading_error);
 
-    drive_output = clamp(drive_output, -drive_max_voltage, drive_max_voltage);
-    heading_output = clamp(heading_output, -heading_max_voltage, heading_max_voltage);
+    drive_output = threshold(drive_output, -drive_max_voltage, drive_max_voltage);
+    heading_output = threshold(heading_output, -heading_max_voltage, heading_max_voltage);
 
     drive_with_voltage(drive_output + heading_output, drive_output - heading_output);
     task::sleep(10);
@@ -287,7 +263,7 @@ void Drive::reset(int max_drive_voltage, int max_turn_voltage, float turn_kp, fl
 
   // Each constant set is in the form of (maxVoltage, kP, kI, kD, startI).
   set_drive_constants(max_drive_voltage, 1.5, 0, 10, 0);
-  set_heading_constants(6, .4, 0, 1, 0);
+  set_heading_constants(6, .4, 1);
 
 // 12, .3, .001, 2, 15 
   set_turn_constants(max_turn_voltage, turn_kp, .015, 1.5, 7.5);

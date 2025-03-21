@@ -3,5 +3,5 @@
 
 void autonomous();
 
-void set_up_clamp(bool auto_clamp);
+void set_up_threshold(bool auto_threshold);
 

@@ -1,11 +1,14 @@
 #include "vex.h"
+PID::PID(float error, float kp) :
+  error(error),
+  kp(kp)
+{};
 
-PID::PID(float error, float kp, float ki, float kd, float starti) :
+
+PID::PID(float error, float kp, float kd) :
   error(error),
   kp(kp),
-  ki(ki),
-  kd(kd),
-  starti(starti)
+  kd(kd)
 {};
 
 PID::PID(float error, float kp, float ki, float kd, float starti, float settle_error, float settle_time, float timeout) :

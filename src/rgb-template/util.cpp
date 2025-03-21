@@ -32,7 +32,7 @@ float to_deg(float angle_rad){
   return(angle_rad*(180.0/M_PI));
 }
 
-float clamp(float input, float min, float max){
+float threshold(float input, float min, float max){
   if( input > max ){ return(max); }
   if(input < min){ return(min); }
   return(input);
