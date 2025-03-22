@@ -63,7 +63,7 @@ public:
   void drive_distance(float distance);
   void drive_distance(float distance, float drive_max_voltage);
   void drive_distance(float distance, float drive_max_voltage, float heading, float heading_max_voltage);
-  void drive_distance(float distance, float drive_max_voltage, float heading, float heading_max_voltage, bool nonstop, float drive_settle_error, float drive_settle_time) ;
+  void drive_distance(float distance, float drive_max_voltage, float heading, float heading_max_voltage, bool nonstop, float drive_settle_error=4, float drive_settle_time=50) ;
 
   bool DrivetrainNeedsToBeStopped = false;
   void control_arcade(int throttle, int turn, float turnBias = 0);

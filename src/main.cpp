@@ -3,13 +3,14 @@
 using namespace vex;
 competition Competition;
 
-
 //
 // Main will set up the competition functions and callbacks.
 //
 int main() {
   Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
+
+  controller(primary).ButtonY.pressed(button_y_test);
 
   pre_auton();
 
