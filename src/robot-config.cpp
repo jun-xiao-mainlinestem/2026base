@@ -137,20 +137,40 @@ int show_heading() {
   wait(300, msec);
   float h = chassis.get_absolute_heading();
 
-  controller(primary).Screen.print("heading: %4.1f, d: %3.1f", h, d);
+  controller(primary).Screen.print("heading: %4.1f", h);
   Brain.Screen.setCursor(11, 1);
   Brain.Screen.print("heading: %4.1f", h);
   Brain.Screen.setCursor(12, 1);
-  Brain.Screen.print("wall distance: %4.1f", d);
   }
   return 1;
+}
+void reset_chassis()
+{
+
+  chassis.set_heading(inertial1.heading());
+  chassis.LDrive.resetPosition();
+  chassis.RDrive.resetPosition();
+  chassis.LDrive.stop(coast);
+  chassis.RDrive.stop(coast);
+
+  // Each constant set is in the form of (maxVoltage, kP, kI, kD, startI).
+  chassis.set_drive_constants(10, 1.5, 0, 10, 0);
+  chassis.set_heading_constants(6, .4, 1);
+
+// 12, .3, .001, 2, 15 
+  chassis.set_turn_constants(10, 0.2, .015, 1.5, 7.5);
+
+  // Each exit condition set is in the form (settle_error, settle_time, timeout).
+  chassis.set_drive_exit_conditions(1, 300, 2000);
+  chassis.set_turn_exit_conditions(1.5, 300, 1500);
+
 }
 
 void pre_auton() {
   setup_gyro();
   check_motors();
   show_temperature();
-  chassis.reset();
-  release_mobile_goal();
+  reset_chassis();
   task show_heading_task(show_heading);
+
 }

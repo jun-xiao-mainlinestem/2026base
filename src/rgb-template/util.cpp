@@ -16,18 +16,6 @@ float reduce_negative_180_to_180(float angle) {
   return(angle);
 }
 
-float reduce_negative_90_to_90(float angle) {
-  while(!(angle >= -90 && angle < 90)) {
-    if( angle < -90 ) { angle += 180; }
-    if(angle >= 90) { angle -= 180; }
-  }
-  return(angle);
-}
-
-float to_rad(float angle_deg){
-  return(angle_deg/(180.0/M_PI));
-}
-
 float to_deg(float angle_rad){
   return(angle_rad*(180.0/M_PI));
 }

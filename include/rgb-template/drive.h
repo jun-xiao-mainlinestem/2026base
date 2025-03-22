@@ -57,18 +57,16 @@ public:
 
   void turn_to_heading(float heading);
   void turn_to_heading(float heading, float turn_max_voltage);
-  void turn_to_heading_nonstop(float heading, float turn_max_voltage);
+  void turn_to_heading(float heading, float turn_max_voltage, bool nonstop, float settle_error = 15, float settle_time = 20);
 
 
   void drive_distance(float distance);
   void drive_distance(float distance, float drive_max_voltage);
-  void drive_distance(float distance, float drive_max_voltage, float heading);
   void drive_distance(float distance, float drive_max_voltage, float heading, float heading_max_voltage);
+  void drive_distance(float distance, float drive_max_voltage, float heading, float heading_max_voltage, bool nonstop, float drive_settle_error, float drive_settle_time) ;
 
   bool DrivetrainNeedsToBeStopped = false;
-  void reset(int max_drive_voltage = 10, int max_turn_voltage = 10, float turn_kp = 0.2, float turn_settle_error = 1.5);
-
-  void control_arcade(int throttle, int turn, float desaturateBias = 0);
+  void control_arcade(int throttle, int turn, float turnBias = 0);
   void control_tank(int left, int right);
 
   void set_drive_constants(float drive_max_voltage, float drive_kp, float drive_ki, float drive_kd, float drive_starti);
@@ -77,6 +75,5 @@ public:
   void set_turn_exit_conditions(float turn_settle_error, float turn_settle_time, float turn_timeout);
   void set_turn_constants(float turn_max_voltage, float turn_kp, float turn_ki, float turn_kd, float turn_starti); 
   void set_stopping(bool set_hold = true);
-  void drive_distance(float distance, float drive_max_voltage, float heading, float heading_max_voltage, float turn_settle_error, float turn_settle_time);
 
 };
