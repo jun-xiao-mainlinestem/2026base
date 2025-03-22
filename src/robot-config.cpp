@@ -23,15 +23,11 @@ const float STEER_BIAS = 0.5;
 Drive chassis(
   //Left Motors:
   motor_group(leftMotor1, leftMotor2, leftMotor3),
-
   //Right Motors:
   motor_group(rightMotor1, rightMotor2, rightMotor3),
-
   inertial1,
-
   //wheel diameter:
   2.75,
-
   //Gear ratio of motor to wheel: if your motor has an 84-tooth gear and your wheel has a 60-tooth gear, this value will be 1.4.
   0.75
 );
@@ -50,7 +46,6 @@ void usercontrol(void) {
       else
         chassis.control_arcade(controller(primary).Axis2.position(), controller(primary).Axis4.position(), STEER_BIAS);
     }
-
     wait(20, msec); // Sleep the task for a short amount of time
   }
 }
@@ -104,7 +99,6 @@ void pre_auton() {
   show_auton_menu();
 }
 
-
 void setup_gyro() {
   while (chassis.Gyro.isCalibrating()) {
     wait(25, msec);
@@ -138,7 +132,6 @@ bool check_motors() {
     controller(primary).rumble("----");
     return false;
   }
-
   return true;
 }
 
@@ -149,7 +142,6 @@ void reset_chassis() {
   chassis.LDrive.stop(coast);
   chassis.RDrive.stop(coast);
 
-  // Each constant set is in the form of (maxVoltage, kP, kI, kD, startI).
   chassis.set_drive_constants(10, 1.5, 0, 10, 0);
   chassis.set_heading_constants(6, .4, 1);
   chassis.set_turn_constants(10, 0.2, .015, 1.5, 7.5);

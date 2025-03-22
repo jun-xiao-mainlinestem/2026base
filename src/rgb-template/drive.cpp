@@ -125,7 +125,7 @@ void Drive::drive_distance(float distance, float drive_max_voltage, float headin
   // Rather than resetting the drive position , this function just notes what the drive position started at
   // and determines error relative to that value.
   float average_position = start_average_position;
-  while (drivePID.is_done() == false && !DrivetrainNeedsToBeStopped) {
+  while (drivePID.is_done() == false && !drivetrain_needs_stopped) {
     average_position = (get_left_position_in() + get_right_position_in()) / 2.0;
     float drive_error = distance + start_average_position - average_position;
     float heading_error = reduce_negative_180_to_180(desired_heading - get_absolute_heading());
@@ -140,7 +140,7 @@ void Drive::drive_distance(float distance, float drive_max_voltage, float headin
     drive_with_voltage(drive_output + heading_output, drive_output - heading_output);
     task::sleep(10);
   }
-  DrivetrainNeedsToBeStopped = false;
+  drivetrain_needs_stopped = false;
   if (!nonstop){
     LDrive.stop(hold);
     RDrive.stop(hold);
@@ -153,6 +153,7 @@ double curve_function(double x, double curve_scale) {
 }
 
 void Drive::control_arcade(int y, int x, float turnBias) {
+  if (driver_control_disabled) return;
   float throttle = deadband(y, 5);
   float turn = deadband(x, 5);
 
@@ -180,12 +181,12 @@ void Drive::control_arcade(int y, int x, float turnBias) {
     RDrive.spin(fwd, right_power, volt);
     LDrive.resetPosition();
     RDrive.resetPosition();
-    DrivetrainNeedsToBeStopped = true;
+    drivetrain_needs_stopped = true;
   }  
   // When joystick are released, run active brake on drive
   // ajdust the coefficient to the amount of coasting preferred
   else {
-    if (DrivetrainNeedsToBeStopped) {
+    if (drivetrain_needs_stopped) {
       if (!stop_hold)
       {
         LDrive.spin(fwd, -LDrive.position(rev) * k_brake, volt);
@@ -195,24 +196,25 @@ void Drive::control_arcade(int y, int x, float turnBias) {
       {
         LDrive.stop(hold);
         RDrive.stop(hold);
-        float h = get_absolute_heading();
-        controller(primary).Screen.print("heading: %4.1f", h);
       }
-      DrivetrainNeedsToBeStopped = false;
+      float h = get_absolute_heading();
+      controller(primary).Screen.print("heading: %4.1f", h);
+      drivetrain_needs_stopped = false;
     }
   }
 }
 
 void Drive::control_tank(int left, int right) {
+  if (driver_control_disabled) return;
   float leftthrottle = curve_function(left, k_throttle);
   float rightthrottle = curve_function(right, k_throttle);
 
   if (fabs(leftthrottle) > 0 || fabs(rightthrottle) > 0) {
     LDrive.spin(fwd, to_volt(leftthrottle), volt);
     RDrive.spin(fwd, to_volt(rightthrottle), volt);
-    DrivetrainNeedsToBeStopped = true;
+    drivetrain_needs_stopped = true;
   } else {
-    if (DrivetrainNeedsToBeStopped) {
+    if (drivetrain_needs_stopped) {
       if (!stop_hold)
       {
         LDrive.stop(coast);
@@ -223,13 +225,13 @@ void Drive::control_tank(int left, int right) {
         LDrive.stop(hold);
         RDrive.stop(hold);
       }
-      DrivetrainNeedsToBeStopped = false;
+      drivetrain_needs_stopped = false;
     }
   }
 }
 
 
-void Drive::set_stopping(bool set_hold)
+void Drive::stop_drivetrain(bool set_hold)
 {
   if (set_hold)
   {

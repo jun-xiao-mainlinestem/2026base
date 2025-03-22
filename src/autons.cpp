@@ -34,8 +34,10 @@ void show_auton_menu()
 
 void button_y_test() {
     Brain.Timer.clear();
+    chassis.driver_control_disabled = true;
       // write your test code here
 
+    chassis.driver_control_disabled = false;
     double t = Brain.Timer.time(sec);
     controller(primary).Screen.print("run time: %.1f       ", t);
 }
