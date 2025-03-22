@@ -36,16 +36,15 @@ Drive chassis(
   0.75
 );
 
-int drive_mode = 1;
-// 1: arcade   2: tank
-
+int drive_mode = 0;
+// 0: arcade   1: tank
 void usercontrol(void) {
   // task end_game_reminder(endgame_timer);
-  wait_for_auton = false;
+  exit_auton_menu = true;
   reset_chassis();
   while (1) {
-    if (drive_mode == 2) chassis.control_tank(controller(primary).Axis3.position(), controller(primary).Axis2.position());
-    if (drive_mode == 1) {
+    if (drive_mode == 1) chassis.control_tank(controller(primary).Axis3.position(), controller(primary).Axis2.position());
+    if (drive_mode == 0) {
       if (abs(controller(primary).Axis4.position()) < 100)
         chassis.control_arcade(controller(primary).Axis2.position(), controller(primary).Axis4.position() * TURN_FACTOR, STEER_BIAS);
       else
@@ -55,6 +54,56 @@ void usercontrol(void) {
     wait(20, msec); // Sleep the task for a short amount of time
   }
 }
+
+void set_drive_mode() {
+  controller(primary).rumble("-");
+  drive_mode = (drive_mode + 1) % 2;
+  if (drive_mode == 0) controller(primary).Screen.print("double arcade         ");
+  if (drive_mode == 1) controller(primary).Screen.print("tank drive            ");
+}
+
+bool exit_auton_menu = false;
+void autonomous(void) {
+    exit_auton_menu = true;
+    run_auton_item(current_auton_selection);
+}
+
+void print_menu_item(char const * txt[], char const * title) {
+  Brain.Screen.clearScreen();
+  Brain.Screen.setCursor(1, 1);
+  Brain.Screen.print("%s", title);
+  Brain.Screen.setCursor(3, 1);
+  Brain.Screen.print("%s", txt[current_auton_selection]);
+  controller(primary).Screen.print("%s %s     ", txt[current_auton_selection], title);
+}
+
+void print_menu(char const * txt[], char const * title) {
+  int auton_num = sizeof(txt) / sizeof(txt[0]);
+  Brain.Screen.setFont(mono30);
+  print_menu_item(txt, title);
+
+  while (!exit_auton_menu) {
+    if (Brain.Screen.pressing()) {
+      while (Brain.Screen.pressing()) {
+        //wait until finger lifted up from the screen
+        wait(20, msec);
+      }
+      current_auton_selection = (current_auton_selection + 1) % auton_num;
+      print_menu_item(txt, title);
+      controller(primary).rumble(".");
+    }
+    task::sleep(50);
+  }
+  Brain.Screen.setFont(mono20);
+}
+
+void pre_auton() {
+  setup_gyro();
+  check_motors();
+  reset_chassis();
+  show_auton_menu();
+}
+
 
 void setup_gyro() {
   while (chassis.Gyro.isCalibrating()) {
@@ -108,11 +157,4 @@ void reset_chassis() {
   // Each exit condition set is in the form (settle_error, settle_time, timeout).
   chassis.set_drive_exit_conditions(1, 300, 2000);
   chassis.set_turn_exit_conditions(1.5, 300, 1500);
-}
-
-void pre_auton() {
-  setup_gyro();
-  check_motors();
-  reset_chassis();
-  show_auton_menu();
 }

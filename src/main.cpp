@@ -11,6 +11,7 @@ int main() {
   Competition.drivercontrol(usercontrol);
 
   controller(primary).ButtonY.pressed(button_y_test);
+  controller(primary).ButtonA.pressed(set_drive_mode);
 
   pre_auton();
 
