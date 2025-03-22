@@ -21,7 +21,6 @@ int main() {
   controller(primary).ButtonA.pressed(set_drive_mode);
   controller(primary).ButtonR2.pressed(hold_drive_train);
 
-
   pre_auton();
 
   // Prevent main from exiting with an infinite loop.

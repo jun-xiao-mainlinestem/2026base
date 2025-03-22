@@ -59,8 +59,8 @@ void set_drive_mode() {
 
 bool exit_auton_menu = false;
 void autonomous(void) {
-    exit_auton_menu = true;
-    run_auton_item(current_auton_selection);
+  exit_auton_menu = true;
+  run_auton_item(current_auton_selection);
 }
 
 void print_menu_item(char const * txt[], char const * title) {
