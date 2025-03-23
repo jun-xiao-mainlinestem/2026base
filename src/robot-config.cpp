@@ -1,6 +1,7 @@
 #include "vex.h"
 using namespace vex;
 
+
 void pre_auton() {
   setup_gyro();
   check_motors(6, 45);

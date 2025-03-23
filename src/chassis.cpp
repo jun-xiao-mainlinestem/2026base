@@ -46,6 +46,7 @@ void usercontrol(void) {
   // task end_game_reminder(endgame_timer);
   exit_auton_menu = true;
   reset_chassis();
+  // do other things before driver control starts
   while (1) {
     if (drive_mode == 1) chassis.control_tank(controller(primary).Axis3.position(), controller(primary).Axis2.position());
     if (drive_mode == 0) {
@@ -69,7 +70,7 @@ void print_menu_item(char const * txt[], char const * title) {
   Brain.Screen.print("%s", title);
   Brain.Screen.setCursor(3, 1);
   Brain.Screen.print("%s", txt[current_auton_selection]);
-  controller(primary).Screen.print("%s %s     ", txt[current_auton_selection], title);
+  controller(primary).Screen.print("%s %s        ", txt[current_auton_selection], title);
 }
 
 void print_menu(char const * txt[], char const * title) {
@@ -101,7 +102,6 @@ void setup_gyro() {
     controller(primary).rumble("----");
   }
 }
-
 
 void reset_chassis() {
   chassis.set_heading(inertial1.heading());
