@@ -34,6 +34,14 @@ Drive chassis(
 
 int drive_mode = 0;
 // 0: arcade   1: tank
+void set_drive_mode() {
+  controller(primary).rumble("-");
+  drive_mode = (drive_mode + 1) % 2;
+  if (drive_mode == 0) controller(primary).Screen.print("double arcade         ");
+  if (drive_mode == 1) controller(primary).Screen.print("tank drive            ");
+}
+
+bool exit_auton_menu = false;
 void usercontrol(void) {
   // task end_game_reminder(endgame_timer);
   exit_auton_menu = true;
@@ -50,14 +58,6 @@ void usercontrol(void) {
   }
 }
 
-void set_drive_mode() {
-  controller(primary).rumble("-");
-  drive_mode = (drive_mode + 1) % 2;
-  if (drive_mode == 0) controller(primary).Screen.print("double arcade         ");
-  if (drive_mode == 1) controller(primary).Screen.print("tank drive            ");
-}
-
-bool exit_auton_menu = false;
 void autonomous(void) {
   exit_auton_menu = true;
   run_auton_item(current_auton_selection);
@@ -73,7 +73,6 @@ void print_menu_item(char const * txt[], char const * title) {
 }
 
 void print_menu(char const * txt[], char const * title) {
-  int auton_num = sizeof(txt) / sizeof(txt[0]);
   Brain.Screen.setFont(mono30);
   print_menu_item(txt, title);
 
@@ -92,19 +91,12 @@ void print_menu(char const * txt[], char const * title) {
   Brain.Screen.setFont(mono20);
 }
 
-void pre_auton() {
-  setup_gyro();
-  check_motors();
-  reset_chassis();
-  show_auton_menu();
-}
-
 void setup_gyro() {
-  while (chassis.Gyro.isCalibrating()) {
+  while (inertial1.isCalibrating()) {
     wait(25, msec);
   }
   controller(primary).rumble("-");
-  if (!chassis.Gyro.installed()) {
+  if (!inertial1.installed()) {
     controller(primary).Screen.print("inertial sensor failure");
     controller(primary).rumble("----");
   }
@@ -137,10 +129,7 @@ bool check_motors() {
 
 void reset_chassis() {
   chassis.set_heading(inertial1.heading());
-  chassis.LDrive.resetPosition();
-  chassis.RDrive.resetPosition();
-  chassis.LDrive.stop(coast);
-  chassis.RDrive.stop(coast);
+  chassis.stop(coast);
 
   chassis.set_drive_constants(10, 1.5, 0, 10, 0);
   chassis.set_heading_constants(6, .4, 1);
@@ -150,3 +139,11 @@ void reset_chassis() {
   chassis.set_drive_exit_conditions(1, 300, 2000);
   chassis.set_turn_exit_conditions(1.5, 300, 1500);
 }
+
+void pre_auton() {
+  setup_gyro();
+  check_motors();
+  reset_chassis();
+  show_auton_menu();
+}
+

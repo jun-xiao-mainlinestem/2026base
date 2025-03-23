@@ -4,10 +4,10 @@ using namespace vex;
 competition Competition;
 
 void hold_drive_train() {
-  chassis.stop_drivetrain(true);
+  chassis.stop(hold);
   controller(primary).rumble(".");
   waitUntil(!controller(primary).ButtonR2.pressing());
-  chassis.stop_drivetrain(false);
+  chassis.stop(coast);
 }
 
 //

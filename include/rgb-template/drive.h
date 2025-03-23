@@ -37,15 +37,17 @@ private:
   float k_brake = 0.16;
   float k_throttle = 5;
   float k_turn = 10;
-  bool stop_hold = false;
+
+  vex::brakeType stop_mode = coast;
 
   float get_left_position_in();
   float get_right_position_in();
-
-public: 
+  
   motor_group LDrive;
   motor_group RDrive;
   inertial Gyro;
+
+public: 
   float desired_heading;
 
   Drive(motor_group LDrive, motor_group RDrive, inertial gyro, float wheel_diameter, float gear_ratio);
@@ -76,6 +78,6 @@ public:
   void set_heading_constants(float heading_max_voltage, float heading_kp, float heading_kd);
   void set_turn_exit_conditions(float turn_settle_error, float turn_settle_time, float turn_timeout);
   void set_turn_constants(float turn_max_voltage, float turn_kp, float turn_ki, float turn_kd, float turn_starti); 
-  void stop_drivetrain(bool set_hold);
+  void stop(vex::brakeType mode);
 
 };

@@ -2,6 +2,8 @@
 
 int current_auton_selection = 0;
 
+int auton_num = 1;
+
 char const * auton_test_menu[] = {
   "auton1",
   "auton2"
@@ -27,6 +29,7 @@ void test2() {
 }
 
 void show_auton_menu() {
+  auton_num = sizeof(auton_test_menu) / sizeof(auton_test_menu[0]);
   print_menu(auton_test_menu, "test");
 }
 

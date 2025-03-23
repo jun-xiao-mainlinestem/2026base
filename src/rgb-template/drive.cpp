@@ -166,7 +166,7 @@ void Drive::control_arcade(int y, int x, float turnBias) {
   // ajdust the coefficient to the amount of coasting preferred
   else {
     if (drivetrain_needs_stopped) {
-      if (!stop_hold) {
+      if (stop_mode != hold) {
         LDrive.spin(fwd, -LDrive.position(rev) * k_brake, volt);
         RDrive.spin(fwd, -RDrive.position(rev) * k_brake, volt);
       } else {
@@ -191,26 +191,17 @@ void Drive::control_tank(int left, int right) {
     drivetrain_needs_stopped = true;
   } else {
     if (drivetrain_needs_stopped) {
-      if (!stop_hold) {
-        LDrive.stop(coast);
-        RDrive.stop(coast);
-      } else {
-        LDrive.stop(hold);
-        RDrive.stop(hold);
-      }
+      LDrive.stop(stop_mode);
+      RDrive.stop(stop_mode);
       drivetrain_needs_stopped = false;
     }
   }
 }
 
-void Drive::stop_drivetrain(bool set_hold) {
-  if (set_hold) {
-    LDrive.stop(hold);
-    RDrive.stop(hold);
-    stop_hold = true;
-  } else {
-    LDrive.stop(coast);
-    RDrive.stop(coast);
-    stop_hold = false;
-  }
+void Drive::stop(vex::brakeType mode) {
+    LDrive.stop(mode);
+    RDrive.stop(mode);
+    stop_mode = mode;
+    chassis.LDrive.resetPosition();
+    chassis.RDrive.resetPosition();
 }
