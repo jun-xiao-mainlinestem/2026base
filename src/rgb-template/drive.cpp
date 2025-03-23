@@ -43,12 +43,12 @@ void Drive::set_drive_exit_conditions(float drive_settle_error, float drive_sett
 }
 
 void Drive::set_heading(float orientation_deg) {
-  Gyro.setRotation(orientation_deg, deg);
+  Gyro.setHeading(orientation_deg, deg);
   desired_heading = orientation_deg;
 }
 
-float Drive::get_absolute_heading() {
-  return (reduce_0_to_360(Gyro.rotation()));
+float Drive::get_heading() {
+  return (Gyro.heading());
 }
 
 float Drive::get_left_position_in() {
@@ -75,9 +75,9 @@ void Drive::turn_to_heading(float heading, float turn_max_voltage) {
 
 void Drive::turn_to_heading(float heading, float turn_max_voltage, bool nonstop, float settle_error, float settle_time) {
   desired_heading = reduce_0_to_360(heading);
-  PID turnPID(reduce_negative_180_to_180(heading - get_absolute_heading()), turn_kp, turn_ki, turn_kd, turn_starti, settle_error, settle_time, turn_timeout);
+  PID turnPID(reduce_negative_180_to_180(heading - get_heading()), turn_kp, turn_ki, turn_kd, turn_starti, settle_error, settle_time, turn_timeout);
   while (!turnPID.is_done()) {
-    float error = reduce_negative_180_to_180(heading - get_absolute_heading());
+    float error = reduce_negative_180_to_180(heading - get_heading());
     float output = turnPID.compute(error);
     output = threshold(output, -turn_max_voltage, turn_max_voltage);
     drive_with_voltage(output, -output);
@@ -106,13 +106,13 @@ void Drive::drive_distance(float distance, float drive_max_voltage, float headin
   desired_heading = reduce_0_to_360(heading);
 
   PID drivePID(distance, drive_kp, drive_ki, drive_kd, drive_starti, drive_settle_error, drive_settle_time, drive_timeout);
-  PID headingPID(reduce_negative_180_to_180(desired_heading - get_absolute_heading()), heading_kp, heading_kd);
+  PID headingPID(reduce_negative_180_to_180(desired_heading - get_heading()), heading_kp, heading_kd);
   float start_average_position = (get_left_position_in() + get_right_position_in()) / 2.0;
   float average_position = start_average_position;
   while (drivePID.is_done() == false && !drivetrain_needs_stopped) {
     average_position = (get_left_position_in() + get_right_position_in()) / 2.0;
     float drive_error = distance + start_average_position - average_position;
-    float heading_error = reduce_negative_180_to_180(desired_heading - get_absolute_heading());
+    float heading_error = reduce_negative_180_to_180(desired_heading - get_heading());
     float drive_output = drivePID.compute(drive_error);
     float heading_output = headingPID.compute(heading_error);
 
@@ -173,7 +173,7 @@ void Drive::control_arcade(int y, int x, float turnBias) {
         LDrive.stop(hold);
         RDrive.stop(hold);
       }
-      float h = get_absolute_heading();
+      float h = get_heading();
       controller(primary).Screen.print("heading: %4.1f", h);
       drivetrain_needs_stopped = false;
     }

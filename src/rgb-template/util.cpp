@@ -36,3 +36,26 @@ float deadband(float input, float width){
   }
   return(input);
 }
+
+bool check_motors(int motor_count, int temperature_limit) {
+  int count = 0;
+  int t = 0;
+  for (int i = 0; i < 20; i++) {
+    motor m = motor(i);
+    if (m.installed()) {
+      count++;
+      t = m.temperature(celsius);
+      if (t >= temperature_limit) {
+        controller(primary).Screen.print("motor %d is %dC           ", i + 1, t);
+        controller(primary).rumble("----");
+        return false;
+      }
+    }
+  }
+  if (count < motor_count) {
+    controller(primary).Screen.print("%d motor is disconnected      ", motor_count - count);
+    controller(primary).rumble("----");
+    return false;
+  }
+  return true;
+}

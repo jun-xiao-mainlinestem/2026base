@@ -18,6 +18,7 @@
 #include "v5_vcs.h"
 
 #include "robot-config.h"
+#include "chassis.h"
 #include "autons.h"
 
 #include "rgb-template/drive.h"

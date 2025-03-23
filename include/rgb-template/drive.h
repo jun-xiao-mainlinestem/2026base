@@ -52,7 +52,7 @@ public:
 
   Drive(motor_group LDrive, motor_group RDrive, inertial gyro, float wheel_diameter, float gear_ratio);
 
-  float get_absolute_heading();
+  float get_heading();
   void set_heading(float orientation_deg);
 
   void drive_with_voltage(float leftVoltage, float rightVoltage);

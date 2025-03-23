@@ -1,16 +1,2 @@
 using namespace vex;
-
-class Drive;
-extern Drive chassis;
-
-extern brain Brain;
-
-extern int drive_mode;
-void set_drive_mode();
-void usercontrol();
-
 void pre_auton();
-void reset_chassis();
-
-void print_menu(char const * txt[], char const * title);
-void autonomous();
