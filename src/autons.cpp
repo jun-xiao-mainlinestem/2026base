@@ -2,6 +2,8 @@
 
 int current_auton_selection = 0;
 
+int parameters[] = {12, 20};
+
 char const * auton_test_menu[] = {
   "auton1",
   "auton2"
@@ -19,13 +21,16 @@ void run_auton_item(int id) {
 }
 
 void test1() {
-  chassis.drive_distance(12, 10, 0, 6, true);
+  int x = parameters[0];
+  int y = parameters[1];
+ 
+  chassis.drive_distance(x, 10, 0, 6, true);
   chassis.turn_to_heading(90, 10, true);
-  chassis.drive_distance(12, 10, 90, 6, true);
+  chassis.drive_distance(y, 10, 90, 6, true);
   chassis.turn_to_heading(180, 10, true);
-  chassis.drive_distance(12, 10, 180, 6, true);
+  chassis.drive_distance(x, 10, 180, 6, true);
   chassis.turn_to_heading(270, 10, true);
-  chassis.drive_distance(12, 10, 270, 6, true);
+  chassis.drive_distance(y, 10, 270, 6, true);
   chassis.turn_to_heading(0); 
 }
 

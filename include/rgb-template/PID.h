@@ -20,15 +20,8 @@ private:
   float time_spent_running = 0;
   
 public:
-
-
-  PID(float error, float kp, float ki, float kd, float starti, float settle_error, float settle_time, float timeout);
-
   PID(float error, float kp, float kd);
-
-  PID(float error, float kp);
-
+  PID(float error, float kp, float ki, float kd, float starti, float settle_error, float settle_time, float timeout);
   float compute(float error);
-
   bool is_done();
 };

@@ -16,11 +16,24 @@ void turn_left_90() {
 //  chassis.driver_control_disabled = false;  
 }
 
-void turn_right_90() {
-  chassis.driver_control_disabled = true;
-  float h = chassis.get_heading();
-  chassis.turn_to_heading(h + 90);
-  chassis.driver_control_disabled = false;  
+void toggle_intake() {
+  intake.spin(forward, 12, volt);
+  while(controller(primary).ButtonL1.pressing()) {
+    wait (20, msec);
+  }
+  intake.stop(coast);
+}
+
+void toggle_clamp() {
+  if (clamp_is_up == true) {
+   clamp_mogo();
+   clamp_is_up = false;
+  }
+  else {
+   release_mogo();
+   clamp_is_up = true;
+  }
+  wait (200, msec);
 }
 
 void hold_drive_train() {
@@ -42,9 +55,8 @@ int main() {
   controller(primary).ButtonR2.pressed(hold_drive_train);
   controller(primary).ButtonUp.pressed(turn_north);
   controller(primary).ButtonLeft.pressed(turn_left_90);
-  controller(primary).ButtonRight.pressed(turn_right_90);
-
-
+  controller(primary).ButtonL1.pressed(toggle_intake);
+  controller(primary).ButtonR1.pressed(toggle_clamp);
 
   pre_auton();
 
