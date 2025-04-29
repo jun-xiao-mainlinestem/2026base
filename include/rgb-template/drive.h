@@ -16,8 +16,6 @@ private:
   float turn_settle_error;
   float turn_settle_time;
   float turn_timeout;
-  float nonstop_turn_settle_error =10;
-  float nonstop_turn_settle_time =20;
 
   float drive_max_voltage;
   float drive_kp;

@@ -2,7 +2,8 @@
 #include "rgb-template/drive.h"
 void run_auton_item(int id);
 void show_auton_menu();
-void button_y_test();
+void run_test_item();
+extern int current_test_item;
 extern int current_auton_selection;
 extern int auton_num;
 void test1();

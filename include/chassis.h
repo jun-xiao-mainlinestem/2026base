@@ -12,5 +12,5 @@ void usercontrol();
 void setup_gyro();
 void reset_chassis();
 
-void print_menu(char const * txt[], char const * title);
+void print_menu(char const * txt[]);
 void autonomous();

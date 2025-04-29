@@ -6,6 +6,7 @@ motor clampMotor = motor(PORT7, ratio36_1, false);
 rotation clampRotation = rotation(PORT10, true);
 distance mogo_distance = distance(PORT11);
 
+bool clamp_is_up = true;
 void detect_mogo(){
   if (mogo_distance.objectDistance(inches) < 1 && clamp_is_up){
     clamp_mogo();
@@ -44,4 +45,3 @@ void release_mogo()
   rotate_clamp_to(40);
 }
 
-bool clamp_is_up = true;

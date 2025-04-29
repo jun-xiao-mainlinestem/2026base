@@ -19,6 +19,7 @@ inertial inertial1 = inertial(PORT9);
 // constant definitions for driving control
 const float TURN_FACTOR = 0.85;
 const float STEER_BIAS = 0.5;
+const int END_GAME_SECONDS = 75;
 
 Drive chassis(
   //Left Motors:
@@ -41,11 +42,25 @@ void set_drive_mode() {
   if (drive_mode == 1) controller(primary).Screen.print("tank drive            ");
 }
 
+int endgame_timer() {
+  Brain.Timer.clear();
+  while (Brain.Timer.time(sec) < END_GAME_SECONDS) {
+    wait(200, msec);
+  }
+  controller(primary).Screen.print("end game ...");
+  controller(primary).rumble("---");
+  wait(20, sec);
+  chassis.stop(hold);
+  return 1;
+}
+
 bool exit_auton_menu = false;
 void usercontrol(void) {
-  // task end_game_reminder(endgame_timer);
   exit_auton_menu = true;
   reset_chassis();
+  current_auton_selection = -1;
+  task end_game_reminder(endgame_timer);
+
   // do other things before driver control starts
   while (1) {
     if (drive_mode == 1) chassis.control_tank(controller(primary).Axis3.position(), controller(primary).Axis2.position());
@@ -61,21 +76,23 @@ void usercontrol(void) {
 
 void autonomous(void) {
   exit_auton_menu = true;
-  run_auton_item(current_auton_selection);
+  run_auton_item(current_auton_selection+1);
 }
 
-void print_menu_item(char const * txt[], char const * title) {
+void print_menu_item(char const * txt[]) {
+  if (current_auton_selection == -1) {
+    controller(primary).Screen.print("custom test: press X");
+    return;
+  }    
   Brain.Screen.clearScreen();
-  Brain.Screen.setCursor(1, 1);
-  Brain.Screen.print("%s", title);
   Brain.Screen.setCursor(3, 1);
   Brain.Screen.print("%s", txt[current_auton_selection]);
-  controller(primary).Screen.print("%s %s        ", txt[current_auton_selection], title);
+  controller(primary).Screen.print("%s", txt[current_auton_selection]);
 }
 
-void print_menu(char const * txt[], char const * title) {
+void print_menu(char const * txt[]) {
   Brain.Screen.setFont(mono30);
-  print_menu_item(txt, title);
+  print_menu_item(txt);
 
   while (!exit_auton_menu) {
     if (Brain.Screen.pressing()) {
@@ -84,7 +101,7 @@ void print_menu(char const * txt[], char const * title) {
         wait(20, msec);
       }
       current_auton_selection = (current_auton_selection + 1) % auton_num;
-      print_menu_item(txt, title);
+      print_menu_item(txt);
       controller(primary).rumble(".");
     }
     task::sleep(50);
