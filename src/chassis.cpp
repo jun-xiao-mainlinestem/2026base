@@ -48,9 +48,12 @@ int endgame_timer() {
     wait(200, msec);
   }
   controller(primary).Screen.print("end game ...");
-  controller(primary).rumble("---");
-  wait(20, sec);
-  chassis.stop(hold);
+  controller(primary).rumble("-");
+  while(true)
+  {
+    wait(60, seconds);
+    check_motors(NUMBER_OF_MOTORS);
+  }
   return 1;
 }
 
@@ -58,7 +61,6 @@ bool exit_auton_menu = false;
 void usercontrol(void) {
   exit_auton_menu = true;
   reset_chassis();
-  current_auton_selection = -1;
   task end_game_reminder(endgame_timer);
 
   // do other things before driver control starts
@@ -76,12 +78,12 @@ void usercontrol(void) {
 
 void autonomous(void) {
   exit_auton_menu = true;
-  run_auton_item(current_auton_selection+1);
+  run_auton_item();
 }
 
 void print_menu_item(char const * txt[]) {
-  if (current_auton_selection == -1) {
-    controller(primary).Screen.print("custom test: press X");
+  if (current_auton_selection < 0) {
+    controller(primary).Screen.print("custom test");
     return;
   }    
   Brain.Screen.clearScreen();
@@ -128,8 +130,8 @@ void reset_chassis() {
   chassis.set_heading_constants(6, .4, 1);
   chassis.set_turn_constants(10, 0.2, .015, 1.5, 7.5);
 
-  chassis.set_drive_exit_conditions(1, 300, 2000);
-  chassis.set_turn_exit_conditions(1.5, 300, 1500);
+  chassis.set_drive_exit_conditions(1, 200, 2000);
+  chassis.set_turn_exit_conditions(1.5, 200, 1500);
 }
 
 

@@ -45,16 +45,16 @@ bool check_motors(int motor_count, int temperature_limit) {
     if (m.installed()) {
       count++;
       t = m.temperature(celsius);
-      if (t >= temperature_limit) {
+      if (t > temperature_limit) {
         controller(primary).Screen.print("motor %d is %dC           ", i + 1, t);
-        controller(primary).rumble("----");
+        controller(primary).rumble("---");
         return false;
       }
     }
   }
   if (count < motor_count) {
     controller(primary).Screen.print("%d motor is disconnected      ", motor_count - count);
-    controller(primary).rumble("----");
+    controller(primary).rumble("---");
     return false;
   }
   return true;

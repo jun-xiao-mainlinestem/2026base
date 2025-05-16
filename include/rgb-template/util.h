@@ -10,4 +10,4 @@ float to_volt(float percent);
 
 float deadband(float input, float width);
 
-bool check_motors(int motor_count, int temperature_limit);
+bool check_motors(int motor_count, int temperature_limit = 45);

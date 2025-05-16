@@ -57,13 +57,12 @@ public:
 
   void turn_to_heading(float heading);
   void turn_to_heading(float heading, float turn_max_voltage);
-  void turn_to_heading(float heading, float turn_max_voltage, bool nonstop, float settle_error = 15, float settle_time = 20);
-
+  void turn_to_heading(float heading, float turn_max_voltage, bool nonstop, float settle_error = 5, float settle_time = 50);
 
   void drive_distance(float distance);
   void drive_distance(float distance, float drive_max_voltage);
   void drive_distance(float distance, float drive_max_voltage, float heading, float heading_max_voltage);
-  void drive_distance(float distance, float drive_max_voltage, float heading, float heading_max_voltage, bool nonstop, float drive_settle_error=4, float drive_settle_time=50) ;
+  void drive_distance(float distance, float drive_max_voltage, float heading, float heading_max_voltage, bool nonstop, float drive_settle_error=2, float drive_settle_time=50) ;
 
   bool drivetrain_needs_stopped = false;
   bool driver_control_disabled = false;

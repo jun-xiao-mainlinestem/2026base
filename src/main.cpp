@@ -9,14 +9,7 @@ void turn_north() {
   chassis.driver_control_disabled = false;
 }
 
-void turn_left_90() {
- // chassis.driver_control_disabled = true;
-  float h = chassis.get_heading();
-  chassis.turn_to_heading(h - 90);
-//  chassis.driver_control_disabled = false;  
-}
-
-void toggle_intake() {
+void button_L1_action() {
   intake.spin(forward, 12, volt);
   while(controller(primary).ButtonL1.pressing()) {
     wait (20, msec);
@@ -24,19 +17,8 @@ void toggle_intake() {
   intake.stop(coast);
 }
 
-void toggle_clamp() {
-  if (clamp_is_up == true) {
-   clamp_mogo();
-   clamp_is_up = false;
-  }
-  else {
-   release_mogo();
-   clamp_is_up = true;
-  }
-  wait (200, msec);
-}
 
-void hold_drive_train() {
+void buttonR2_action() {
   chassis.stop(hold);
   controller(primary).rumble(".");
   waitUntil(!controller(primary).ButtonR2.pressing());
@@ -45,19 +27,18 @@ void hold_drive_train() {
 
 void button_right_action()
 {
-  // select test to run
-  if ((Brain.Timer.time(sec) < 5) || current_auton_selection > -1) {
-    show_auton_menu();
-    current_auton_selection = (current_auton_selection + 1) % auton_num;
-    return;
+  // activate test mode
+  if ((Brain.Timer.time(sec) < 5)) {
+    auton_test_mode = true;
   }
 }
 
-void button_x_action()
+void buttonA_action()
 {
-  if (current_auton_selection > -1)
+  // run auton test
+  if (auton_test_mode)
   {
-    run_test_item();
+    run_auton_test();
     return;
   }
 }
@@ -69,13 +50,12 @@ int main() {
   Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
 
-  controller(primary).ButtonR2.pressed(hold_drive_train);
-  controller(primary).ButtonUp.pressed(turn_north);
-  controller(primary).ButtonLeft.pressed(turn_left_90);
   controller(primary).ButtonRight.pressed(button_right_action);
-  controller(primary).ButtonX.pressed(button_x_action);
+  controller(primary).ButtonA.pressed(buttonA_action);
 
-  controller(primary).ButtonL1.pressed(toggle_intake);
+  controller(primary).ButtonR2.pressed(buttonR2_action);
+  controller(primary).ButtonUp.pressed(turn_north);
+  controller(primary).ButtonL1.pressed(button_L1_action);
   controller(primary).ButtonR1.pressed(toggle_clamp);
 
   pre_auton();
