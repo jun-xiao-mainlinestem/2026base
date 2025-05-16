@@ -1,8 +1,6 @@
 #include "vex.h"
 using namespace vex;
 
-const int NUMBER_OF_MOTORS=6;
-
 motor intake = motor(PORT8, ratio18_1, true);
 motor clampMotor = motor(PORT7, ratio36_1, false);
 rotation clampRotation = rotation(PORT10, true);
@@ -13,17 +11,6 @@ void detect_mogo(){
   if (mogo_distance.objectDistance(inches) < 1 && clamp_is_up){
     clamp_mogo();
   }
-}
-
-void pre_auton() {
-  setup_gyro();
-  check_motors(NUMBER_OF_MOTORS);
-  reset_chassis();
-  show_auton_menu();
-
-  // additional setup for other systems of the robot
-  clampRotation.setPosition(clampRotation.angle(deg), degrees);
-  mogo_distance.changed(detect_mogo);
 }
 
 void rotate_clamp_to(float angle)

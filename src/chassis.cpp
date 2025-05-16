@@ -16,10 +16,18 @@ motor rightMotor3 = motor(PORT6, ratio18_1, true);
 
 inertial inertial1 = inertial(PORT9);
 
+// 0: double arcade   1: tank
+bool DRIVE_TANK_MODE = false;
+
+// total number of motors, including drivetrain
+const int NUMBER_OF_MOTORS = 6;
+
+// end game reminder
+const int END_GAME_SECONDS = 75;
+
 // constant definitions for driving control
 const float TURN_FACTOR = 0.85;
 const float STEER_BIAS = 0.5;
-const int END_GAME_SECONDS = 75;
 
 Drive chassis(
   //Left Motors:
@@ -33,13 +41,16 @@ Drive chassis(
   0.75
 );
 
-int drive_mode = 0;
-// 0: arcade   1: tank
-void set_drive_mode() {
-  controller(primary).rumble("-");
-  drive_mode = (drive_mode + 1) % 2;
-  if (drive_mode == 0) controller(primary).Screen.print("double arcade         ");
-  if (drive_mode == 1) controller(primary).Screen.print("tank drive            ");
+void reset_chassis() {
+  chassis.set_heading(inertial1.heading());
+  chassis.stop(coast);
+
+  chassis.set_drive_constants(10, 1.5, 0, 10, 0);
+  chassis.set_heading_constants(6, .4, 1);
+  chassis.set_turn_constants(10, 0.2, .015, 1.5, 7.5);
+
+  chassis.set_drive_exit_conditions(1, 200, 2000);
+  chassis.set_turn_exit_conditions(1.5, 200, 1500);
 }
 
 int endgame_timer() {
@@ -65,8 +76,8 @@ void usercontrol(void) {
 
   // do other things before driver control starts
   while (1) {
-    if (drive_mode == 1) chassis.control_tank(controller(primary).Axis3.position(), controller(primary).Axis2.position());
-    if (drive_mode == 0) {
+    if (DRIVE_TANK_MODE) chassis.control_tank(controller(primary).Axis3.position(), controller(primary).Axis2.position());
+    else {
       if (abs(controller(primary).Axis4.position()) < 100)
         chassis.control_arcade(controller(primary).Axis2.position(), controller(primary).Axis4.position() * TURN_FACTOR, STEER_BIAS);
       else
@@ -122,16 +133,9 @@ void setup_gyro() {
   }
 }
 
-void reset_chassis() {
-  chassis.set_heading(inertial1.heading());
-  chassis.stop(coast);
-
-  chassis.set_drive_constants(10, 1.5, 0, 10, 0);
-  chassis.set_heading_constants(6, .4, 1);
-  chassis.set_turn_constants(10, 0.2, .015, 1.5, 7.5);
-
-  chassis.set_drive_exit_conditions(1, 200, 2000);
-  chassis.set_turn_exit_conditions(1.5, 200, 1500);
+void pre_auton() {
+  setup_gyro();
+  check_motors(NUMBER_OF_MOTORS);
+  reset_chassis();
+  show_auton_menu();
 }
-
-
