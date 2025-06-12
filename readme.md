@@ -1,7 +1,11 @@
 RGB BOTS TEMPLATE IS INSPIRED BY JARS-TEMPLATE
+#Install
+go to [github](https://github.com/jun-xiao-mainlinestem/2026base), download the source code as zip file.
+![source](./images/github.png)
 
 # Create a new project
-new v5 project, copy the folders and files.
+- unzip the downloaded file to a folder on local drive
+- in vscdoe, select menu 'file' -> 'open folder' 
 
 # Edit chassis.cpp
 modify motor and inertia sensor port number
