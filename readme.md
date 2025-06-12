@@ -5,7 +5,7 @@ go to [github](https://github.com/jun-xiao-mainlinestem/2026base), download the 
 
 ![source](./images/github.png)
 
-# Create a new project
+# Open the project
 - unzip the downloaded file to a folder on local drive
 - in vscdoe, select menu 'file' -> 'open folder' 
 
