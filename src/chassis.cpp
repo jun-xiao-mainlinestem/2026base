@@ -25,7 +25,7 @@ const int NUMBER_OF_MOTORS = 6;
 // end game reminder
 const int END_GAME_SECONDS = 75;
 
-// constant definitions for driving control
+// constant definitions for driver control
 const float TURN_FACTOR = 0.85;
 const float STEER_BIAS = 0.5;
 
@@ -72,7 +72,7 @@ bool exit_auton_menu = false;
 void usercontrol(void) {
   exit_auton_menu = true;
   reset_chassis();
-  task end_game_reminder(endgame_timer);
+  thread endgame_timer_thread = thread(endgame_timer);
 
   // do other things before driver control starts
   while (1) {
@@ -83,7 +83,7 @@ void usercontrol(void) {
       else
         chassis.control_arcade(controller(primary).Axis2.position(), controller(primary).Axis4.position(), STEER_BIAS);
     }
-    wait(20, msec); // Sleep the task for a short amount of time
+    wait(20, msec); 
   }
 }
 
@@ -117,7 +117,7 @@ void print_menu(char const * txt[]) {
       print_menu_item(txt);
       controller(primary).rumble(".");
     }
-    task::sleep(50);
+    wait(50, msec);
   }
   Brain.Screen.setFont(mono20);
 }

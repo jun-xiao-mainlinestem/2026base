@@ -21,7 +21,7 @@ void rotate_clamp_to(float angle)
     float output = clampPID.compute(error);
     output = threshold(output, -10, 10);
     clampMotor.spin(forward, output, volt);
-    task::sleep(10);
+    wait(10, msec);
   }
   clampMotor.stop(hold);
 }

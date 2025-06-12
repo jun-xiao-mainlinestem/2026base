@@ -73,6 +73,15 @@ void Drive::turn_to_heading(float heading, float turn_max_voltage) {
   turn_to_heading(heading, turn_max_voltage, false, turn_settle_error, turn_settle_time);
 }
 
+/*
+ * Turns the robot to a specified angle using PID control.
+ * - heading: Target heading to turn to (in degrees).
+ * - turn_max_voltage: Maximum voltage for the turn 
+ * - nonstop: If false, stops the robot at the end; if true, allows chaining.
+ * - settle_error: error range for start calcuating the settle time.
+ * - settle_time: settle time for existing the PID loop (in milliseconds).
+ */
+
 void Drive::turn_to_heading(float heading, float turn_max_voltage, bool nonstop, float settle_error, float settle_time) {
   desired_heading = reduce_0_to_360(heading);
   PID turnPID(reduce_negative_180_to_180(heading - get_heading()), turn_kp, turn_ki, turn_kd, turn_starti, settle_error, settle_time, turn_timeout);
@@ -81,7 +90,7 @@ void Drive::turn_to_heading(float heading, float turn_max_voltage, bool nonstop,
     float output = turnPID.compute(error);
     output = threshold(output, -turn_max_voltage, turn_max_voltage);
     drive_with_voltage(output, -output);
-    task::sleep(10);
+    wait(10, msec);
   }
   if (!nonstop) {
     LDrive.stop(hold);
@@ -120,7 +129,7 @@ void Drive::drive_distance(float distance, float drive_max_voltage, float headin
     heading_output = threshold(heading_output, -heading_max_voltage, heading_max_voltage);
 
     drive_with_voltage(drive_output + heading_output, drive_output - heading_output);
-    task::sleep(10);
+    wait(10, msec);
   }
   drivetrain_needs_stopped = false;
   if (!nonstop) {
