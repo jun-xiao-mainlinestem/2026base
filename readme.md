@@ -3,7 +3,7 @@ RGB BOTS TEMPLATE IS INSPIRED BY JARS-TEMPLATE
 # Install
 go to [github](https://github.com/jun-xiao-mainlinestem/2026base), download the source code as zip file.
 
-!(./images/github.png)
+![source](./images/github.png)
 
 # Open the project
 - unzip the downloaded file to a folder on local drive
