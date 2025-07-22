@@ -25,7 +25,7 @@ void show_auton_menu() {
   print_menu(auton_menu_text);
 }
 
-// When true, the autonomous routine will pause at each step until the 'A' button is pressed.
+// When true, the autonomous routine will stop at each step if the 'A' button is hold.
 bool auton_test_mode = false;
 
 // The first autonomous routine.
@@ -34,8 +34,9 @@ void test1() {
   int y = auton1_parameters[1];
 
   chassis.drive_distance(x, 10, 0, 6, true);
-  // If in test mode, wait for the 'A' button to be pressed before continuing.
+  // If in test mode and the 'A' button not hold, stop the routine here.
   if (auton_test_mode && !controller(primary).ButtonA.pressing() ) return;
+
   chassis.turn_to_heading(90, 10, true);
   chassis.drive_distance(y, 10, 90, 6, true);
   chassis.turn_to_heading(180, 10, true);
@@ -62,17 +63,5 @@ void run_auton_item() {
     test2();
     break;
   }
-}
-
-// Runs the selected autonomous routine for testing and displays the run time.
-void run_auton_test() {
-  chassis.driver_control_disabled = true;
-  Brain.Timer.clear();
-
-  run_auton_item(); 
-
-  double t = Brain.Timer.time(sec);
-  controller(primary).Screen.print("run time: %.1f   ", t);
-  chassis.driver_control_disabled = false;
 }
 

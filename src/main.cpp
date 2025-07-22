@@ -74,19 +74,12 @@ void buttonRight_action()
     show_auton_menu();
     return;
   }
-
-  // otherwise run macro function 
-  chassis.driver_control_disabled = true;
-  // insert code below
-
-  chassis.driver_control_disabled = false;
 }
 
 // This function is called when the B button is pressed.
 void buttonB_action()
 {
-
-  // otherwise run macro function
+  // run macro function
   chassis.driver_control_disabled = true;
   // insert code below
 
@@ -96,11 +89,26 @@ void buttonB_action()
 // This function is called when the A button is pressed.
 void buttonA_action()
 {
-  // run auton test if in test mode
+  // If in test mode, run the selected autonomous routine for testing and displays the run time.
   if (auton_test_mode)
   {
-    run_auton_test();
+    chassis.driver_control_disabled = true;
+    Brain.Timer.clear();
+
+    run_auton_item(); 
+
+    double t = Brain.Timer.time(sec);
+    controller(primary).Screen.print("run time: %.1f   ", t);
+    chassis.driver_control_disabled = false;
+
+    return;
   }
+
+    // otherwise run test code 
+  chassis.driver_control_disabled = true;
+  // insert test code below
+
+  chassis.driver_control_disabled = false;
 }
 
 // ----------------------------------------------------------------------------
@@ -127,10 +135,6 @@ int main() {
 
   // Run the pre-autonomous function.
   pre_auton();
-
-  // additional setup for other subsystems of the robot
-//  liftRotation.setPosition(liftRotation.angle(deg), degrees);
-//  arm_distance.changed(detect_arm);
 
   // Prevent main from exiting with an infinite loop.
   while (true) {

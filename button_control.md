@@ -16,4 +16,17 @@
 ## R2
 *  Hold drivetrain
 
+## Right
+*  Activate test mode if pressed within 5 seconds of starting the program
+*  If in test mode, press to scroll through auton menu
+
+## A
+*  If in test mode, press to run the selected autonomous routine for testing
+*  If not in test mode, run custom piece of code for testing
+
+## B
+*  Hold to run macro, current unassigned
+
+
+
 

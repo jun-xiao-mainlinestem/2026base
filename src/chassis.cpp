@@ -23,7 +23,7 @@ motor rightMotor2 = motor(PORT5, ratio6_1, false);
 motor rightMotor3 = motor(PORT6, ratio18_1, true);
 
 // inertial sensor for turning and heading
-inertial inertial1 = inertial(PORT9);
+inertial inertial1 = inertial(PORT10);
 
 // if you want the drive mode to be changeable in you code, remove the "const"
 // true for tank drive, false for arcade drive
@@ -123,13 +123,9 @@ void usercontrol(void) {
     if (DRIVE_TANK_MODE) chassis.control_tank(controller(primary).Axis3.position(), controller(primary).Axis2.position());
     // This is the arcade drive code.
     else {
-      // This code reduces the sensitivity of the turn stick when it is near the center.
-      if (abs(controller(primary).Axis4.position()) < 100)
-        chassis.control_arcade(controller(primary).Axis2.position(), controller(primary).Axis4.position() * TURN_FACTOR, STEER_BIAS);
-      // This code uses the full sensitivity of the turn stick when it is far from the center.
-      else
-        chassis.control_arcade(controller(primary).Axis2.position(), controller(primary).Axis4.position(), STEER_BIAS);
-    }
+      // This code reduces the sensitivity of the turn stick
+      chassis.control_arcade(controller(primary).Axis2.position(), controller(primary).Axis4.position() * TURN_FACTOR, STEER_BIAS);
+   }
     // This wait prevents the loop from using too much CPU time.
     wait(20, msec); 
   }

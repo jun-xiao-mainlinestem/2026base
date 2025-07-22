@@ -12,7 +12,6 @@ extern bool is_red_team;
 
 // Displays the autonomous routine selection menu on the brain screen.
 void show_auton_menu();
-// Runs the selected autonomous routine for testing purposes.
-void run_auton_test();
+
 // Runs the selected autonomous routine.
 void run_auton_item();
