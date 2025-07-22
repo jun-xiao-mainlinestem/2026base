@@ -38,10 +38,10 @@ void buttonR1_action() {
     score_middle();
   }
   else {
-    score_top();
+    score_long();
   }
   // Wait until the button is released to stop the intake.
-  while(controller(primary).ButtonL2.pressing()) {
+  while(controller(primary).ButtonR1.pressing()) {
     wait (20, msec);
   }
   chassis.stop(coast);
