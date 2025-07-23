@@ -14,3 +14,13 @@ void show_auton_menu();
 
 // Runs the selected autonomous routine.
 void run_auton_item();
+
+// Prints the autonomous selection menu to the brain screen.
+void print_menu(char const * txt[]);
+
+extern bool exit_auton_menu;
+extern bool auton_test_mode;
+bool should_continue_auton_step();
+
+// The autonomous task.
+void autonomous();

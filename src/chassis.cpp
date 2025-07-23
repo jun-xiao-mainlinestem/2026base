@@ -80,6 +80,10 @@ void reset_chassis() {
   chassis.set_turn_exit_conditions(1.5, 200, 1500);
 }
 
+
+
+// No need to change code below this line
+
 // This function is a thread that runs in the background to remind the driver of the end game.
 int endgame_timer() {
   // Clears the brain timer.
@@ -100,9 +104,6 @@ int endgame_timer() {
   }
   return 1;
 }
-
-// This variable is used to exit the autonomous menu.
-bool exit_auton_menu = false;
 
 // This is the user control function.
 // It is called when the driver control period starts.
@@ -126,61 +127,6 @@ void usercontrol(void) {
     // This wait prevents the loop from using too much CPU time.
     wait(20, msec); 
   }
-}
-
-// This is the autonomous function.
-// It is called when the autonomous period starts.
-void autonomous(void) {
-  // Exits the autonomous menu.
-  exit_auton_menu = true;
-  // Runs the selected autonomous routine.
-  run_auton_item();
-}
-
-// This function prints the selected autonomous routine to the brain and controller screens.
-void print_menu_item(char const * txt[]) {
-  // If the custom test is selected, print "custom test" to the controller screen.
-  if (current_auton_selection < 0) {
-    controller(primary).Screen.print("custom test");
-    return;
-  }    
-  // Clears the brain screen.
-  Brain.Screen.clearScreen();
-  // Sets the cursor to the third row, first column.
-  Brain.Screen.setCursor(3, 1);
-  // Prints the selected autonomous routine to the brain screen.
-  Brain.Screen.print("%s", txt[current_auton_selection]);
-  // Prints the selected autonomous routine to the controller screen.
-  controller(primary).Screen.print("%s", txt[current_auton_selection]);
-}
-
-// This function displays the autonomous menu on the brain screen.
-void print_menu(char const * txt[]) {
-  // Sets the font to mono30.
-  Brain.Screen.setFont(mono30);
-  // Prints the selected autonomous routine.
-  print_menu_item(txt);
-
-  // This loop runs until the autonomous menu is exited.
-  while (!exit_auton_menu) {
-    // If the brain screen is pressed, cycle through the autonomous routines.
-    if (Brain.Screen.pressing()) {
-      // Waits until the finger is lifted up from the screen.
-      while (Brain.Screen.pressing()) {
-        wait(20, msec);
-      }
-      // Cycles through the autonomous routines.
-      current_auton_selection = (current_auton_selection + 1) % auton_num;
-      // Prints the selected autonomous routine.
-      print_menu_item(txt);
-      // Rumbles the controller.
-      controller(primary).rumble(".");
-    }
-    // This wait prevents the loop from using too much CPU time.
-    wait(50, msec);
-  }
-  // Sets the font to mono20.
-  Brain.Screen.setFont(mono20);
 }
 
 // This function sets up the gyro.
@@ -214,8 +160,3 @@ void pre_auton() {
   if(gyro_setup_success && motors_setup_success) show_auton_menu();
 }
 
-// When true, the autonomous routine will stop at each step if the 'A' button is hold.
-bool auton_test_mode = false;
-bool should_continue_auton_step() {
-  return !(auton_test_mode && !controller(primary).ButtonA.pressing());
-}

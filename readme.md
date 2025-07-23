@@ -53,7 +53,9 @@ The project is organized into the following directories:
 ### Autonomous Routines (`autons.cpp`)
 
 *   **Create Functions:** Write your autonomous routines as separate functions.
+*   **Map functions:** Map auton functions to menu items in the `run_auton_item()` function 
 *   **Auton Menu:** Add the names of your autonomous functions to the `auton_menu_text` array to make them selectable on the brain's screen.
+*   **Auton paramters:** Create array variables for the auton functions at the top of the file to easy tuning the auton parameters.
 
 ## Drive APIs (`drive.h`)
 
