@@ -10,6 +10,9 @@ extern Drive chassis;
 // A flag to switch between tank and arcade drive modes.
 extern bool DRIVE_TANK_MODE;
 
+extern bool auton_test_mode;
+bool should_continue_auton_step();
+
 // The user control task.
 void usercontrol();
 // The pre-autonomous task.

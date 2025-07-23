@@ -6,15 +6,16 @@
 
 ## R1
 *  Hold to score long goal & hold the drivetrain
-*  If R2 is hold, score upper level of center goal 
 *  Release to stop the roller immediately.
 
 ## L2
 *  Hold to out-take balls and/or score lower level of center goal 
+*  If L1 pressed, intake halls into basket
 *  Release to stop the roller immediately
 
 ## R2
-*  Hold drivetrain
+*  Hold to score upper level of center goal 
+*  Release to stop the roller immediately.
 
 ## Right
 *  Activate test mode if pressed within 5 seconds of starting the program
@@ -25,6 +26,9 @@
 *  If not in test mode, run custom piece of code for testing
 
 ## B
+*  Hold drivetrain
+
+## X
 *  Hold to run macro, current unassigned
 
 

@@ -35,9 +35,6 @@ const float TURN_FACTOR = 0.85;
 // STEER_BIAS allows for a non-proportional steering response
 const float STEER_BIAS = 0.5;
 
-// total number of motors, including drivetrain
-const int NUMBER_OF_MOTORS = 8;
-
 // end game reminder will start at 85 seconds into the match
 const int END_GAME_SECONDS = 85;
 
@@ -215,4 +212,10 @@ void pre_auton() {
   reset_chassis();
   // Shows the autonomous menu.
   if(gyro_setup_success && motors_setup_success) show_auton_menu();
+}
+
+// When true, the autonomous routine will stop at each step if the 'A' button is hold.
+bool auton_test_mode = false;
+bool should_continue_auton_step() {
+  return !(auton_test_mode && !controller(primary).ButtonA.pressing());
 }

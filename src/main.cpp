@@ -48,9 +48,7 @@ void buttonR1_action() {
   stop_rollers();
 }
 
-
 // This function is called when the R2 button is pressed.
-// It holds the drivetrain in place until the button is released.
 void buttonR2_action() {
   chassis.stop(hold);
   controller(primary).rumble(".");
@@ -58,6 +56,8 @@ void buttonR2_action() {
   chassis.stop(coast);
 }
 
+// Global flag auton_test_mode indicating whether the robot is in autonomous test mode.
+// When true, special button actions allow selection and testing of autonomous routines.
 // This function is called when the Right button is pressed.
 void buttonRight_action()
 {
@@ -77,14 +77,25 @@ void buttonRight_action()
 }
 
 // This function is called when the B button is pressed.
+// It holds the drivetrain in place until the button is released.
 void buttonB_action()
+{
+  chassis.stop(hold);
+  controller(primary).rumble(".");
+  waitUntil(!controller(primary).ButtonB.pressing());
+  chassis.stop(coast);
+}
+
+// This function is called when the X button is pressed.
+void buttonX_action()
 {
   // run macro function
   chassis.driver_control_disabled = true;
-  // insert code below
+  // TODO: Insert macro code here. This is a placeholder for future macro actions triggered by Button X.
 
   chassis.driver_control_disabled = false;
 }
+
 
 // This function is called when the A button is pressed.
 void buttonA_action()
@@ -106,7 +117,7 @@ void buttonA_action()
 
     // otherwise run test code 
   chassis.driver_control_disabled = true;
-  // insert test code below
+  // TODO: Insert test code here. This is a placeholder for future test actions triggered by Button A.
 
   chassis.driver_control_disabled = false;
 }
@@ -126,11 +137,12 @@ int main() {
   controller(primary).ButtonRight.pressed(buttonRight_action);
   controller(primary).ButtonA.pressed(buttonA_action);
   controller(primary).ButtonB.pressed(buttonB_action);
+  controller(primary).ButtonX.pressed(buttonX_action);
 
-  controller(primary).ButtonR2.pressed(buttonR2_action);
   controller(primary).ButtonL1.pressed(buttonL1_action);
   controller(primary).ButtonL2.pressed(buttonL2_action);
   controller(primary).ButtonR1.pressed(buttonR1_action);
+  controller(primary).ButtonR2.pressed(buttonR2_action);
 
 
   // Run the pre-autonomous function.

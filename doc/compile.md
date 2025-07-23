@@ -2,6 +2,9 @@
 
 This is a VEX V5 project.
 
+## command+k to clear terminal window
+
+
 ## Building the project
 
 To build the project, run the following command:
