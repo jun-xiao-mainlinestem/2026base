@@ -10,8 +10,8 @@ This project provides a template for VEX V5 competition robotics, featuring a mo
 *   **Open in VS Code:** 
     *   If needed, follow the instructions to install [VScode with VEX extension](https://kb.vex.com/hc/en-us/categories/360002333191-V5?sc=vs-code-extension).
     *   In Visual Studio Code, go to `File > Open Folder` and select the extracted folder.
-*   **If using mac with Apple silicon**: 
-    *   If needed, [install Rosetta](https://support.apple.com/en-us/102527)
+*   **If using Mac with Apple silicon**: 
+    *   If needed, [install Rosetta](https://support.apple.com/en-us/102527) to simulate intel x86 chip.
     *   Edit `c_cpp_properties.json` file under `.vscode` folder.
 
 ## Project Structure
@@ -37,13 +37,13 @@ The project is organized into the following directories:
 *   **Driver Control Constants:**
     *   `TURN_FACTOR`: Adjusts the turning speed.
     *   `STEER_BIAS`: Controls the curve of the robot when both joysticks are used.
-*   **PID Constants:** If neeeded, tune the PID constants for driving and turning in the `reset_chassis()` function. Otherwise, keep the default values.
+*   **PID Constants:** If needed, tune the PID constants for driving and turning in the `reset_chassis()` function. Otherwise, keep the default values.
 
 ### Other Subsystems (`robot-config.cpp`)
 
-*   Configure motors and sensors for other subsystems like arms, claws, or intakes in this file.
-*   Set `NUMBER_OF_MOTORS` to automatically check for disconnected or overheated motors.
-*   Write helper functions to control the subsystems.
+*   **Motor configuration:** Create motors and sensors for other subsystems like intake or lift.
+*   **Motor safety check:** Set `NUMBER_OF_MOTORS` to automatically check for disconnected or overheated motors.
+*   **Help functions:** Write helper functions to control the subsystems and declare those functions in `robot-config.h`.
 
 ### Driver Control (`main.cpp`)
 
@@ -55,7 +55,16 @@ The project is organized into the following directories:
 *   **Create Functions:** Write your autonomous routines as separate functions.
 *   **Map functions:** Map auton functions to menu items in the `run_auton_item()` function 
 *   **Auton Menu:** Add the names of your autonomous functions to the `auton_menu_text` array to make them selectable on the brain's screen.
-*   **Auton paramters:** Create array variables for the auton functions at the top of the file to easy tuning the auton parameters.
+*   **Auton parameters:** Create array variables for the auton functions at the top of the file to easy tuning the auton parameters.
+
+## Run sample program
+- Build and download the program to the brain and using game controller to select the program slot and run the program.
+- For button mappings and custom actions, see [doc/button_control.md](doc/button_control.md).
+- Test autons using either the field switch or the game controller in the following steps:
+    - Press the controller's `Right button` within 5 seconds of program startup to enter test mode.
+    - When in test mode, press the `Right button` to cycle autonomous routines.
+    - Press the `A button` to run the selected routine. Hold the button to continue pass stops.
+
 
 ## Drive APIs (`drive.h`)
 
