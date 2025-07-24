@@ -25,7 +25,8 @@
 *  If not in test mode, run custom piece of code for testing
 
 ## B
-*  Hold drivetrain
+*  Hold to brake drivetrain
+*  Show distance drived and reset the motor encoder
 
 ## X
 *  Hold to run macro, current unassigned

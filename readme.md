@@ -60,7 +60,7 @@ The project is organized into the following directories:
 
 ## Run sample program
 - Build and download the program to the brain and using game controller to select the program slot and run the program.
-- For arcade driving, use the left stick to turn and right stick to drive forward and backward. For more button mappings and custom actions, see [doc/button_control.md](doc/button_control.md).
+- For arcade driving, use the `left stick` to turn and `right stick` to drive forward and backward. After you release the turn stick, the controller shows the current heading. If you press the `B button`, the controller shows the distance drived. For more button mappings and custom actions, see [doc/button_control.md](doc/button_control.md).
 - Test autons using either the field switch or the game controller in the following steps:
     - Press the controller's `Right button` within 5 seconds of program startup to enter test mode.
     - When in test mode, press the `Right button` to cycle autonomous routines.

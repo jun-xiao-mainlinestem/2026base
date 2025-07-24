@@ -183,7 +183,7 @@ void Drive::control_arcade(int y, int x, float turnBias) {
         RDrive.stop(hold);
       }
       float h = get_heading();
-      controller(primary).Screen.print("heading: %4.1f", h);
+      controller(primary).Screen.print("heading: %4.1f       ", h);
       drivetrain_needs_stopped = false;
     }
   }

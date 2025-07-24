@@ -44,11 +44,6 @@ private:
 
   // The default brake type for the drivetrain.
   vex::brakeType stop_mode = coast;
-
-  // Gets the position of the left side of the drivetrain in inches.
-  float get_left_position_in();
-  // Gets the position of the right side of the drivetrain in inches.
-  float get_right_position_in();
   
   // The motor group for the left side of the drivetrain.
   motor_group LDrive;
@@ -111,4 +106,8 @@ public:
   // Stops the drivetrain.
   void stop(vex::brakeType mode);
 
+  // Gets the position of the left side of the drivetrain in inches.
+  float get_left_position_in();
+  // Gets the position of the right side of the drivetrain in inches.
+  float get_right_position_in();
 };
