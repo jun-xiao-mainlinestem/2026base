@@ -15,7 +15,7 @@ competition Competition;
 // This function is called when the L1 button is pressed.
 // It spins the intake motor forward while the button is held down.
 void buttonL1_action() {
-  in_take();
+  in_take_basket();
   // Wait until the button is released to stop the intake.
   while(controller(primary).ButtonL1.pressing()) {
     wait (20, msec);
@@ -34,12 +34,7 @@ void buttonL2_action() {
 
 void buttonR1_action() {
   chassis.stop(hold);
-  if (controller(primary).ButtonR2.pressing()) {  
-    score_middle();
-  }
-  else {
-    score_long();
-  }
+  score_long();
   // Wait until the button is released to stop the intake.
   while(controller(primary).ButtonR1.pressing()) {
     wait (20, msec);
@@ -51,9 +46,13 @@ void buttonR1_action() {
 // This function is called when the R2 button is pressed.
 void buttonR2_action() {
   chassis.stop(hold);
-  controller(primary).rumble(".");
-  waitUntil(!controller(primary).ButtonR2.pressing());
+  score_middle();
+  while(controller(primary).ButtonR2.pressing()) {
+    wait (20, msec);
+  }  
   chassis.stop(coast);
+  stop_rollers();
+
 }
 
 // Global flag auton_test_mode indicating whether the robot is in autonomous test mode.
@@ -95,7 +94,6 @@ void buttonX_action()
 
   chassis.driver_control_disabled = false;
 }
-
 
 // This function is called when the A button is pressed.
 void buttonA_action()

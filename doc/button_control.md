@@ -1,17 +1,16 @@
 # Button Control
 
 ## L1
-*  Hold to intake balls
+*  Hold to intake balls halls into basket
+*  Release to stop the roller immediately
+
+## L2
+*  Hold to score lower level of center goal from the basket.
 *  Release to stop the roller immediately
 
 ## R1
 *  Hold to score long goal & hold the drivetrain
 *  Release to stop the roller immediately.
-
-## L2
-*  Hold to out-take balls and/or score lower level of center goal 
-*  If L1 pressed, intake halls into basket
-*  Release to stop the roller immediately
 
 ## R2
 *  Hold to score upper level of center goal 
