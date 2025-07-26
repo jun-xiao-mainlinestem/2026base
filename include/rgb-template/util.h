@@ -18,3 +18,5 @@ float deadband(float input, float width);
 
 // Checks if all motors are connected and not overheating.
 bool check_motors(int motor_count, int temperature_limit = 45);
+
+void   test_websocket();

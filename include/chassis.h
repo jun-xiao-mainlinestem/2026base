@@ -10,7 +10,12 @@ extern Drive chassis;
 // A flag to switch between tank and arcade drive modes.
 extern bool DRIVE_TANK_MODE;
 
+extern bool team_is_red;
+
 // The user control task.
 void usercontrol();
 // The pre-autonomous task.
 void pre_auton();
+
+// returns true when the joystick is touched.
+bool joystick_touched();

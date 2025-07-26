@@ -25,6 +25,9 @@ motor rightMotor3 = motor(PORT6, ratio18_1, true);
 // inertial sensor for turning and heading
 inertial inertial1 = inertial(PORT10);
 
+// optical sensor for team color detection
+optical team_optical = optical(PORT9);
+
 // if you want the drive mode to be changeable in you code, remove the "const"
 // true for tank drive, false for arcade drive
 bool DRIVE_TANK_MODE = false;
@@ -38,6 +41,10 @@ const float STEER_BIAS = 0.5;
 // end game reminder will start at 85 seconds into the match
 const int END_GAME_SECONDS = 85;
 
+
+// ------------------------------------------------------------------------
+//                     No need to change code below this line
+// ------------------------------------------------------------------------
 
 // The Drive class is a wrapper for the VEX motor_group class.
 // It provides a more intuitive interface for controlling a drivetrain.
@@ -80,9 +87,6 @@ void reset_chassis() {
   chassis.set_turn_exit_conditions(1.5, 200, 1500);
 }
 
-
-
-// No need to change code below this line
 
 // This function is a thread that runs in the background to remind the driver of the end game.
 int endgame_timer() {
@@ -139,11 +143,26 @@ bool setup_gyro() {
   controller(primary).rumble("-");
   // If the inertial sensor is not installed, print an error message to the controller screen.
   if (!inertial1.installed()) {
-    controller(primary).Screen.print("inertial sensor failure");
+    controller(primary).Screen.print("inertial sensor failure.   ");
     controller(primary).rumble("----");
+    wait(2, seconds);
     return false;  
   }
   return true;
+}
+
+bool team_is_red = true;
+void setup_team_color(){
+  if (team_optical.installed()) {
+    // Sets the team color based on the optical sensor.
+    if (team_optical.color() == color::blue) {
+      team_is_red = false;
+      controller(primary).Screen.print("               blue");
+    } else {
+      controller(primary).Screen.print("                red");
+    }
+  } 
+  wait(2, seconds);
 }
 
 // This function is called before the autonomous period starts.
@@ -151,6 +170,9 @@ void pre_auton() {
   bool gyro_setup_success = true;
   // Sets up the gyro.
   gyro_setup_success = setup_gyro();
+  // Sets up the team color.
+  setup_team_color();
+
   bool motors_setup_success = true;
   // Checks the motors.
   motors_setup_success = check_motors(NUMBER_OF_MOTORS);
@@ -158,5 +180,16 @@ void pre_auton() {
   reset_chassis();
   // Shows the autonomous menu.
   if(gyro_setup_success && motors_setup_success) show_auton_menu();
+}
+
+// This function returns true when the joystick is touched.
+bool joystick_touched() {
+  float d = fabs(chassis.get_left_position_in()) + fabs(chassis.get_right_position_in());
+  if (d > 1) {
+    return true;
+  }
+  else {
+    return false;
+  }
 }
 

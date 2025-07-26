@@ -27,6 +27,7 @@
 		{
 			"name": "Mac",
 			"includePath": [
+				"${workspaceFolder}/**",
 				"${vex_sdkIncludes}",
 				"${workspaceFolder}/include"
 			],

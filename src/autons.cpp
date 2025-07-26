@@ -51,12 +51,12 @@ char const * auton_menu_text[] = {
 // The default autonomous routine selection.
 int current_auton_selection = 0;
 
-// The team color.
-bool is_red_team = true;
 
 
+// ----------------------------------------------------------------------------
+//                     No need to change code below this line
+// ----------------------------------------------------------------------------
 
-// No need to change code below this line
 
 // When true, the autonomous routine will stop at each step if the 'A' button is hold.
 bool auton_test_mode = false;

@@ -1,12 +1,18 @@
 // vex.h includes all of the headers for the VEX V5 library
 #include "vex.h"
+#include "serial_communication.h"
 
 // All vex classes and functions are in the vex namespace
 using namespace vex;
+using namespace serial;
 
 // A global instance of competition
 // This object is used to register callbacks for the autonomous and driver control periods.
 competition Competition;
+
+// Global serial communication object
+SerialCommunication serialComm;
+bool serialListening = false;
 
 // ----------------------------------------------------------------------------
 //                                Controller Callbacks
@@ -63,20 +69,12 @@ void buttonB_action()
   chassis.stop(hold);
   controller(primary).rumble(".");
   wait(0.5, sec);
-  // Display the distance traveled on the controller screen.
-  controller(primary).Screen.print("distance: %.2f in.    ", distance_traveled);
+  // Display the distance traveled previously on the controller screen.
+  float h = chassis.get_heading();
+  controller(primary).Screen.print("heading: 4.0f, distance: %.1f", h, distance_traveled);
+
   waitUntil(!controller(primary).ButtonB.pressing());
   chassis.stop(coast);
-}
-
-// This function is called when the X button is pressed.
-void buttonX_action()
-{
-  // run macro function
-  chassis.driver_control_disabled = true;
-  // TODO: Insert macro code here. This is a placeholder for future macro actions triggered by Button X.
-
-  chassis.driver_control_disabled = false;
 }
 
 
@@ -149,6 +147,58 @@ void buttonA_action()
   chassis.driver_control_disabled = false;
 }
 
+
+// This function is called when the X button is pressed.
+void buttonX_action()
+{
+  // Toggle serial communication listening
+  if (!serialListening) {
+    // Start listening
+    if (serialComm.connect()) {
+      serialListening = true;
+      controller(primary).Screen.print("Serial listening ON");
+      controller(primary).rumble(".");
+      
+      // Set up message callback
+      serialComm.onMessage([](const std::string& message) {
+        controller(primary).Screen.print("Received: %s", message.c_str());
+        
+        // Handle commands
+        if (message == "MOVE_FORWARD") {
+          chassis.drive_distance(12);
+        }
+        else if (message == "TURN_LEFT") {
+          chassis.turn_to_heading(90);
+        }
+        else if (message == "TURN_RIGHT") {
+          chassis.turn_to_heading(-90);
+        }
+        else if (message == "STOP") {
+          chassis.stop(brake);
+        }
+        else if (message == "STATUS") {
+          serialComm.send("Robot status: OK\n");
+        }
+      });
+      
+      // Set up error callback
+      serialComm.onError([](const std::string& error) {
+        controller(primary).Screen.print("Serial error: %s", error.c_str());
+      });
+      
+    } else {
+      controller(primary).Screen.print("Serial connect failed");
+      controller(primary).rumble("--");
+    }
+  } else {
+    // Stop listening
+    serialComm.disconnect();
+    serialListening = false;
+    controller(primary).Screen.print("Serial listening OFF");
+    controller(primary).rumble("-");
+  }
+}
+
 // ----------------------------------------------------------------------------
 //                                Main
 // ----------------------------------------------------------------------------
@@ -162,7 +212,7 @@ int main() {
 
   // Register the controller button callbacks.
   controller(primary).ButtonRight.pressed(buttonRight_action);
-  controller(primary).ButtonRight.pressed(buttonLeft_action);
+  controller(primary).ButtonLeft.pressed(buttonLeft_action);
   controller(primary).ButtonA.pressed(buttonA_action);
   controller(primary).ButtonB.pressed(buttonB_action);
   controller(primary).ButtonX.pressed(buttonX_action);
@@ -172,12 +222,16 @@ int main() {
   controller(primary).ButtonR1.pressed(buttonR1_action);
   controller(primary).ButtonR2.pressed(buttonR2_action);
 
-
   // Run the pre-autonomous function.
   pre_auton();
 
   // Prevent main from exiting with an infinite loop.
   while (true) {
+    // Poll for serial messages if listening is enabled
+    if (serialListening) {
+      serialComm.poll();
+    }
     wait(100, msec);
   }
 }
+
