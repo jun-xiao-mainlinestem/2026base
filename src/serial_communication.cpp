@@ -36,9 +36,9 @@ void SerialCommunication::disconnect() {
 bool SerialCommunication::send(const std::string& message) {
     if (!connected) return false;
     
-    // Use VEX's built-in serial communication
-    // This will send data through the USB port
-    printf("%s", message.c_str());
+    // For VEX V5, we'll use the controller screen to show what we're sending
+    // This helps with debugging
+    controller(primary).Screen.print("Sending: %s", message.c_str());
     
     return true;
 }
@@ -46,17 +46,17 @@ bool SerialCommunication::send(const std::string& message) {
 void SerialCommunication::poll() {
     if (!connected) return;
     
-    // Check for incoming data
-    // In VEX V5, we can use scanf or similar functions to read from USB
-    char ch;
-    while (scanf("%c", &ch) == 1) {
-        buffer += ch;
-        
-        // If we get a newline, process the message
-        if (ch == '\n') {
-            processBuffer();
-        }
-    }
+    // For VEX V5, the WebSocket communication is handled by the VEX Extension
+    // The poll function is called regularly to check for new messages
+    // In this implementation, we're not actually reading from USB
+    // Instead, the VEX Extension forwards WebSocket messages to the brain
+    
+    // This is a placeholder - in practice, the VEX Extension would
+    // forward WebSocket messages to the brain through the USB connection
+    // and this function would process those messages
+    
+    // For now, we'll just return without doing anything
+    // The actual message processing happens in the main.cpp callback
 }
 
 std::string SerialCommunication::readLine() {

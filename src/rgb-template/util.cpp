@@ -1,42 +1,5 @@
 #include "vex.h"
-#include "serial_communication.h"
 #include <iostream>
-using namespace serial;
-
-void test_serial_communication() {
-  SerialCommunication serial;
-  
-  // Set up message callback
-  serial.onMessage([](const std::string& message) {
-    controller(primary).Screen.print("Received: %s", message.c_str());
-  });
-  
-  // Set up error callback
-  serial.onError([](const std::string& error) {
-    controller(primary).Screen.print("Error: %s", error.c_str());
-  });
-  
-  // Connect to serial communication
-  if (serial.connect()) {
-    controller(primary).Screen.print("Serial connected!");
-    
-    // Send a test message
-    serial.send("Hello from VEX V5!\n");
-    
-    // Poll for messages for 10 seconds
-    Brain.Timer.clear();
-    while (serial.isConnected() && Brain.Timer.time(sec) < 10) {
-      serial.poll();
-      wait(50, msec);
-    }
-    
-    // Disconnect
-    serial.disconnect();
-  } else {
-    controller(primary).Screen.print("Failed to connect serial");
-  }
-}
-
 
 float reduce_0_to_360(float angle) {
   while(!(angle >= 0 && angle < 360)) {

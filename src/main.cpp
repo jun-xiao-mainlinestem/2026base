@@ -142,7 +142,24 @@ void buttonA_action()
 
     // otherwise run test code 
   chassis.driver_control_disabled = true;
-  // TODO: Insert test code here. This is a placeholder for future test actions triggered by Button A.
+  
+  // Test robot commands directly
+  controller(primary).Screen.print("Testing FORWARD");
+  chassis.drive_with_voltage(4, 4);
+  wait(2000, msec);
+  
+  controller(primary).Screen.print("Testing STOP");
+  chassis.stop(brake);
+  wait(1000, msec);
+  
+  controller(primary).Screen.print("Testing LEFT");
+  chassis.drive_with_voltage(-4, 4);
+  wait(2000, msec);
+  
+  controller(primary).Screen.print("Testing STOP");
+  chassis.stop(brake);
+  
+  controller(primary).Screen.print("Test complete!");
 
   chassis.driver_control_disabled = false;
 }
@@ -162,19 +179,46 @@ void buttonX_action()
       // Set up message callback
       serialComm.onMessage([](const std::string& message) {
         controller(primary).Screen.print("Received: %s", message.c_str());
+        controller(primary).rumble("."); // Rumble to indicate command received
         
         // Handle commands
-        if (message == "MOVE_FORWARD") {
-          chassis.drive_distance(12);
+        if (message == "FORWARD") {
+          controller(primary).Screen.print("Executing: FORWARD");
+          chassis.drive_with_voltage(4, 4);
         }
-        else if (message == "TURN_LEFT") {
-          chassis.turn_to_heading(90);
+        else if (message == "BACKWARD") {
+          controller(primary).Screen.print("Executing: BACKWARD");
+          chassis.drive_with_voltage(-4, -4);
         }
-        else if (message == "TURN_RIGHT") {
-          chassis.turn_to_heading(-90);
+        else if (message == "LEFT") {
+          controller(primary).Screen.print("Executing: LEFT");
+          chassis.drive_with_voltage(-4, 4);
+        }
+        else if (message == "RIGHT") {
+          controller(primary).Screen.print("Executing: RIGHT");
+          chassis.drive_with_voltage(4, -4);
         }
         else if (message == "STOP") {
           chassis.stop(brake);
+          stop_rollers(); // Stop all rollers when stop command is issued
+          
+          // Get current status and send back
+          float current_heading = chassis.get_heading();
+          float distance_traveled = (chassis.get_left_position_in() + chassis.get_right_position_in()) / 2.0;
+          
+          // Convert floats to strings using sprintf (VEX-compatible)
+          char status_buffer[100];
+          sprintf(status_buffer, "STATUS:%.1f:%.1f\n", current_heading, distance_traveled);
+          std::string status_message(status_buffer);
+          serialComm.send(status_message);
+        }
+        else if (message == "INTAKE") {
+          in_take();
+          // Continue spinning until stop command is issued
+        }
+        else if (message == "SCORE") {
+          score_long();
+          // Continue spinning until stop command is issued
         }
         else if (message == "STATUS") {
           serialComm.send("Robot status: OK\n");
