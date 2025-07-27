@@ -171,83 +171,20 @@ void buttonA_action()
 
 
 // This function is called when the X button is pressed.
-void buttonX_action()
-{
+void buttonX_action() {
   // Toggle serial communication listening
   if (!serialListening) {
-    // Start listening
     if (serialComm.connect()) {
       serialListening = true;
       controller(primary).Screen.clearScreen();
       controller(primary).Screen.print("Serial listening ON");
       controller(primary).rumble(".");
-      
-      // Set up message callback
-      serialComm.onMessage([](const std::string& message) {
-        controller(primary).Screen.clearScreen();
-        controller(primary).Screen.print("Received: %s", message.c_str());
-        controller(primary).rumble("."); // Rumble to indicate command received
-        
-        // Handle commands
-        if (message == "FORWARD") {
-          controller(primary).Screen.clearScreen();
-          controller(primary).Screen.print("Executing: FORWARD");
-          chassis.drive_with_voltage(4, 4);
-        }
-        else if (message == "BACKWARD") {
-          controller(primary).Screen.clearScreen();
-          controller(primary).Screen.print("Executing: BACKWARD");
-          chassis.drive_with_voltage(-4, -4);
-        }
-        else if (message == "LEFT") {
-          controller(primary).Screen.clearScreen();
-          controller(primary).Screen.print("Executing: LEFT");
-          chassis.drive_with_voltage(-4, 4);
-        }
-        else if (message == "RIGHT") {
-          controller(primary).Screen.clearScreen();
-          controller(primary).Screen.print("Executing: RIGHT");
-          chassis.drive_with_voltage(4, -4);
-        }
-        else if (message == "STOP") {
-          chassis.stop(brake);
-          stop_rollers(); // Stop all rollers when stop command is issued
-          
-          // Get current status and send back
-          float current_heading = chassis.get_heading();
-          float distance_traveled = (chassis.get_left_position_in() + chassis.get_right_position_in()) / 2.0;
-          
-          // Convert floats to strings using sprintf (VEX-compatible)
-          char status_buffer[100];
-          sprintf(status_buffer, "STATUS:%.1f:%.1f\n", current_heading, distance_traveled);
-          std::string status_message(status_buffer);
-          serialComm.send(status_message);
-        }
-        else if (message == "INTAKE") {
-          in_take();
-          // Continue spinning until stop command is issued
-        }
-        else if (message == "SCORE") {
-          score_long();
-          // Continue spinning until stop command is issued
-        }
-        else if (message == "STATUS") {
-          serialComm.send("Robot status: OK\n");
-        }
-      });
-      
-      // Set up error callback
-      serialComm.onError([](const std::string& error) {
-        controller(primary).Screen.print("Serial error: %s", error.c_str());
-      });
-      
     } else {
       controller(primary).Screen.clearScreen();
       controller(primary).Screen.print("Serial connect failed");
       controller(primary).rumble("--");
     }
   } else {
-    // Stop listening
     serialComm.disconnect();
     serialListening = false;
     controller(primary).Screen.clearScreen();
@@ -284,6 +221,9 @@ int main() {
 
   // Prevent main from exiting with an infinite loop.
   while (true) {
+    if (serialListening) {
+      serialComm.poll();
+    }
     wait(100, msec);
   }
 }

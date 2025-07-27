@@ -5,19 +5,13 @@ import { CommandProcessor } from './commands';
 import { VoiceCommand, RobotCommand, RobotAction, RobotStatus } from './types';
 
 export class VoiceControlApp {
-  private websocket: VEXWebSocket;
+  private websocket: VEXWebSocket | null = null;
   private speech: SpeechRecognition;
   private commandProcessor: CommandProcessor;
   private isConnected: boolean = false;
+  private deviceId: string = "";
 
   constructor() {
-    // Configuration - update with your VEX device ID and port
-    this.websocket = new VEXWebSocket({
-      id: "51583", // Replace with your device ID
-      port: "7071",
-      ip: "localhost"
-    });
-
     this.speech = new SpeechRecognition();
     this.commandProcessor = new CommandProcessor();
     
@@ -26,17 +20,6 @@ export class VoiceControlApp {
   }
 
   private setupEventHandlers(): void {
-    // WebSocket events
-    this.websocket.onStatusChange((connected) => {
-      this.isConnected = connected;
-      this.updateConnectionStatus(connected);
-    });
-
-    this.websocket.onMessage((data) => {
-      this.displayMessage(`Robot: ${data}`);
-      this.parseRobotStatus(data);
-    });
-
     // Speech recognition events
     this.speech.onResult((voiceCommand) => {
       this.handleVoiceCommand(voiceCommand);
@@ -65,29 +48,30 @@ export class VoiceControlApp {
       return;
     }
 
-    const commandString = this.formatRobotCommand(robotCommand);
-    this.websocket.send(commandString);
-    this.displayMessage(`Executing: ${robotCommand.action}`);
+    const commandChar = this.formatRobotCommand(robotCommand);
+    this.websocket?.send(commandChar);
+    this.displayMessage(`Executing: ${robotCommand.action} (char: '${commandChar}')`);
   }
 
   private formatRobotCommand(robotCommand: RobotCommand): string {
+    // Map RobotAction to single-character command
     switch (robotCommand.action) {
       case RobotAction.FORWARD:
-        return 'FORWARD';
+        return 'a';
       case RobotAction.BACKWARD:
-        return 'BACKWARD';
+        return 'b';
       case RobotAction.LEFT:
-        return 'LEFT';
+        return 'l';
       case RobotAction.RIGHT:
-        return 'RIGHT';
+        return 'd';
       case RobotAction.STOP:
-        return 'STOP';
+        return 'p';
       case RobotAction.INTAKE:
-        return 'INTAKE';
+        return 'i';
       case RobotAction.SCORE:
-        return 'SCORE';
+        return 's';
       default:
-        return 'STOP';
+        return 'p';
     }
   }
 
@@ -143,12 +127,26 @@ export class VoiceControlApp {
   }
 
   private initializeUI(): void {
-    // Connect button
+    // Device ID input
+    const deviceIdInput = document.getElementById('device-id-input') as HTMLInputElement;
     const connectBtn = document.getElementById('connect-btn') as HTMLButtonElement;
-    if (connectBtn) {
+    if (deviceIdInput && connectBtn) {
+      connectBtn.disabled = true;
+      deviceIdInput.addEventListener('input', () => {
+        this.deviceId = deviceIdInput.value.trim();
+        connectBtn.disabled = this.deviceId.length === 0;
+      });
+      
+      // Add click event listener for connect button
       connectBtn.addEventListener('click', async () => {
         try {
           this.displayMessage('Attempting to connect to VEX Extension...');
+          this.websocket = new VEXWebSocket({
+            id: this.deviceId,
+            port: "7071",
+            ip: "localhost"
+          });
+          this.setupWebSocketHandlers(); // Setup handlers after websocket is initialized
           await this.websocket.connect();
           this.displayMessage('✅ Successfully connected to VEX Extension!');
         } catch (error) {
@@ -188,6 +186,18 @@ export class VoiceControlApp {
         }
       });
     }
+  }
+
+  private setupWebSocketHandlers(): void {
+    if (!this.websocket) return;
+    this.websocket.onStatusChange((connected) => {
+      this.isConnected = connected;
+      this.updateConnectionStatus(connected);
+    });
+    this.websocket.onMessage((data) => {
+      this.displayMessage(`Robot: ${data}`);
+      this.parseRobotStatus(data);
+    });
   }
 
   async start(): Promise<void> {

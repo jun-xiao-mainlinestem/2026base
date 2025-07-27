@@ -21,7 +21,7 @@ bool SerialCommunication::connect() {
     connected = true;
     
     // Send a test message to verify connection
-    send("VEX_BRAIN_CONNECTED\n");
+ //   send("VEX_BRAIN_CONNECTED\n");
     
     return connected;
 }
@@ -36,8 +36,8 @@ void SerialCommunication::disconnect() {
 bool SerialCommunication::send(const std::string& message) {
     if (!connected) return false;
     
-    // Write to the user port (stdio) - this sends data back to the computer
-    // This allows the computer to receive responses from the VEX brain
+    // For responses, we can use printf to send data back to the computer
+    // This will appear in the debug terminal
     printf("%s", message.c_str());
     
     // Also show on controller screen for debugging
@@ -49,24 +49,56 @@ bool SerialCommunication::send(const std::string& message) {
 
 void SerialCommunication::poll() {
     if (!connected) return;
-    
-    // For now, we'll use a simple simulation to test the command processing
-    // In a real implementation, this would read from the user port
-    static int pollCounter = 0;
-    pollCounter++;
-    
-    // Simulate receiving a command every 100 polls (about every 10 seconds)
-    if (pollCounter % 100 == 0) {
-        // This simulates what would come from the user port
-        std::string simulatedMessage = "FORWARD\n";
-        buffer += simulatedMessage;
-        processBuffer();
-        
-        // Also simulate a STOP command after 2 seconds
-        if (pollCounter % 200 == 0) {
-            std::string stopMessage = "STOP\n";
-            buffer += stopMessage;
-            processBuffer();
+    static FILE* serialFile = nullptr;
+    // Open serial port if not already open
+    if (!serialFile) {
+        serialFile = fopen("/dev/serial1", "rb");
+        if (!serialFile) {
+            controller(primary).Screen.clearScreen();
+            controller(primary).Screen.print("can't open serial");
+            controller(primary).rumble(".");
+            return;
+        }
+    }
+    // Read one byte at a time
+    char c;
+    if (fread(&c, 1, 1, serialFile) == 1) {
+        // Map character to command and act
+        if (c == 'a' || c == 'A') {
+            controller(primary).Screen.clearScreen();
+            controller(primary).Screen.print("FORWARD");
+            controller(primary).rumble(".");
+            chassis.drive_with_voltage(4, 4);
+        } else if (c == 'p' || c == 'P') {
+            controller(primary).Screen.clearScreen();
+            controller(primary).Screen.print("STOP");
+            controller(primary).rumble(".");
+            chassis.stop(brake);
+        } else if (c == 'd' || c == 'D') {
+            controller(primary).Screen.clearScreen();
+            controller(primary).Screen.print("RIGHT");
+            controller(primary).rumble(".");
+            chassis.drive_with_voltage(4, -4);
+        } else if (c == 'l' || c == 'L') {
+            controller(primary).Screen.clearScreen();
+            controller(primary).Screen.print("LEFT");
+            controller(primary).rumble(".");
+            chassis.drive_with_voltage(-4, 4);
+        } else if (c == 'b' || c == 'B') {
+            controller(primary).Screen.clearScreen();
+            controller(primary).Screen.print("BACKWARD");
+            controller(primary).rumble(".");
+            chassis.drive_with_voltage(-4, -4);
+        } else if (c == 'i' || c == 'I') {
+            controller(primary).Screen.clearScreen();
+            controller(primary).Screen.print("INTAKE");
+            controller(primary).rumble(".");
+            in_take();
+        } else if (c == 's' || c == 'S') {
+            controller(primary).Screen.clearScreen();
+            controller(primary).Screen.print("SCORE");
+            controller(primary).rumble(".");
+            score_long();
         }
     }
 }

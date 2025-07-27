@@ -52,17 +52,6 @@ A web-based voice control interface for VEX V5 robots using WebSocket communicat
    npm install
    ```
 
-3. **Configure your device**
-   - Open `src/app.ts`
-   - Update the WebSocket configuration:
-     ```typescript
-     this.websocket = new VEXWebSocket({
-       id: "YOUR_DEVICE_ID", // Replace with your device ID
-       port: "7071",         // Update if different
-       ip: "localhost"
-     });
-     ```
-
 ## Usage
 
 ### Development Mode
@@ -80,50 +69,28 @@ This creates optimized files in the `dist/` directory
 ### Running the Application
 1. **Start the development server**: `npm run dev`
 2. **Open your browser** to `http://localhost:3000`
-3. **Connect to robot**: Click "Connect to Robot"
-4. **Start listening**: Click "Start Listening"
-5. **Speak commands**: Use the supported voice commands
+3. **Enter your Device ID** in the input field
+4. **Connect to robot**: Click "Connect to Robot"
+5. **Start listening**: Click "Start Listening"
+6. **Speak commands**: Use the supported voice commands
 
 ## VEX Code Integration
 
-The VEX brain code must be updated to handle the voice commands. Add this to your `main.cpp`:
+The VEX brain code must be updated to handle the voice commands. The system uses single-character commands sent via WebSocket through the VEX Extension.
 
-```cpp
-// In buttonX_action() function
-serialComm.onMessage([](const std::string& message) {
-    controller(primary).Screen.print("Received: %s", message.c_str());
-    
-    if (message == "FORWARD") {
-        chassis.drive_with_voltage(6, 6);
-    }
-    else if (message == "BACKWARD") {
-        chassis.drive_with_voltage(-6, -6);
-    }
-    else if (message == "LEFT") {
-        chassis.drive_with_voltage(-6, 6);
-    }
-    else if (message == "RIGHT") {
-        chassis.drive_with_voltage(6, -6);
-    }
-    else if (message == "STOP") {
-        chassis.stop(brake);
-        stop_rollers();
-        
-        // Send status back
-        float current_heading = chassis.get_heading();
-        float distance_traveled = (chassis.get_left_position_in() + chassis.get_right_position_in()) / 2.0;
-        
-        std::string status_message = "STATUS:" + std::to_string(current_heading) + ":" + std::to_string(distance_traveled) + "\n";
-        serialComm.send(status_message);
-    }
-    else if (message == "INTAKE") {
-        in_take();
-    }
-    else if (message == "SCORE") {
-        score_long();
-    }
-});
-```
+### Key Components
+- **Serial Communication**: Reads single-character commands from `/dev/serial1`
+- **Command Mapping**: Maps characters to robot actions
+- **Status Reporting**: Sends robot status when "stop" command is received
+
+### Command Mapping
+- `a` → FORWARD
+- `b` → BACKWARD
+- `l` → LEFT
+- `d` → RIGHT
+- `p` → STOP
+- `i` → INTAKE
+- `s` → SCORE
 
 ## Project Structure
 
@@ -141,8 +108,21 @@ voice-control-robot/
 ├── package.json
 ├── tsconfig.json
 ├── webpack.config.js
+├── test_websocket_simple.js # WebSocket test script
 └── README.md
 ```
+
+## Testing
+
+### WebSocket Test
+Use the included test script to verify WebSocket communication:
+
+```bash
+cd voice-control-robot
+node test_websocket_simple.js [DEVICE_ID]
+```
+
+This will send a sequence of test commands to verify robot response.
 
 ## Troubleshooting
 
@@ -150,7 +130,7 @@ voice-control-robot/
 
 1. **WebSocket Connection Failed**
    - Check VEX Extension settings
-   - Verify Device ID in `app.ts`
+   - Verify Device ID is correct
    - Ensure USB connection
 
 2. **Speech Recognition Not Working**

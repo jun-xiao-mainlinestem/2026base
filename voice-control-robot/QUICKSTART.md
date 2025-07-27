@@ -21,21 +21,17 @@ npm install
 npm run dev
 ```
 
-### Step 3: Configure Device ID
-1. Open `src/app.ts`
-2. Replace `"78490"` with your actual Device ID
-3. Save the file
-
-### Step 4: Upload VEX Code
+### Step 3: Upload VEX Code
 1. Upload the updated `main.cpp` to VEX brain
 2. Press Button X on controller to enable listening
 3. Verify "Serial listening ON" appears on controller
 
-### Step 5: Start Voice Control
+### Step 4: Start Voice Control
 1. Open browser to `http://localhost:3000`
-2. Click "Connect to Robot"
-3. Click "Start Listening"
-4. Say "forward" to test
+2. Enter your Device ID in the input field
+3. Click "Connect to Robot"
+4. Click "Start Listening"
+5. Say "forward" to test
 
 ## 🎤 Voice Commands
 
@@ -52,7 +48,7 @@ npm run dev
 ## 🔧 Troubleshooting
 
 ### Connection Issues
-- Check Device ID in `app.ts`
+- Check Device ID is correct
 - Ensure Button X is pressed on controller
 - Verify USB connection
 

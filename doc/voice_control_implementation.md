@@ -50,6 +50,7 @@ The voice control system has been fully implemented and tested. All components a
 │   ├── package.json              # Dependencies
 │   ├── tsconfig.json             # TypeScript config
 │   ├── webpack.config.js         # Build configuration
+│   ├── test_websocket_simple.js  # WebSocket test script
 │   └── README.md                 # Project documentation
 ├── src/
 │   ├── main.cpp                  # Updated with voice commands
@@ -100,22 +101,16 @@ npm run dev
 3. Verify connection status on controller screen
 
 ### 4. Web Interface Configuration
-1. Open `voice-control-robot/src/app.ts`
-2. Update WebSocket configuration:
-   ```typescript
-   this.websocket = new VEXWebSocket({
-     id: "YOUR_DEVICE_ID", // Replace with actual device ID
-     port: "7071",
-     ip: "localhost"
-   });
-   ```
+1. Open the web interface at `http://localhost:3000`
+2. Enter your Device ID in the input field
+3. Click "Connect to Robot"
 
 ## Usage Instructions
 
 ### 1. Start the System
 1. **Start web server**: `npm run dev` (runs on http://localhost:3000)
 2. **Enable VEX listening**: Press Button X on controller
-3. **Connect web interface**: Click "Connect to Robot"
+3. **Connect web interface**: Enter Device ID and click "Connect to Robot"
 4. **Start voice recognition**: Click "Start Listening"
 
 ### 2. Voice Commands
@@ -138,7 +133,7 @@ npm run dev
 
 ### Serial Communication
 - **Baud Rate**: 115200
-- **Format**: Line-delimited messages
+- **Format**: Single-character commands
 - **Status Format**: `STATUS:heading:distance`
 
 ### Speech Recognition
@@ -240,7 +235,7 @@ npm run dev
 **Symptoms**: "Connection failed" error
 **Solutions**:
 - Check VEX Extension settings
-- Verify Device ID in app.ts
+- Verify Device ID is correct
 - Ensure USB connection
 - Restart VEX Extension
 
