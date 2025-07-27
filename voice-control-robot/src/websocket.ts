@@ -25,8 +25,26 @@ export class VEXWebSocket {
       
       this.socket.onmessage = (event) => {
         console.log('WebSocket message received:', event.data);
-        if (this.onMessageCallback) {
-          this.onMessageCallback(event.data);
+        console.log('Data type:', typeof event.data);
+        
+        // Handle different data types
+        if (event.data instanceof Blob) {
+          console.log('Received Blob data, reading as text...');
+          const reader = new FileReader();
+          reader.onload = () => {
+            const textData = reader.result as string;
+            console.log('Blob converted to text:', textData);
+            if (this.onMessageCallback) {
+              this.onMessageCallback(textData);
+            }
+          };
+          reader.readAsText(event.data);
+        } else {
+          // Handle string data
+          const messageData = typeof event.data === 'string' ? event.data : String(event.data);
+          if (this.onMessageCallback) {
+            this.onMessageCallback(messageData);
+          }
         }
       };
       

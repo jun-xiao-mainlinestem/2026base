@@ -12,13 +12,13 @@ A web-based voice control interface for VEX V5 robots using WebSocket communicat
 
 ## Supported Commands
 
-- **forward** - Drive forward using voltage control
-- **backward/back** - Drive backward using voltage control
+- **move** - Drive forward using voltage control
+- **back** - Drive backward using voltage control
 - **left** - Turn left using voltage control
 - **right** - Turn right using voltage control
 - **stop** - Stop robot and report status
-- **intake** - Activate intake mechanism (continues until stop)
-- **score** - Activate scoring mechanism (continues until stop)
+- **roll** - Activate intake mechanism (continues until stop)
+- **shoot** - Activate scoring mechanism (continues until stop)
 
 ## Prerequisites
 
@@ -72,7 +72,7 @@ This creates optimized files in the `dist/` directory
 3. **Enter your Device ID** in the input field
 4. **Connect to robot**: Click "Connect to Robot"
 5. **Start listening**: Click "Start Listening"
-6. **Speak commands**: Use the supported voice commands
+6. **Speak commands**: Use the supported voice commands (e.g., "move", "stop", "left", "roll", "shoot")
 
 ## VEX Code Integration
 

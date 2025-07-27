@@ -8,8 +8,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>🎤 Voice-Controlled Robot</h1>
-            <div id="connection-status" class="status disconnected">🔴 Disconnected</div>
+            <h1>🎤 Voice-Controlled VEX Robot</h1>
         </header>
 
         <main>
@@ -22,21 +21,13 @@
 
                 <div class="voice-section">
                     <h3>Voice Control</h3>
-                    <button id="listen-btn" class="btn btn-success">Start Listening</button>
-                    <div class="voice-indicator" id="voice-indicator"></div>
-                    <div class="listening-status" id="listening-status">🔇 Not listening</div>
-                </div>
-
-                <div class="commands-section">
-                    <h3>Supported Commands</h3>
-                    <div class="command-list">
-                        <span class="command">forward</span>
-                        <span class="command">backward</span>
-                        <span class="command">left</span>
-                        <span class="command">right</span>
-                        <span class="command">stop</span>
-                        <span class="command">intake</span>
-                        <span class="command">score</span>
+                    <div class="voice-control-row">
+                        <button id="listen-btn" class="btn btn-success">Start Listening</button>
+                    </div>
+                    <div class="voice-indicator-row">
+                        <div class="voice-indicator" id="voice-indicator"></div>
+                        <div class="listening-status" id="listening-status">🔇 Not listening</div>
+                        <div id="connection-status" class="status disconnected">🔴 Disconnected</div>
                     </div>
                 </div>
 
@@ -44,12 +35,10 @@
                     <h3>Robot Status</h3>
                     <div class="status-display">
                         <div class="status-item">
-                            <label>Current Heading:</label>
-                            <span id="current-heading">--</span>°
+                            <label>Current Heading: <span id="current-heading">--</span>°</label>
                         </div>
                         <div class="status-item">
-                            <label>Distance Driven:</label>
-                            <span id="distance-driven">--</span> inches
+                            <label>Distance Driven: <span id="distance-driven">--</span> inches</label>
                         </div>
                     </div>
                 </div>

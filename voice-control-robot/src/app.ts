@@ -31,9 +31,11 @@ export class VoiceControlApp {
   }
 
   private async handleVoiceCommand(voiceCommand: VoiceCommand): Promise<void> {
+    console.log('Voice command received:', voiceCommand);
     this.displayMessage(`Heard: "${voiceCommand.command}"`);
     
     const robotCommand = this.commandProcessor.processVoiceCommand(voiceCommand);
+    console.log('Processed robot command:', robotCommand);
     
     if (robotCommand) {
       this.executeRobotCommand(robotCommand);
@@ -77,9 +79,22 @@ export class VoiceControlApp {
 
   private updateConnectionStatus(connected: boolean): void {
     const statusElement = document.getElementById('connection-status');
+    const listenBtn = document.getElementById('listen-btn') as HTMLButtonElement;
+    
     if (statusElement) {
       statusElement.textContent = connected ? '🟢 Connected' : '🔴 Disconnected';
       statusElement.className = connected ? 'status connected' : 'status disconnected';
+    }
+    
+    if (listenBtn) {
+      listenBtn.disabled = !connected;
+      if (!connected) {
+        // If disconnected, also stop listening and reset button
+        this.speech.stop();
+        listenBtn.textContent = 'Start Listening';
+        listenBtn.className = 'btn btn-success';
+        this.updateListeningStatus(false);
+      }
     }
   }
 
@@ -109,20 +124,80 @@ export class VoiceControlApp {
     }
   }
 
+  private displayCommandList(): void {
+    const outputElement = document.getElementById('output');
+    if (outputElement) {
+      const timestamp = new Date().toLocaleTimeString();
+      const commandList = `
+        <div class="command-list-display">
+          <strong>📋 Available Commands:</strong><br>
+          <span class="command-tag">move</span>
+          <span class="command-tag">back</span>
+          <span class="command-tag">left</span>
+          <span class="command-tag">right</span>
+          <span class="command-tag">stop</span>
+          <span class="command-tag">roll</span>
+          <span class="command-tag">shoot</span>
+        </div>
+      `;
+      outputElement.innerHTML += `<div>[${timestamp}] ${commandList}</div>`;
+      outputElement.scrollTop = outputElement.scrollHeight;
+    }
+  }
+
+  private clearCommandList(): void {
+    const outputElement = document.getElementById('output');
+    if (outputElement) {
+      // Remove command list entries (entries that contain "Available Commands:")
+      const entries = outputElement.querySelectorAll('div');
+      entries.forEach(entry => {
+        if (entry.innerHTML.includes('Available Commands:')) {
+          entry.remove();
+        }
+      });
+    }
+  }
+
   private parseRobotStatus(data: string): void {
+    console.log('parseRobotStatus called with data:', data);
+    console.log('Data type:', typeof data);
+    console.log('Data length:', data.length);
+    
+    // Ensure data is a string
+    if (typeof data !== 'string') {
+      console.warn('Received non-string data:', data);
+      return;
+    }
+    
     // Parse status messages from robot
     if (data.includes('STATUS:')) {
+      console.log('Found STATUS in data, parsing...');
       const parts = data.split(':');
+      console.log('Split parts:', parts);
       if (parts.length >= 3) {
         const heading = parts[1].trim();
         const distance = parts[2].trim();
+        console.log('Extracted heading:', heading, 'distance:', distance);
         
         const headingElement = document.getElementById('current-heading');
         const distanceElement = document.getElementById('distance-driven');
         
-        if (headingElement) headingElement.textContent = heading;
-        if (distanceElement) distanceElement.textContent = distance;
+        console.log('Heading element found:', !!headingElement);
+        console.log('Distance element found:', !!distanceElement);
+        
+        if (headingElement) {
+          headingElement.textContent = heading;
+          console.log('Updated heading element to:', heading);
+        }
+        if (distanceElement) {
+          distanceElement.textContent = distance;
+          console.log('Updated distance element to:', distance);
+        }
+      } else {
+        console.warn('STATUS message has insufficient parts:', parts);
       }
+    } else {
+      console.log('No STATUS found in data');
     }
   }
 
@@ -159,6 +234,9 @@ export class VoiceControlApp {
     // Start/Stop listening button
     const listenBtn = document.getElementById('listen-btn') as HTMLButtonElement;
     if (listenBtn) {
+      // Initially disable since we're not connected
+      listenBtn.disabled = true;
+      
       listenBtn.addEventListener('click', () => {
         if (listenBtn.textContent === 'Start Listening') {
           this.speech.start();
@@ -166,12 +244,14 @@ export class VoiceControlApp {
           listenBtn.className = 'btn btn-danger';
           this.updateListeningStatus(true);
           this.displayMessage('🎤 Voice recognition started - speak commands continuously');
+          this.displayCommandList();
         } else {
           this.speech.stop();
           listenBtn.textContent = 'Start Listening';
           listenBtn.className = 'btn btn-success';
           this.updateListeningStatus(false);
           this.displayMessage('🔇 Voice recognition stopped');
+          this.clearCommandList();
         }
       });
     }

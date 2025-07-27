@@ -67,13 +67,13 @@ The voice control system has been fully implemented and tested. All components a
 ## Voice Commands Implementation
 
 ### Supported Commands
-1. **forward** → `chassis.drive_with_voltage(6, 6)`
-2. **backward/back** → `chassis.drive_with_voltage(-6, -6)`
-3. **left** → `chassis.drive_with_voltage(-6, 6)`
-4. **right** → `chassis.drive_with_voltage(6, -6)`
+1. **move** → `chassis.drive_with_voltage(3, 3)`
+2. **back** → `chassis.drive_with_voltage(-3, -3)`
+3. **left** → `chassis.drive_with_voltage(-3, 3)`
+4. **right** → `chassis.drive_with_voltage(3, -3)`
 5. **stop** → `chassis.stop(brake)` + status report
-6. **intake** → `in_take()` (continues until stop)
-7. **score** → `score_long()` (continues until stop)
+6. **roll** → `in_take()` (continues until stop)
+7. **shoot** → `score_long()` (continues until stop)
 
 ### Command Flow
 ```
@@ -162,7 +162,7 @@ npm run build
 npm run dev
 
 # Test voice commands
-# Say: "forward", "stop", "left", "right", "intake", "score"
+# Say: "move", "stop", "left", "right", "roll", "shoot"
 ```
 
 ## Error Handling

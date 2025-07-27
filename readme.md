@@ -80,20 +80,20 @@ Web Interface (TypeScript) → WebSocket → VEX Extension → Serial → VEX Br
    ```bash
    # Open http://localhost:3000
    # Enter Device ID and connect
-   # Start listening and speak commands
+   # Start listening and speak commands (e.g., "move", "stop", "roll", "shoot")
    ```
 
 ## 🎤 Voice Commands
 
 | Command | Action | Character Code |
 |---------|--------|----------------|
-| "forward" | Drive forward | `a` |
-| "backward" | Drive backward | `b` |
+| "move" | Drive forward | `a` |
+| "back" | Drive backward | `b` |
 | "left" | Turn left | `l` |
 | "right" | Turn right | `d` |
 | "stop" | Stop and report status | `p` |
-| "intake" | Start intake mechanism | `i` |
-| "score" | Start scoring mechanism | `s` |
+| "roll" | Start intake mechanism | `i` |
+| "shoot" | Start scoring mechanism | `s` |
 
 ## 🔧 Testing
 

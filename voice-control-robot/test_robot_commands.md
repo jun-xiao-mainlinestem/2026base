@@ -21,34 +21,34 @@ node test_websocket_simple.js 77606
 ```
 
 The script will send these single-character commands automatically:
-- `a` (FORWARD) - robot should move forward
+- `a` (MOVE) - robot should move forward
 - `p` (STOP) - robot should stop
 - `d` (RIGHT) - robot should turn right
 - `l` (LEFT) - robot should turn left
-- `b` (BACKWARD) - robot should move backward
-- `i` (INTAKE) - robot should start intake
-- `s` (SCORE) - robot should start scoring
+- `b` (BACK) - robot should move backward
+- `i` (ROLL) - robot should start intake
+- `s` (SHOOT) - robot should start scoring
 
 ### Step 3: Check Controller Screen
 For each command, you should see:
 ```
-FORWARD
+MOVE
 STOP
 RIGHT
 LEFT
-BACKWARD
-INTAKE
-SCORE
+BACK
+ROLL
+SHOOT
 ```
 
 ### Step 4: Check Robot Movement
-- **FORWARD (a)**: Robot drives forward
-- **BACKWARD (b)**: Robot drives backward  
+- **MOVE (a)**: Robot drives forward
+- **BACK (b)**: Robot drives backward  
 - **LEFT (l)**: Robot turns left
 - **RIGHT (d)**: Robot turns right
 - **STOP (p)**: Robot stops and reports status
-- **INTAKE (i)**: Robot starts intake mechanism
-- **SCORE (s)**: Robot starts scoring mechanism
+- **ROLL (i)**: Robot starts intake mechanism
+- **SHOOT (s)**: Robot starts scoring mechanism
 
 ## If Manual Commands Don't Work:
 
@@ -114,13 +114,13 @@ This test verifies that your VEX robot can receive and execute single-character 
 
 3. **Observe the robot and controller:**
    - The script will send a sequence of single-character commands:
-     - `a` (FORWARD)
+     - `a` (MOVE)
      - `p` (STOP)
      - `d` (RIGHT)
      - `l` (LEFT)
-     - `b` (BACKWARD)
-     - `i` (INTAKE)
-     - `s` (SCORE)
+     - `b` (BACK)
+     - `i` (ROLL)
+     - `s` (SHOOT)
    - Each command is sent with a short delay.
    - The robot should move or act according to each command, and the controller screen should display the current action.
 
@@ -152,3 +152,8 @@ Connecting to: ws://localhost:7071/vexrobotics.vexcode/device?id=77606
 - Ensure the correct device ID is used.
 - Confirm the VEX VS Code Extension WebSocket server is running.
 - If the robot does not respond, check the controller screen for error messages. 
+
+### Check 3: Robot Not Moving
+- Check controller screen for "Serial listening ON"
+- Verify commands in activity log
+- Test with "stop" command first 

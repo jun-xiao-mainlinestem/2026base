@@ -1,4 +1,5 @@
 #include "serial_communication.h"
+#include "chassis.h"
 #include <sstream>
 #include <cstring>
 
@@ -68,35 +69,44 @@ void SerialCommunication::poll() {
             controller(primary).Screen.clearScreen();
             controller(primary).Screen.print("FORWARD");
             controller(primary).rumble(".");
-            chassis.drive_with_voltage(4, 4);
+            chassis.drive_with_voltage(2, 2);
         } else if (c == 'p' || c == 'P') {
             controller(primary).Screen.clearScreen();
             controller(primary).Screen.print("STOP");
             controller(primary).rumble(".");
+            float current_heading = chassis.get_heading();
+            float distance_traveled = (chassis.get_left_position_in() + chassis.get_right_position_in()) / 2.0;
             chassis.stop(brake);
+            stop_rollers();
+            
+            // Send status back to webpage            
+            char status_message[100];
+            sprintf(status_message, "STATUS:%.1f:%.1f\n", current_heading, distance_traveled);
+            send(status_message);
+
         } else if (c == 'd' || c == 'D') {
             controller(primary).Screen.clearScreen();
             controller(primary).Screen.print("RIGHT");
             controller(primary).rumble(".");
-            chassis.drive_with_voltage(4, -4);
+            chassis.drive_with_voltage(2, -2);
         } else if (c == 'l' || c == 'L') {
             controller(primary).Screen.clearScreen();
             controller(primary).Screen.print("LEFT");
             controller(primary).rumble(".");
-            chassis.drive_with_voltage(-4, 4);
+            chassis.drive_with_voltage(-2, 2);
         } else if (c == 'b' || c == 'B') {
             controller(primary).Screen.clearScreen();
             controller(primary).Screen.print("BACKWARD");
             controller(primary).rumble(".");
-            chassis.drive_with_voltage(-4, -4);
+            chassis.drive_with_voltage(-2, -2);
         } else if (c == 'i' || c == 'I') {
             controller(primary).Screen.clearScreen();
-            controller(primary).Screen.print("INTAKE");
+            controller(primary).Screen.print("ROLL");
             controller(primary).rumble(".");
             in_take();
         } else if (c == 's' || c == 'S') {
             controller(primary).Screen.clearScreen();
-            controller(primary).Screen.print("SCORE");
+            controller(primary).Screen.print("SHOOT");
             controller(primary).rumble(".");
             score_long();
         }

@@ -31,19 +31,19 @@ npm run dev
 2. Enter your Device ID in the input field
 3. Click "Connect to Robot"
 4. Click "Start Listening"
-5. Say "forward" to test
+5. Say "move" to test
 
 ## 🎤 Voice Commands
 
 | Command | Action |
 |---------|--------|
-| "forward" | Drive forward |
-| "backward" | Drive backward |
+| "move" | Drive forward |
+| "back" | Drive backward |
 | "left" | Turn left |
 | "right" | Turn right |
 | "stop" | Stop and report status |
-| "intake" | Start intake (continues) |
-| "score" | Start scoring (continues) |
+| "roll" | Start intake (continues) |
+| "shoot" | Start scoring (continues) |
 
 ## 🔧 Troubleshooting
 
@@ -74,7 +74,7 @@ npm run dev
 - ✅ WebSocket shows "🟢 Connected"
 - ✅ Controller shows "Serial listening ON"
 - ✅ Voice commands appear in activity log
-- ✅ Robot responds to "forward" command
+- ✅ Robot responds to "move" command
 - ✅ Status updates when "stop" is said
 
 ---
