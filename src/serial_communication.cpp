@@ -36,10 +36,13 @@ void SerialCommunication::disconnect() {
 bool SerialCommunication::send(const std::string& message) {
     if (!connected) return false;
     
-    // For VEX V5, we'll use the controller screen to show what we're sending
-    // This helps with debugging
+    // Write to the user port (stdio) - this sends data back to the computer
+    // This allows the computer to receive responses from the VEX brain
+    printf("%s", message.c_str());
+    
+    // Also show on controller screen for debugging
     controller(primary).Screen.clearScreen();
-    controller(primary).Screen.print("Sending: %s", message.c_str());
+    controller(primary).Screen.print("Sent: %s", message.c_str());
     
     return true;
 }
@@ -47,25 +50,24 @@ bool SerialCommunication::send(const std::string& message) {
 void SerialCommunication::poll() {
     if (!connected) return;
     
-    // For VEX V5, the VEX Extension forwards WebSocket messages to the brain
-    // through a custom USB protocol. Since we can't directly access this,
-    // we'll simulate the message reception for testing purposes.
-    
-    // In a real implementation, the VEX Extension would send messages
-    // through the USB connection and this function would read them.
-    
-    // For now, we'll simulate receiving a test message periodically
-    // to verify the message processing works
+    // For now, we'll use a simple simulation to test the command processing
+    // In a real implementation, this would read from the user port
     static int pollCounter = 0;
     pollCounter++;
     
-    // Simulate receiving a message every 1000 polls (about every 10 seconds)
-    if (pollCounter % 30 == 0) {
-        // This simulates what the VEX Extension would send
-        std::string simulatedMessage = "TEST\n";
+    // Simulate receiving a command every 100 polls (about every 10 seconds)
+    if (pollCounter % 100 == 0) {
+        // This simulates what would come from the user port
+        std::string simulatedMessage = "FORWARD\n";
         buffer += simulatedMessage;
         processBuffer();
         
+        // Also simulate a STOP command after 2 seconds
+        if (pollCounter % 200 == 0) {
+            std::string stopMessage = "STOP\n";
+            buffer += stopMessage;
+            processBuffer();
+        }
     }
 }
 
