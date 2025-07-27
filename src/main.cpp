@@ -144,21 +144,26 @@ void buttonA_action()
   chassis.driver_control_disabled = true;
   
   // Test robot commands directly
+  controller(primary).Screen.clearScreen();
   controller(primary).Screen.print("Testing FORWARD");
   chassis.drive_with_voltage(4, 4);
   wait(2000, msec);
   
+  controller(primary).Screen.clearScreen();
   controller(primary).Screen.print("Testing STOP");
   chassis.stop(brake);
   wait(1000, msec);
   
+  controller(primary).Screen.clearScreen();
   controller(primary).Screen.print("Testing LEFT");
   chassis.drive_with_voltage(-4, 4);
   wait(2000, msec);
   
+  controller(primary).Screen.clearScreen();
   controller(primary).Screen.print("Testing STOP");
   chassis.stop(brake);
   
+  controller(primary).Screen.clearScreen();
   controller(primary).Screen.print("Test complete!");
 
   chassis.driver_control_disabled = false;
@@ -173,28 +178,34 @@ void buttonX_action()
     // Start listening
     if (serialComm.connect()) {
       serialListening = true;
+      controller(primary).Screen.clearScreen();
       controller(primary).Screen.print("Serial listening ON");
       controller(primary).rumble(".");
       
       // Set up message callback
       serialComm.onMessage([](const std::string& message) {
+        controller(primary).Screen.clearScreen();
         controller(primary).Screen.print("Received: %s", message.c_str());
         controller(primary).rumble("."); // Rumble to indicate command received
         
         // Handle commands
         if (message == "FORWARD") {
+          controller(primary).Screen.clearScreen();
           controller(primary).Screen.print("Executing: FORWARD");
           chassis.drive_with_voltage(4, 4);
         }
         else if (message == "BACKWARD") {
+          controller(primary).Screen.clearScreen();
           controller(primary).Screen.print("Executing: BACKWARD");
           chassis.drive_with_voltage(-4, -4);
         }
         else if (message == "LEFT") {
+          controller(primary).Screen.clearScreen();
           controller(primary).Screen.print("Executing: LEFT");
           chassis.drive_with_voltage(-4, 4);
         }
         else if (message == "RIGHT") {
+          controller(primary).Screen.clearScreen();
           controller(primary).Screen.print("Executing: RIGHT");
           chassis.drive_with_voltage(4, -4);
         }
@@ -231,6 +242,7 @@ void buttonX_action()
       });
       
     } else {
+      controller(primary).Screen.clearScreen();
       controller(primary).Screen.print("Serial connect failed");
       controller(primary).rumble("--");
     }
@@ -238,6 +250,7 @@ void buttonX_action()
     // Stop listening
     serialComm.disconnect();
     serialListening = false;
+    controller(primary).Screen.clearScreen();
     controller(primary).Screen.print("Serial listening OFF");
     controller(primary).rumble("-");
   }
@@ -271,10 +284,6 @@ int main() {
 
   // Prevent main from exiting with an infinite loop.
   while (true) {
-    // Poll for serial messages if listening is enabled
-    if (serialListening) {
-      serialComm.poll();
-    }
     wait(100, msec);
   }
 }

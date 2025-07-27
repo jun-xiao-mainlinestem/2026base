@@ -38,6 +38,7 @@ bool SerialCommunication::send(const std::string& message) {
     
     // For VEX V5, we'll use the controller screen to show what we're sending
     // This helps with debugging
+    controller(primary).Screen.clearScreen();
     controller(primary).Screen.print("Sending: %s", message.c_str());
     
     return true;
@@ -46,17 +47,26 @@ bool SerialCommunication::send(const std::string& message) {
 void SerialCommunication::poll() {
     if (!connected) return;
     
-    // For VEX V5, the WebSocket communication is handled by the VEX Extension
-    // The poll function is called regularly to check for new messages
-    // In this implementation, we're not actually reading from USB
-    // Instead, the VEX Extension forwards WebSocket messages to the brain
+    // For VEX V5, the VEX Extension forwards WebSocket messages to the brain
+    // through a custom USB protocol. Since we can't directly access this,
+    // we'll simulate the message reception for testing purposes.
     
-    // This is a placeholder - in practice, the VEX Extension would
-    // forward WebSocket messages to the brain through the USB connection
-    // and this function would process those messages
+    // In a real implementation, the VEX Extension would send messages
+    // through the USB connection and this function would read them.
     
-    // For now, we'll just return without doing anything
-    // The actual message processing happens in the main.cpp callback
+    // For now, we'll simulate receiving a test message periodically
+    // to verify the message processing works
+    static int pollCounter = 0;
+    pollCounter++;
+    
+    // Simulate receiving a message every 1000 polls (about every 10 seconds)
+    if (pollCounter % 30 == 0) {
+        // This simulates what the VEX Extension would send
+        std::string simulatedMessage = "TEST\n";
+        buffer += simulatedMessage;
+        processBuffer();
+        
+    }
 }
 
 std::string SerialCommunication::readLine() {
