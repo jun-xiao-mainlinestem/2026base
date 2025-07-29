@@ -1,7 +1,7 @@
 const WebSocket = require('ws');
 const readline = require('readline');
 
-console.log('🔧 Simple WebSocket Test (Single-Character Commands)');
+console.log('🔧 Simple WebSocket Test (Text Commands)');
 console.log('==================================');
 console.log('');
 
@@ -36,19 +36,19 @@ function startTest(id) {
     messageReceived: false
   };
 
-  // Sequence of single-character commands to test
+  // Sequence of text commands to test
   const testSequence = [
-    { label: 'FORWARD', char: 'a', delay: 2000 },
-    { label: 'STOP', char: 'p', delay: 1000 },
-    { label: 'RIGHT', char: 'd', delay: 2000 },
-    { label: 'STOP', char: 'p', delay: 1000 },
-    { label: 'LEFT', char: 'l', delay: 2000 },
-    { label: 'STOP', char: 'p', delay: 1000 },
-    { label: 'BACKWARD', char: 'b', delay: 2000 },
-    { label: 'STOP', char: 'p', delay: 1000 },
-    { label: 'INTAKE', char: 'i', delay: 2000 },
-    { label: 'SCORE', char: 's', delay: 2000 },
-    { label: 'STOP', char: 'p', delay: 1000 }
+    { label: 'FORWARD', command: 'FORWARD', delay: 2000 },
+    { label: 'STOP', command: 'STOP', delay: 1000 },
+    { label: 'RIGHT', command: 'RIGHT', delay: 2000 },
+    { label: 'STOP', command: 'STOP', delay: 1000 },
+    { label: 'LEFT', command: 'LEFT', delay: 2000 },
+    { label: 'STOP', command: 'STOP', delay: 1000 },
+    { label: 'BACKWARD', command: 'BACKWARD', delay: 2000 },
+    { label: 'STOP', command: 'STOP', delay: 1000 },
+    { label: 'ROLL', command: 'ROLL', delay: 2000 },
+    { label: 'SHOOT', command: 'SHOOT', delay: 2000 },
+    { label: 'STOP', command: 'STOP', delay: 1000 }
   ];
 
   let currentIndex = 0;
@@ -56,8 +56,8 @@ function startTest(id) {
   function sendNextCommand() {
     if (currentIndex < testSequence.length) {
       const cmd = testSequence[currentIndex];
-      console.log(`📤 Sending: ${cmd.label} (char: '${cmd.char}')`);
-      ws.send(cmd.char);
+      console.log(`📤 Sending: ${cmd.label} (command: '${cmd.command}')`);
+      ws.send(cmd.command);
       testResults.messageSent = true;
       currentIndex++;
       setTimeout(sendNextCommand, cmd.delay);

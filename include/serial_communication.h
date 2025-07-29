@@ -17,6 +17,7 @@ private:
     // Internal methods
     void processBuffer();
     std::string extractMessage();
+    void processCommand(const std::string& command);
     
 public:
     SerialCommunication();

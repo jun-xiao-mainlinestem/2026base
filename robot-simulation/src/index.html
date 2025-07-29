@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VEX Robot Simulation</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 VEX Pushback Simulation</h1>
+            <p>Drag the robot to position it, then use the buttons (or w,s,a,d,q,e,space) to move it around the field.</p>
+        </header>
+
+        <main>
+            <div class="simulation-area">
+                <div class="field-container">
+                    <canvas id="field-canvas" width="800" height="600"></canvas>
+                    <div class="field-overlay">
+                        <div class="instructions">
+                            <p>📱 <strong>Drag</strong> the robot to move it</p>
+                            <p>🔄 <strong>Scroll over the robot</strong> to rotate it</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-panel">
+                <div class="command-panel">
+                    <h3>Movement Commands</h3>
+                    <div class="command-buttons">
+                        <button id="forward-btn" class="btn btn-primary">Forward</button>
+                        <button id="backward-btn" class="btn btn-primary">Backward</button>
+                        <button id="turn-left-btn" class="btn btn-secondary">Turn Left</button>
+                        <button id="turn-right-btn" class="btn btn-secondary">Turn Right</button>
+                        <button id="turn-cw-btn" class="btn btn-secondary">Turn Clockwise</button>
+                        <button id="turn-ccw-btn" class="btn btn-secondary">Turn Counter-clockwise</button>
+                    </div>
+                    <div class="stop-button-container">
+                        <button id="stop-btn" class="btn btn-danger">Stop</button>
+                    </div>
+                </div>
+
+                <div class="status-panel">
+                    <h3>Robot Status</h3>
+                    <div class="status-grid">
+                        <div class="status-item">
+                            <label>Heading:</label>
+                            <span id="heading-display">0.0°</span>
+                        </div>
+                        <div class="status-item">
+                            <label>Distance Traveled:</label>
+                            <span id="distance-display">0.0 inches</span>
+                        </div>
+                        <div class="status-item">
+                            <label>Status:</label>
+                            <span id="movement-status">Stopped</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="log-panel">
+                <div class="log-header">
+                    <h3>Activity Log</h3>
+                    <button id="clear-log-btn" class="btn btn-small">Clear Log</button>
+                </div>
+                <div id="log-display" class="log-display"></div>
+            </div>
+        </main>
+    </div>
+</body>
+</html> 

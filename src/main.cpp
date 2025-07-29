@@ -101,7 +101,6 @@ void buttonRight_action()
   // TODO: Insert test code here. This is a placeholder for future actions triggered by Button Right.
 
   chassis.driver_control_disabled = false;
-
 }
 
 // This function is called when the Left button is pressed.
@@ -140,31 +139,9 @@ void buttonA_action()
     return;
   }
 
-    // otherwise run test code 
+     // otherwise run test code 
   chassis.driver_control_disabled = true;
-  
-  // Test robot commands directly
-  controller(primary).Screen.clearScreen();
-  controller(primary).Screen.print("Testing FORWARD");
-  chassis.drive_with_voltage(4, 4);
-  wait(2000, msec);
-  
-  controller(primary).Screen.clearScreen();
-  controller(primary).Screen.print("Testing STOP");
-  chassis.stop(brake);
-  wait(1000, msec);
-  
-  controller(primary).Screen.clearScreen();
-  controller(primary).Screen.print("Testing LEFT");
-  chassis.drive_with_voltage(-4, 4);
-  wait(2000, msec);
-  
-  controller(primary).Screen.clearScreen();
-  controller(primary).Screen.print("Testing STOP");
-  chassis.stop(brake);
-  
-  controller(primary).Screen.clearScreen();
-  controller(primary).Screen.print("Test complete!");
+  // TODO: Insert test code here. This is a placeholder for future test actions triggered by Button A.
 
   chassis.driver_control_disabled = false;
 }
@@ -179,6 +156,8 @@ void buttonX_action() {
       controller(primary).Screen.clearScreen();
       controller(primary).Screen.print("Serial listening ON");
       controller(primary).rumble(".");
+      // Send a test message to verify serial is working
+     // serialComm.send("VEX_BRAIN_READY\n");
     } else {
       controller(primary).Screen.clearScreen();
       controller(primary).Screen.print("Serial connect failed");
