@@ -87,8 +87,13 @@ Voice Command → Speech Recognition → Command Processing → WebSocket → VE
 ### 1. VEX Extension Configuration
 1. Install VEX VS Code Extension
 2. Connect VEX brain via USB
-3. Enable WebSocket Server in extension settings
-4. Note Device ID and port (default: 7071)
+3. **Configure WebSocket Server**:
+   - Go to VEX Extension settings: https://kb.vex.com/hc/en-us/articles/21410932256660-Understanding-the-User-Settings-for-VEX-VS-Code-Extension
+   - Enable WebSocket Server in extension settings
+4. **Get your Device ID**:
+   - View brain info: https://kb.vex.com/hc/en-us/articles/8608865978644-VS-Code-UI-Overview-for-V5
+   - Note your Device ID (process ID) - this is your unique identifier
+   - The WebSocket URL format is: `ws://localhost:7071/vexrobotics.vexcode/device?id=YOUR_DEVICE_ID`
 
 ### 2. Web Interface Setup
 ```bash
@@ -330,10 +335,10 @@ npm run dev
 #### 1. WebSocket Connection Failed
 **Symptoms**: "Connection failed" error
 **Solutions**:
-- Check VEX Extension settings
-- Verify Device ID is correct
+- Check VEX Extension settings (see setup section above)
+- Verify Device ID is correct (get from brain info)
 - Ensure USB connection
-- Restart VEX Extension
+- Check WebSocket server is enabled in VEX Extension settings
 
 #### 2. Speech Recognition Not Working
 **Symptoms**: No voice commands recognized
@@ -346,7 +351,7 @@ npm run dev
 #### 3. Robot Not Responding
 **Symptoms**: Commands sent but no robot movement
 **Solutions**:
-- Verify Button X is pressed on VEX controller
+- Verify Button LEFT is pressed on VEX controller within 5 seconds
 - Check serial communication
 - Review command mapping
 - Test with manual commands
@@ -366,7 +371,7 @@ npm run build
 npm run dev
 
 # Check VEX code
-# Upload and test with Button X
+# Upload and test with Button LEFT
 
 # Check WebSocket
 # Open browser console and monitor connections

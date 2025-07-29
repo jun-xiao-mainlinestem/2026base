@@ -27,8 +27,8 @@ npm run dev
 ```
 
 ### Step 3: Upload VEX Code
-1. Review [drivetrain configuration](/readme.md) and download the sample VEX program to VEX brain
-2. Run the program and press Button LEFT on controller within 5 seconds to enable listening
+1. Review the [drivetrain configuration](/readme.md) and download the sample VEX program to VEX brain
+2. Run the program and press Button LEFT on the controller within 5 seconds to enable listening
 3. Verify "Serial listening ON" appears on controller
 
 ### Step 4: Start Voice Control
@@ -64,21 +64,21 @@ npm run dev
 - Try different browsers
 
 ### Robot Not Moving
-- Check controller screen for "Serial listening ON"
+- Check controller screen for " remote on"
 - Verify commands in activity log
 - Test with "stop" command first
 
 ## 📞 Need Help?
 
 1. Check the full README.md
-2. Review [Implmentation Document](doc/voice_control_implementation.md)
+2. Review [Implementation Document](doc/voice_control_implementation.md)
 3. Check browser console for errors
 4. Verify all connections
 
 ## ✅ Success Indicators
 
 - ✅ WebSocket shows "🟢 Connected"
-- ✅ Controller shows "Serial listening ON"
+- ✅ Controller shows " remote on"
 - ✅ Voice commands appear in activity log
 - ✅ Robot responds to "move" command
 - ✅ Status updates when "stop" is said
