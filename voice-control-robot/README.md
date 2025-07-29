@@ -10,11 +10,10 @@
 
 ### Step 1: Setup VEX Extension
 1. Open VS Code with VEX Extension
-2. Connect VEX brain via USB
-3. **Configure WebSocket Server**:
+2. **Configure WebSocket Server**:
    - Go to VEX Extension settings: https://kb.vex.com/hc/en-us/articles/21410932256660-Understanding-the-User-Settings-for-VEX-VS-Code-Extension
    - Enable WebSocket Server in extension settings
-4. **Get your Device ID**:
+3. **Get your Device ID**:
    - View brain info: https://kb.vex.com/hc/en-us/articles/8608865978644-VS-Code-UI-Overview-for-V5
    - Note your Device ID (process ID) - this is your unique identifier
    - The WebSocket URL format is: `ws://localhost:7071/vexrobotics.vexcode/device?id=YOUR_DEVICE_ID`
