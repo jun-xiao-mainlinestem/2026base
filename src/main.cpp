@@ -1,17 +1,17 @@
 // vex.h includes all of the headers for the VEX V5 library
 #include "vex.h"
-#include "serial_communication.h"
+#include "rgb-template/RemoteControl.h"
 
 // All vex classes and functions are in the vex namespace
 using namespace vex;
-using namespace serial;
+using namespace rgb;
 
 // A global instance of competition
 // This object is used to register callbacks for the autonomous and driver control periods.
 competition Competition;
 
-// Global serial communication object
-SerialCommunication serialComm;
+// Global remote control object
+RemoteControl remoteControl;
 bool serialListening = false;
 
 // ----------------------------------------------------------------------------
@@ -104,9 +104,40 @@ void buttonRight_action()
 
 }
 
+bool remote_control_mode = false;
 // This function is called when the Left button is pressed.
 void buttonLeft_action()
 {
+    // activate test mode if the button is pressed immediately after running the program
+  if ((Brain.Timer.time(sec) < 5) && !remote_control_mode) {
+    controller(primary).rumble("-");
+    remote_control_mode = true;
+    return;
+  }
+
+  if(remote_control_mode){
+      // Toggle serial communication listening
+    if (!serialListening) {
+      if (remoteControl.connect()) {
+        serialListening = true;
+        controller(primary).Screen.clearScreen();
+        controller(primary).Screen.print("           remote on");
+        controller(primary).rumble(".");
+      } else {
+        controller(primary).Screen.clearScreen();
+        controller(primary).Screen.print("           remote failed");
+        controller(primary).rumble("--");
+      }
+    } else {
+      remoteControl.disconnect();
+      serialListening = false;
+      controller(primary).Screen.clearScreen();
+        controller(primary).Screen.print("           remote off");
+      controller(primary).rumble(".");
+    }   
+    return;
+  }
+
   // if in test mode, scroll through the auton menu
   if (auton_test_mode)
   {
@@ -172,25 +203,7 @@ void buttonA_action()
 
 // This function is called when the X button is pressed.
 void buttonX_action() {
-  // Toggle serial communication listening
-  if (!serialListening) {
-    if (serialComm.connect()) {
-      serialListening = true;
-      controller(primary).Screen.clearScreen();
-      controller(primary).Screen.print("Serial listening ON");
-      controller(primary).rumble(".");
-    } else {
-      controller(primary).Screen.clearScreen();
-      controller(primary).Screen.print("Serial connect failed");
-      controller(primary).rumble("--");
-    }
-  } else {
-    serialComm.disconnect();
-    serialListening = false;
-    controller(primary).Screen.clearScreen();
-    controller(primary).Screen.print("Serial listening OFF");
-    controller(primary).rumble("-");
-  }
+
 }
 
 // ----------------------------------------------------------------------------
@@ -222,7 +235,7 @@ int main() {
   // Prevent main from exiting with an infinite loop.
   while (true) {
     if (serialListening) {
-      serialComm.poll();
+      remoteControl.poll();
     }
     wait(100, msec);
   }

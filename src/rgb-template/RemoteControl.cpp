@@ -1,57 +1,45 @@
-#include "serial_communication.h"
+#include "rgb-template/RemoteControl.h"
 #include "chassis.h"
-#include <sstream>
 #include <cstring>
 
-namespace serial {
+namespace rgb {
 
-SerialCommunication::SerialCommunication() : connected(false) {
-    // Initialize serial communication
-    // The VEX brain uses the USB port for serial communication
+// Static member initialization
+FILE* RemoteControl::serialFile = nullptr;
+std::string RemoteControl::lineBuffer = "";
+
+RemoteControl::RemoteControl() : connected(false) {
+    // Initialize remote control
 }
 
-SerialCommunication::~SerialCommunication() {
+RemoteControl::~RemoteControl() {
     if (connected) {
         disconnect();
     }
 }
 
-bool SerialCommunication::connect() {
-    // For VEX V5, the USB port is automatically available for serial communication
-    // We just need to check if it's working
+bool RemoteControl::connect() {
     connected = true;
-    
-    // Send a test message to verify connection
- //   send("VEX_BRAIN_CONNECTED\n");
-    
     return connected;
 }
 
-void SerialCommunication::disconnect() {
+void RemoteControl::disconnect() {
     if (connected) {
         send("VEX_BRAIN_DISCONNECTED\n");
         connected = false;
     }
 }
 
-bool SerialCommunication::send(const std::string& message) {
+bool RemoteControl::send(const std::string& message) {
     if (!connected) return false;
     
-    // For responses, we can use printf to send data back to the computer
-    // This will appear in the debug terminal
+    // Send data back to the computer via printf
     printf("%s", message.c_str());
-    
-    // Also show on controller screen for debugging
-//    controller(primary).Screen.clearScreen();
-//    controller(primary).Screen.print("Sent: %s", message.c_str());
-    
     return true;
 }
 
-void SerialCommunication::poll() {
+void RemoteControl::poll() {
     if (!connected) return;
-    static FILE* serialFile = nullptr;
-    static std::string lineBuffer = "";
 
     // Open serial port if not already open
     if (!serialFile) {
@@ -82,7 +70,7 @@ void SerialCommunication::poll() {
     }
 }
 
-void SerialCommunication::processCommand(const std::string& command) {
+void RemoteControl::processCommand(const std::string& command) {
     // Remove any whitespace and newlines
     std::string cmd = command;
     cmd.erase(0, cmd.find_first_not_of(" \t\r\n"));
@@ -92,7 +80,11 @@ void SerialCommunication::processCommand(const std::string& command) {
     for (char& c : cmd) {
         c = toupper(c);
     }
-
+    
+    // Debug: print the cmd value
+    controller(primary).Screen.clearScreen();
+    controller(primary).Screen.print("cmd: '%s'", cmd.c_str());
+    controller(primary).Screen.newLine();
     
     // Map command to action
     if (cmd == "FORWARD" || cmd == "MOVE" || cmd == "GO") {
@@ -139,56 +131,4 @@ void SerialCommunication::processCommand(const std::string& command) {
     }
 }
 
-std::string SerialCommunication::readLine() {
-    if (buffer.empty()) return "";
-    
-    size_t newlinePos = buffer.find('\n');
-    if (newlinePos == std::string::npos) return "";
-    
-    std::string line = buffer.substr(0, newlinePos);
-    buffer = buffer.substr(newlinePos + 1);
-    
-    return line;
-}
-
-std::string SerialCommunication::readAll() {
-    std::string data = buffer;
-    buffer.clear();
-    return data;
-}
-
-void SerialCommunication::processBuffer() {
-    std::string message = extractMessage();
-    if (!message.empty() && messageCallback) {
-        messageCallback(message);
-    }
-}
-
-std::string SerialCommunication::extractMessage() {
-    size_t newlinePos = buffer.find('\n');
-    if (newlinePos == std::string::npos) return "";
-    
-    std::string message = buffer.substr(0, newlinePos);
-    buffer = buffer.substr(newlinePos + 1);
-    
-    // Remove carriage return if present
-    if (!message.empty() && message.back() == '\r') {
-        message.pop_back();
-    }
-    
-    return message;
-}
-
-void SerialCommunication::clearBuffer() {
-    buffer.clear();
-}
-
-bool SerialCommunication::hasData() const {
-    return !buffer.empty();
-}
-
-int SerialCommunication::availableBytes() const {
-    return static_cast<int>(buffer.length());
-}
-
-} // namespace serial 
+} // namespace rgb 

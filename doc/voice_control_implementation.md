@@ -21,10 +21,10 @@ The voice control system has been fully implemented and tested. All components a
   - Error handling
 
 ### 2. VEX Brain Integration
-- **Location**: `src/main.cpp`
+- **Location**: `src/main.cpp` and `src/rgb-template/RemoteControl.cpp`
 - **Status**: ✅ Complete
 - **Features**:
-  - Serial communication handling
+  - RemoteControl module for serial communication
   - Voice command processing
   - Status reporting
   - Mechanism control
@@ -54,10 +54,12 @@ The voice control system has been fully implemented and tested. All components a
 │   └── README.md                 # Project documentation
 ├── src/
 │   ├── main.cpp                  # Updated with voice commands
-│   ├── serial_communication.cpp  # Serial communication
+│   ├── rgb-template/
+│   │   └── RemoteControl.cpp     # Serial communication module
 │   └── ...
 ├── include/
-│   ├── serial_communication.h    # Serial communication header
+│   ├── rgb-template/
+│   │   └── RemoteControl.h       # RemoteControl header
 │   └── ...
 └── doc/
     ├── voice_control_plan.md     # Original plan
@@ -67,10 +69,10 @@ The voice control system has been fully implemented and tested. All components a
 ## Voice Commands Implementation
 
 ### Supported Commands
-1. **move** → `chassis.drive_with_voltage(3, 3)`
-2. **back** → `chassis.drive_with_voltage(-3, -3)`
-3. **left** → `chassis.drive_with_voltage(-3, 3)`
-4. **right** → `chassis.drive_with_voltage(3, -3)`
+1. **move** → `chassis.drive_with_voltage(2, 2)`
+2. **back** → `chassis.drive_with_voltage(-2, -2)`
+3. **left** → `chassis.drive_with_voltage(-2, 2)`
+4. **right** → `chassis.drive_with_voltage(2, -2)`
 5. **stop** → `chassis.stop(brake)` + status report
 6. **roll** → `in_take()` (continues until stop)
 7. **shoot** → `score_long()` (continues until stop)
@@ -96,8 +98,8 @@ npm run dev
 ```
 
 ### 3. VEX Code Configuration
-1. Upload the updated `main.cpp` to VEX brain
-2. Press Button X on controller to enable serial listening
+1. Upload the updated `main.cpp` and `RemoteControl.cpp` to VEX brain
+2. Press Button LEFT on controller within 5 seconds to enable listening to remote commands
 3. Verify connection status on controller screen
 
 ### 4. Web Interface Configuration
@@ -109,7 +111,7 @@ npm run dev
 
 ### 1. Start the System
 1. **Start web server**: `npm run dev` (runs on http://localhost:3000)
-2. **Enable VEX listening**: Press Button X on controller
+2. **Enable VEX listening**: Press Button LEFT on controller immediately after the program runs
 3. **Connect web interface**: Enter Device ID and click "Connect to Robot"
 4. **Start voice recognition**: Click "Start Listening"
 
@@ -133,7 +135,7 @@ npm run dev
 
 ### Serial Communication
 - **Baud Rate**: 115200
-- **Format**: Single-character commands
+- **Format**: Complete word commands with newline
 - **Status Format**: `STATUS:heading:distance`
 
 ### Speech Recognition
@@ -141,6 +143,100 @@ npm run dev
 - **Language**: en-US
 - **Confidence**: Displayed in activity log
 - **Fallback**: Manual command entry possible
+
+## RemoteControl Module Implementation
+
+### Serial Port Reading
+
+#### File-Based Communication
+The RemoteControl module uses file-based serial communication on the VEX brain:
+
+```cpp
+// Open serial port for reading
+FILE* serialFile = fopen("/dev/serial1", "rb");
+```
+
+#### Character-by-Character Processing
+Commands are read one character at a time to build complete lines:
+
+```cpp
+// Read one character at a time
+char c;
+if (fread(&c, 1, 1, serialFile) == 1) {
+    if (c == '\n' || c == '\r') {
+        // End of line reached, process the command
+        if (!lineBuffer.empty()) {
+            processCommand(lineBuffer);
+            lineBuffer.clear();
+        }
+    } else {
+        // Add character to line buffer
+        lineBuffer += c;
+    }
+}
+```
+
+#### Command Processing
+```cpp
+void RemoteControl::processCommand(const std::string& command) {
+    // Remove whitespace and newlines
+    std::string cmd = command;
+    cmd.erase(0, cmd.find_first_not_of(" \t\r\n"));
+    cmd.erase(cmd.find_last_not_of(" \t\r\n") + 1);
+    
+    // Convert to uppercase
+    for (char& c : cmd) {
+        c = toupper(c);
+    }
+    
+    // Map commands to actions
+    if (cmd == "FORWARD" || cmd == "MOVE" || cmd == "GO") {
+        chassis.drive_with_voltage(2, 2);
+    } else if (cmd == "STOP") {
+        chassis.stop(brake);
+        // Send status back
+        char status_message[100];
+        sprintf(status_message, "STATUS:%.1f:%.1f\n", 
+                chassis.get_heading(), 
+                (chassis.get_left_position_in() + chassis.get_right_position_in()) / 2.0);
+        send(status_message);
+    }
+    // ... other commands
+}
+```
+
+#### Polling Integration
+The RemoteControl module is integrated into the main loop:
+
+```cpp
+// In main.cpp
+while (true) {
+    if (serialListening) {
+        remoteControl.poll();  // Check for new commands
+    }
+    wait(100, msec);
+}
+```
+
+### Key Features
+
+#### Robust Error Handling
+- **File open failures**: Graceful handling of serial port access issues
+- **Empty commands**: Filter out empty lines and whitespace
+- **Invalid commands**: Display unknown commands on controller screen
+- **Connection status**: Visual feedback on controller screen
+
+#### Debug Output
+- **Command display**: Show received commands on controller screen
+- **Processing feedback**: Display processed command values
+- **Status messages**: Real-time status updates
+- **Error indicators**: Rumble patterns for different states
+
+#### Performance Characteristics
+- **Non-blocking**: Serial operations don't interfere with robot control
+- **Efficient polling**: 100ms intervals provide responsive control
+- **Memory efficient**: Static buffers prevent memory leaks
+- **Low latency**: Immediate command processing
 
 ## Testing and Validation
 

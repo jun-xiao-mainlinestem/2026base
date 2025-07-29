@@ -39,7 +39,7 @@ Voice Commands → Web Interface → WebSocket → VEX Extension → Serial → 
 - **Message Routing**: Handle bidirectional communication
 
 #### 3. VEX Brain
-- **Serial Communication**: Receive commands via USB user port
+- **RemoteControl Module**: Handle serial communication via USB user port
 - **Command Execution**: Execute robot movements and mechanism control
 - **Status Reporting**: Send robot state back to web interface
 - **Error Handling**: Provide feedback for failed operations
@@ -172,14 +172,14 @@ Voice Commands → Web Interface → WebSocket → VEX Extension → Serial → 
 - **Status feedback**: Stop command includes robot status report
 
 ### Command Mapping
-Voice commands are mapped to single-character serial commands for efficient transmission:
-- "move" → 'a'
-- "back" → 'b' 
-- "left" → 'l'
-- "right" → 'd'
-- "stop" → 'p'
-- "roll" → 'i'
-- "shoot" → 's'
+Voice commands are mapped to complete word serial commands for reliable transmission:
+- "move" → "FORWARD"
+- "back" → "BACKWARD" 
+- "left" → "LEFT"
+- "right" → "RIGHT"
+- "stop" → "STOP"
+- "roll" → "ROLL"
+- "shoot" → "SHOOT"
 
 ## Technical Requirements
 
@@ -204,11 +204,11 @@ Voice commands are mapped to single-character serial commands for efficient tran
 ## Serial Communication Strategy
 
 ### Communication Protocol
-The system uses a simple, efficient serial communication protocol:
+The system uses a robust serial communication protocol through the RemoteControl module:
 
 #### Command Transmission
-- **Single character commands**: Minimize transmission overhead
-- **Immediate execution**: No command queuing or buffering
+- **Complete word commands**: "FORWARD", "STOP", "LEFT", etc.
+- **Line-based processing**: Commands end with newline character (`\n`)
 - **Case-insensitive**: Accept both uppercase and lowercase characters
 - **Error handling**: Graceful handling of invalid commands
 
@@ -218,11 +218,67 @@ The system uses a simple, efficient serial communication protocol:
 - **Real-time transmission**: Immediate response to status requests
 - **Error recovery**: Fallback values for sensor failures
 
+### Serial Port Reading Implementation
+
+#### File-Based Serial Communication
+The RemoteControl module uses file-based serial communication on the VEX brain:
+
+```cpp
+// Open serial port for reading
+FILE* serialFile = fopen("/dev/serial1", "rb");
+```
+
+#### Character-by-Character Reading
+Commands are read one character at a time to build complete lines:
+
+```cpp
+// Read one character at a time
+char c;
+if (fread(&c, 1, 1, serialFile) == 1) {
+    if (c == '\n' || c == '\r') {
+        // Process complete line
+        processCommand(lineBuffer);
+        lineBuffer.clear();
+    } else {
+        // Add character to buffer
+        lineBuffer += c;
+    }
+}
+```
+
+#### Line Buffer Management
+- **Static buffer**: `std::string lineBuffer` accumulates characters
+- **Newline detection**: Process commands when `\n` or `\r` is encountered
+- **Empty line filtering**: Only process non-empty command lines
+- **Buffer clearing**: Reset buffer after processing each command
+
+#### Command Processing
+- **Whitespace removal**: Strip leading/trailing whitespace and newlines
+- **Case conversion**: Convert to uppercase for case-insensitive comparison
+- **Command mapping**: Map to robot actions (FORWARD, STOP, etc.)
+- **Debug output**: Show processed command on controller screen
+
 ### Implementation Approach
-- **Polling-based**: Check for new commands every 20ms
+- **Polling-based**: Check for new commands every 100ms in main loop
 - **Non-blocking**: Serial operations don't interfere with robot control
 - **Robust error handling**: Connection failures don't crash the system
 - **User feedback**: Controller screen and rumble provide immediate feedback
+
+#### Polling Integration
+```cpp
+// In main.cpp
+while (true) {
+    if (serialListening) {
+        remoteControl.poll();  // Check for new commands
+    }
+    wait(100, msec);
+}
+```
+
+#### Button Control
+- **Button X toggle**: Press to enable/disable serial listening
+- **Connection status**: Display on controller screen
+- **Error feedback**: Rumble patterns for different states
 
 ## User Interface Design
 
