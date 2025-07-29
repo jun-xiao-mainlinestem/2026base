@@ -117,7 +117,7 @@ void buttonLeft_action()
   }
 
   if(remote_control_mode){
-      // Toggle serial communication listening
+      // Toggle websocket communication listening
     if (!remoteListening) {
       remoteControl.attemptConnection();
       remoteListening = true;
