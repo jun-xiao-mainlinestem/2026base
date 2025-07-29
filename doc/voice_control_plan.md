@@ -268,7 +268,7 @@ if (fread(&c, 1, 1, serialFile) == 1) {
 ```cpp
 // In main.cpp
 while (true) {
-    if (serialListening) {
+    if (remoteListening) {
         remoteControl.poll();  // Check for new commands
     }
     wait(100, msec);

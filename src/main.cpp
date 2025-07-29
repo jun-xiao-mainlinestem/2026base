@@ -12,7 +12,8 @@ competition Competition;
 
 // Global remote control object
 RemoteControl remoteControl;
-bool serialListening = false;
+bool remoteListening = false;
+bool remote_control_mode = false;
 
 // ----------------------------------------------------------------------------
 //                                Controller Callbacks
@@ -71,7 +72,7 @@ void buttonB_action()
   wait(0.5, sec);
   // Display the distance traveled previously on the controller screen.
   float h = chassis.get_heading();
-  controller(primary).Screen.print("heading: 4.0f, distance: %.1f", h, distance_traveled);
+  controller(primary).Screen.print("heading: %.1f, distance: %.1f", h, distance_traveled);
 
   waitUntil(!controller(primary).ButtonB.pressing());
   chassis.stop(coast);
@@ -83,7 +84,7 @@ void buttonB_action()
 // This function is called when the Right button is pressed.
 void buttonRight_action()
 {
-  // activate test mode if the button is pressed immediately after running the program
+  // Activate test mode if the button is pressed immediately after running the program
   if ((Brain.Timer.time(sec) < 5) && !auton_test_mode) {
     controller(primary).rumble("-");
     auton_test_mode = true;
@@ -96,7 +97,7 @@ void buttonRight_action()
     show_auton_menu();
     return;
   }
-  // otherwise, run ohter macro code
+  // otherwise, run other macro code
   chassis.driver_control_disabled = true;
   // TODO: Insert test code here. This is a placeholder for future actions triggered by Button Right.
 
@@ -104,46 +105,25 @@ void buttonRight_action()
 
 }
 
-bool remote_control_mode = false;
 // This function is called when the Left button is pressed.
 void buttonLeft_action()
 {
-    // activate test mode if the button is pressed immediately after running the program
+    // Activate remote control mode if the button is pressed immediately after running the program
   if ((Brain.Timer.time(sec) < 5) && !remote_control_mode) {
     controller(primary).rumble("-");
     remote_control_mode = true;
-      if (remoteControl.connect()) {
-        serialListening = true;
-        controller(primary).Screen.clearScreen();
-        controller(primary).Screen.print("           remote on");
-        controller(primary).rumble(".");
-      } else {
-        controller(primary).Screen.clearScreen();
-        controller(primary).Screen.print("           remote failed");
-        controller(primary).rumble("--");
-      }
+    remoteControl.attemptConnection();
     return;
   }
 
   if(remote_control_mode){
       // Toggle serial communication listening
-    if (!serialListening) {
-      if (remoteControl.connect()) {
-        serialListening = true;
-        controller(primary).Screen.clearScreen();
-        controller(primary).Screen.print("           remote on");
-        controller(primary).rumble(".");
-      } else {
-        controller(primary).Screen.clearScreen();
-        controller(primary).Screen.print("           remote failed");
-        controller(primary).rumble("--");
-      }
+    if (!remoteListening) {
+      remoteControl.attemptConnection();
+      remoteListening = true;
     } else {
       remoteControl.disconnect();
-      serialListening = false;
-      controller(primary).Screen.clearScreen();
-        controller(primary).Screen.print("           remote off");
-      controller(primary).rumble(".");
+      remoteListening = false;
     }   
     return;
   }
@@ -156,7 +136,7 @@ void buttonLeft_action()
     return;
   }
 
-  // otherwise, run ohter macro code
+  // otherwise, run other macro code
   chassis.driver_control_disabled = true;
   // TODO: Insert test code here. This is a placeholder for future actions triggered by Button Left.
 
@@ -181,40 +161,15 @@ void buttonA_action()
     return;
   }
 
-    // otherwise run test code 
+    // otherwise run macro code 
   chassis.driver_control_disabled = true;
-  
-  // Test robot commands directly
-  controller(primary).Screen.clearScreen();
-  controller(primary).Screen.print("Testing FORWARD");
-  chassis.drive_with_voltage(4, 4);
-  wait(2000, msec);
-  
-  controller(primary).Screen.clearScreen();
-  controller(primary).Screen.print("Testing STOP");
-  chassis.stop(brake);
-  wait(1000, msec);
-  
-  controller(primary).Screen.clearScreen();
-  controller(primary).Screen.print("Testing LEFT");
-  chassis.drive_with_voltage(-4, 4);
-  wait(2000, msec);
-  
-  controller(primary).Screen.clearScreen();
-  controller(primary).Screen.print("Testing STOP");
-  chassis.stop(brake);
-  
-  controller(primary).Screen.clearScreen();
-  controller(primary).Screen.print("Test complete!");
+
+  // TODO: Insert test code here. This is a placeholder for future actions triggered by Button A. 
 
   chassis.driver_control_disabled = false;
 }
 
 
-// This function is called when the X button is pressed.
-void buttonX_action() {
-
-}
 
 // ----------------------------------------------------------------------------
 //                                Main
@@ -232,7 +187,6 @@ int main() {
   controller(primary).ButtonLeft.pressed(buttonLeft_action);
   controller(primary).ButtonA.pressed(buttonA_action);
   controller(primary).ButtonB.pressed(buttonB_action);
-  controller(primary).ButtonX.pressed(buttonX_action);
 
   controller(primary).ButtonL1.pressed(buttonL1_action);
   controller(primary).ButtonL2.pressed(buttonL2_action);
@@ -244,7 +198,7 @@ int main() {
 
   // Prevent main from exiting with an infinite loop.
   while (true) {
-    if (serialListening) {
+    if (remoteListening) {
       remoteControl.poll();
     }
     wait(100, msec);

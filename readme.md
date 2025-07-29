@@ -65,7 +65,8 @@ The project is organized into the following directories:
     - Press the controller's `Right button` within 5 seconds of program startup to enter test mode.
     - When in test mode, press the `Right button` to cycle through the list of autonomous routines on the controller screen.
     - Press the `A button` to run the routine shown on the screen. Hold the button to continue pass stops.
-
+- (Optional) Allow remote control of the robot with web application:
+    - Read [remote control document](voice-control-robot/readme.md) to understand how it works.
 &nbsp;
 ---
 # More Information of the [Library](src/rgb-template/)

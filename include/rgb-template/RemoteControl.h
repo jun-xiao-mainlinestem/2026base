@@ -12,6 +12,7 @@ private:
     static std::string lineBuffer;
     
     void processCommand(const std::string& command);
+    void updateStatus(bool success, const char* status_message);
     
 public:
     RemoteControl();
@@ -21,6 +22,7 @@ public:
     bool connect();
     void disconnect();
     bool isConnected() const { return connected; }
+    bool attemptConnection();
     
     // Communication methods
     bool send(const std::string& message);

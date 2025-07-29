@@ -20,6 +20,7 @@ RemoteControl::~RemoteControl() {
 
 bool RemoteControl::connect() {
     connected = true;
+    updateStatus(true, "           remote on");
     return connected;
 }
 
@@ -27,6 +28,7 @@ void RemoteControl::disconnect() {
     if (connected) {
         send("VEX_BRAIN_DISCONNECTED\n");
         connected = false;
+        updateStatus(true, "           remote off");
     }
 }
 
@@ -36,6 +38,21 @@ bool RemoteControl::send(const std::string& message) {
     // Send data back to the computer via printf
     printf("%s", message.c_str());
     return true;
+}
+
+void RemoteControl::updateStatus(bool success, const char* status_message) {
+    controller(primary).Screen.clearScreen();
+    controller(primary).Screen.print("%s", status_message);
+    controller(primary).rumble(success ? "." : "--");
+}
+
+bool RemoteControl::attemptConnection() {
+    if (connect()) {
+        return true;
+    } else {
+        updateStatus(false, "           remote failed");
+        return false;
+    }
 }
 
 void RemoteControl::poll() {
@@ -119,7 +136,8 @@ void RemoteControl::processCommand(const std::string& command) {
         score_long();
     } else {
         // Unknown command
-
+        controller(primary).Screen.print("Unknown: %s", cmd.c_str());
+        controller(primary).rumble(".");
     }
 }
 

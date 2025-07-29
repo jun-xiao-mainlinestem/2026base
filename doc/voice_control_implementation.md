@@ -216,7 +216,7 @@ The RemoteControl module is integrated into the main loop:
 ```cpp
 // In main.cpp
 while (true) {
-    if (serialListening) {
+    if (remoteListening) {
         remoteControl.poll();  // Check for new commands
     }
     wait(100, msec);
