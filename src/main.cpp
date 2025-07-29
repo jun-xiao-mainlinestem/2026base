@@ -112,6 +112,16 @@ void buttonLeft_action()
   if ((Brain.Timer.time(sec) < 5) && !remote_control_mode) {
     controller(primary).rumble("-");
     remote_control_mode = true;
+      if (remoteControl.connect()) {
+        serialListening = true;
+        controller(primary).Screen.clearScreen();
+        controller(primary).Screen.print("           remote on");
+        controller(primary).rumble(".");
+      } else {
+        controller(primary).Screen.clearScreen();
+        controller(primary).Screen.print("           remote failed");
+        controller(primary).rumble("--");
+      }
     return;
   }
 

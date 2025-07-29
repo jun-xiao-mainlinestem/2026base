@@ -88,11 +88,9 @@ void RemoteControl::processCommand(const std::string& command) {
     
     // Map command to action
     if (cmd == "FORWARD" || cmd == "MOVE" || cmd == "GO") {
-        controller(primary).Screen.print("FORWARD");
         controller(primary).rumble(".");
         chassis.drive_with_voltage(2, 2);
     } else if (cmd == "STOP") {
-        controller(primary).Screen.print("STOP");
         controller(primary).rumble(".");
         float current_heading = chassis.get_heading();
         float distance_traveled = (chassis.get_left_position_in() + chassis.get_right_position_in()) / 2.0;
@@ -105,29 +103,23 @@ void RemoteControl::processCommand(const std::string& command) {
         send(status_message);
 
     } else if (cmd == "RIGHT") {
-        controller(primary).Screen.print("RIGHT");
         controller(primary).rumble(".");
         chassis.drive_with_voltage(2, -2);
     } else if (cmd == "LEFT") {
-        controller(primary).Screen.print("LEFT");
         controller(primary).rumble(".");
         chassis.drive_with_voltage(-2, 2);
     } else if (cmd == "BACKWARD" || cmd == "BACK") {
-        controller(primary).Screen.print("BACKWARD");
         controller(primary).rumble(".");
         chassis.drive_with_voltage(-2, -2);
     } else if (cmd == "ROLL" || cmd == "INTAKE") {
-        controller(primary).Screen.print("ROLL");
         controller(primary).rumble(".");
         in_take();
     } else if (cmd == "SHOOT" || cmd == "SCORE") {
-        controller(primary).Screen.print("SHOOT");
         controller(primary).rumble(".");
         score_long();
     } else {
         // Unknown command
-        controller(primary).Screen.print("UNKNOWN: %s", command.c_str());
-        controller(primary).rumble(".");
+
     }
 }
 

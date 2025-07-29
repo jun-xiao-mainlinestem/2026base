@@ -161,8 +161,8 @@ void setup_team_color(){
     } else {
       controller(primary).Screen.print("                red");
     }
+    wait(1, seconds);
   } 
-  wait(2, seconds);
 }
 
 // This function is called before the autonomous period starts.
