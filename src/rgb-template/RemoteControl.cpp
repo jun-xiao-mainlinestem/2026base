@@ -20,7 +20,7 @@ RemoteControl::~RemoteControl() {
 
 bool RemoteControl::connect() {
     connected = true;
-    updateStatus(true, "           remote on");
+    updateStatus(true, "           connection on");
     return connected;
 }
 
@@ -28,7 +28,7 @@ void RemoteControl::disconnect() {
     if (connected) {
         send("VEX_BRAIN_DISCONNECTED\n");
         connected = false;
-        updateStatus(true, "           remote off");
+        updateStatus(true, "           connection off");
     }
 }
 
@@ -50,7 +50,7 @@ bool RemoteControl::attemptConnection() {
     if (connect()) {
         return true;
     } else {
-        updateStatus(false, "           remote failed");
+        updateStatus(false, "           connection failed");
         return false;
     }
 }
@@ -63,7 +63,7 @@ void RemoteControl::poll() {
         serialFile = fopen("/dev/serial1", "rb");
         if (!serialFile) {
             controller(primary).Screen.clearScreen();
-            controller(primary).Screen.print("can't open serial");
+            controller(primary).Screen.print("can't open port");
             controller(primary).rumble(".");
             return;
         }
@@ -136,6 +136,8 @@ void RemoteControl::processCommand(const std::string& command) {
         score_long();
     } else {
         // Unknown command
+        wait(2, seconds);
+        controller(primary).Screen.clearScreen();
         controller(primary).Screen.print("Unknown: %s", cmd.c_str());
         controller(primary).rumble(".");
     }
