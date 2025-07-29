@@ -61,7 +61,7 @@ export class VoiceControlApp {
       case RobotAction.FORWARD:
         return 'FORWARD\n';
       case RobotAction.BACKWARD:
-        return 'BACKWARDb\n';
+        return 'BACKWARD\n';
       case RobotAction.LEFT:
         return 'LEFT\n';
       case RobotAction.RIGHT:

@@ -92,11 +92,7 @@ void SerialCommunication::processCommand(const std::string& command) {
     for (char& c : cmd) {
         c = toupper(c);
     }
-    
-    // Debug: print the cmd value
-    controller(primary).Screen.clearScreen();
-    controller(primary).Screen.print("cmd: '%s'", cmd.c_str());
-    controller(primary).Screen.newLine();
+
     
     // Map command to action
     if (cmd == "FORWARD" || cmd == "MOVE" || cmd == "GO") {
