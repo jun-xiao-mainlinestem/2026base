@@ -93,14 +93,17 @@ void SerialCommunication::processCommand(const std::string& command) {
         c = toupper(c);
     }
     
+    // Debug: print the cmd value
+    controller(primary).Screen.clearScreen();
+    controller(primary).Screen.print("cmd: '%s'", cmd.c_str());
+    controller(primary).Screen.newLine();
+    
     // Map command to action
-    if (cmd == "A") {
-        controller(primary).Screen.clearScreen();
+    if (cmd == "FORWARD" || cmd == "MOVE" || cmd == "GO") {
         controller(primary).Screen.print("FORWARD");
         controller(primary).rumble(".");
         chassis.drive_with_voltage(2, 2);
-    } else if (cmd == "P") {
-        controller(primary).Screen.clearScreen();
+    } else if (cmd == "STOP") {
         controller(primary).Screen.print("STOP");
         controller(primary).rumble(".");
         float current_heading = chassis.get_heading();
@@ -113,34 +116,28 @@ void SerialCommunication::processCommand(const std::string& command) {
         sprintf(status_message, "STATUS:%.1f:%.1f\n", current_heading, distance_traveled);
         send(status_message);
 
-    } else if (cmd == "D") {
-        controller(primary).Screen.clearScreen();
+    } else if (cmd == "RIGHT") {
         controller(primary).Screen.print("RIGHT");
         controller(primary).rumble(".");
         chassis.drive_with_voltage(2, -2);
-    } else if (cmd == "L") {
-        controller(primary).Screen.clearScreen();
+    } else if (cmd == "LEFT") {
         controller(primary).Screen.print("LEFT");
         controller(primary).rumble(".");
         chassis.drive_with_voltage(-2, 2);
-    } else if (cmd == "B") {
-        controller(primary).Screen.clearScreen();
+    } else if (cmd == "BACKWARD" || cmd == "BACK") {
         controller(primary).Screen.print("BACKWARD");
         controller(primary).rumble(".");
         chassis.drive_with_voltage(-2, -2);
-    } else if (cmd == "I") {
-        controller(primary).Screen.clearScreen();
+    } else if (cmd == "ROLL" || cmd == "INTAKE") {
         controller(primary).Screen.print("ROLL");
         controller(primary).rumble(".");
         in_take();
-    } else if (cmd == "S") {
-        controller(primary).Screen.clearScreen();
+    } else if (cmd == "SHOOT" || cmd == "SCORE") {
         controller(primary).Screen.print("SHOOT");
         controller(primary).rumble(".");
         score_long();
     } else {
         // Unknown command
-        controller(primary).Screen.clearScreen();
         controller(primary).Screen.print("UNKNOWN: %s", command.c_str());
         controller(primary).rumble(".");
     }

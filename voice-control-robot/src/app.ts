@@ -59,21 +59,21 @@ export class VoiceControlApp {
     // Map RobotAction to single-character command
     switch (robotCommand.action) {
       case RobotAction.FORWARD:
-        return 'a\n';
+        return 'FORWARD\n';
       case RobotAction.BACKWARD:
-        return 'b\n';
+        return 'BACKWARDb\n';
       case RobotAction.LEFT:
-        return 'l\n';
+        return 'LEFT\n';
       case RobotAction.RIGHT:
-        return 'd\n';
+        return 'RIGHT\n';
       case RobotAction.STOP:
-        return 'p\n';
+        return 'STOP\n';
       case RobotAction.INTAKE:
-        return 'i\n';
+        return 'INTAKE\n';
       case RobotAction.SCORE:
-        return 's\n';
+        return 'SCORE\n';
       default:
-        return 'p\n';
+        return 'STOP\n';
     }
   }
 
