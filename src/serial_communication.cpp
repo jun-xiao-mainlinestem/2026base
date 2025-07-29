@@ -42,8 +42,8 @@ bool SerialCommunication::send(const std::string& message) {
     printf("%s", message.c_str());
     
     // Also show on controller screen for debugging
-    controller(primary).Screen.clearScreen();
-    controller(primary).Screen.print("Sent: %s", message.c_str());
+//    controller(primary).Screen.clearScreen();
+//    controller(primary).Screen.print("Sent: %s", message.c_str());
     
     return true;
 }
@@ -52,176 +52,97 @@ void SerialCommunication::poll() {
     if (!connected) return;
     static FILE* serialFile = nullptr;
     static std::string lineBuffer = "";
-    static int totalBytesRead = 0;
 
+    // Open serial port if not already open
     if (!serialFile) {
-        // Use /dev/serial1 as it was working before
-        serialFile = fopen("/dev/serial1", "r");
-        if (serialFile) {
+        serialFile = fopen("/dev/serial1", "rb");
+        if (!serialFile) {
             controller(primary).Screen.clearScreen();
+            controller(primary).Screen.print("can't open serial");
             controller(primary).rumble(".");
-        } else {
-            controller(primary).Screen.clearScreen();
-            controller(primary).rumble("---");
             return;
         }
     }
 
-
-    char readBuf[128];
-    size_t bytesRead = fread(readBuf, 1, sizeof(readBuf), serialFile);
-    totalBytesRead += bytesRead;
-    
-    if (bytesRead > 0) {
-        // Print raw buffer to controller for debugging
-        controller(primary).Screen.clearScreen();
-        controller(primary).Screen.print("Bytes read: %d", (int)bytesRead);
-        
-        for (size_t i = 0; i < bytesRead; ++i) {
-            char c = readBuf[i];
-            controller(primary).Screen.newLine();
-            controller(primary).Screen.print("[%d] 0x%02X '%c'", (int)i, (unsigned char)c, (c >= 32 && c <= 126) ? c : '.');
-            
-            // Process each character immediately (for single char commands)
-            if (c == '\n' || c == '\r') {
-                if (!lineBuffer.empty()) {
-                    controller(primary).Screen.newLine();
-                    controller(primary).Screen.print("Command: %s", lineBuffer.c_str());
-                    processCommand(lineBuffer);
-                    lineBuffer.clear();
-                }
-            } else {
-                lineBuffer += c;
+    // Read one character at a time and build lines
+    char c;
+    if (fread(&c, 1, 1, serialFile) == 1) {
+        if (c == '\n' || c == '\r') {
+            // End of line reached, process the command
+            if (!lineBuffer.empty()) {
+                controller(primary).Screen.clearScreen();
+                controller(primary).Screen.print("Command: %s", lineBuffer.c_str());
+                processCommand(lineBuffer);
+                lineBuffer.clear();
             }
+        } else {
+            // Add character to line buffer
+            lineBuffer += c;
         }
     }
 }
 
 void SerialCommunication::processCommand(const std::string& command) {
-    // Handle both single characters and full commands
-    std::string cmd = command;
-    
     // Remove any whitespace and newlines
+    std::string cmd = command;
     cmd.erase(0, cmd.find_first_not_of(" \t\r\n"));
     cmd.erase(cmd.find_last_not_of(" \t\r\n") + 1);
     
-    // If it's a single character, map it directly
-    if (cmd.length() == 1) {
-        char c = cmd[0];
-        switch (c) {
-            case 'w': case 'W': // Forward
-                controller(primary).Screen.clearScreen();
-                controller(primary).Screen.print("Command: FORWARD (w)");
-                chassis.drive_with_voltage(3, 3);
-                controller(primary).rumble(".");
-                break;
-            case 's': case 'S': // Backward
-                controller(primary).Screen.clearScreen();
-                controller(primary).Screen.print("Command: BACKWARD (s)");
-                chassis.drive_with_voltage(-3, -3);
-                controller(primary).rumble(".");
-                break;
-            case 'a': case 'A': // Left
-                controller(primary).Screen.clearScreen();
-                controller(primary).Screen.print("Command: LEFT (a)");
-                chassis.drive_with_voltage(-3, 3);
-                controller(primary).rumble(".");
-                break;
-            case 'd': case 'D': // Right
-                controller(primary).Screen.clearScreen();
-                controller(primary).Screen.print("Command: RIGHT (d)");
-                chassis.drive_with_voltage(3, -3);
-                controller(primary).rumble(".");
-                break;
-            case 'x': case 'X': // Stop
-                controller(primary).Screen.clearScreen();
-                controller(primary).Screen.print("Command: STOP (x)");
-                chassis.drive_with_voltage(0, 0);
-                controller(primary).rumble("---");
-                
-                // Send status back
-                char statusMsg[128];
-                sprintf(statusMsg, "STATUS:HEADING=%.2f\n", 
-                        chassis.get_heading());
-                send(statusMsg);
-                break;
-            case 'r': case 'R': // Roll/Intake
-                controller(primary).Screen.clearScreen();
-                controller(primary).Screen.print("Command: ROLL (r)");
-                in_take();
-                controller(primary).rumble(".");
-                break;
-            case 'f': case 'F': // Shoot/Score
-                controller(primary).Screen.clearScreen();
-                controller(primary).Screen.print("Command: SHOOT (f)");
-                score_long();
-                controller(primary).rumble(".");
-                break;
-            default:
-                controller(primary).Screen.clearScreen();
-                controller(primary).Screen.print("UNKNOWN CHAR: %c", c);
-                controller(primary).rumble(".");
-                break;
-        }
-    } else {
-        // Handle full text commands (convert to uppercase)
-        for (char& c : cmd) {
-            c = toupper(c);
-        }
+    // Convert to uppercase for case-insensitive comparison
+    for (char& c : cmd) {
+        c = toupper(c);
+    }
+    
+    // Map command to action
+    if (cmd == "A") {
+        controller(primary).Screen.clearScreen();
+        controller(primary).Screen.print("FORWARD");
+        controller(primary).rumble(".");
+        chassis.drive_with_voltage(2, 2);
+    } else if (cmd == "P") {
+        controller(primary).Screen.clearScreen();
+        controller(primary).Screen.print("STOP");
+        controller(primary).rumble(".");
+        float current_heading = chassis.get_heading();
+        float distance_traveled = (chassis.get_left_position_in() + chassis.get_right_position_in()) / 2.0;
+        chassis.stop(brake);
+        stop_rollers();
         
-        if (cmd == "FORWARD" || cmd == "MOVE" || cmd == "GO") {
-            controller(primary).Screen.clearScreen();
-            controller(primary).Screen.print("Command: FORWARD");
-            chassis.drive_with_voltage(3, 3);
-            controller(primary).rumble(".");
-        }
-        else if (cmd == "BACKWARD" || cmd == "BACK") {
-            controller(primary).Screen.clearScreen();
-            controller(primary).Screen.print("Command: BACKWARD");
-            chassis.drive_with_voltage(-3, -3);
-            controller(primary).rumble(".");
-        }
-        else if (cmd == "LEFT") {
-            controller(primary).Screen.clearScreen();
-            controller(primary).Screen.print("Command: LEFT");
-            chassis.drive_with_voltage(-3, 3);
-            controller(primary).rumble(".");
-        }
-        else if (cmd == "RIGHT") {
-            controller(primary).Screen.clearScreen();
-            controller(primary).Screen.print("Command: RIGHT");
-            chassis.drive_with_voltage(3, -3);
-            controller(primary).rumble(".");
-        }
-        else if (cmd == "STOP") {
-            controller(primary).Screen.clearScreen();
-            controller(primary).Screen.print("Command: STOP");
-            chassis.drive_with_voltage(0, 0);
-            controller(primary).rumble("---");
-            
-            // Send status back
-            char statusMsg[128];
-            sprintf(statusMsg, "STATUS:HEADING=%.2f\n", 
-                    chassis.get_heading());
-            send(statusMsg);
-        }
-        else if (cmd == "ROLL" || cmd == "INTAKE") {
-            controller(primary).Screen.clearScreen();
-            controller(primary).Screen.print("Command: ROLL");
-            in_take();
-            controller(primary).rumble(".");
-        }
-        else if (cmd == "SHOOT" || cmd == "SCORE") {
-            controller(primary).Screen.clearScreen();
-            controller(primary).Screen.print("Command: SHOOT");
-            score_long();
-            controller(primary).rumble(".");
-        }
-        else {
-            controller(primary).Screen.clearScreen();
-            controller(primary).Screen.print("UNKNOWN: %s", command.c_str());
-            controller(primary).rumble(".");
-        }
+        // Send status back to webpage            
+        char status_message[100];
+        sprintf(status_message, "STATUS:%.1f:%.1f\n", current_heading, distance_traveled);
+        send(status_message);
+
+    } else if (cmd == "D") {
+        controller(primary).Screen.clearScreen();
+        controller(primary).Screen.print("RIGHT");
+        controller(primary).rumble(".");
+        chassis.drive_with_voltage(2, -2);
+    } else if (cmd == "L") {
+        controller(primary).Screen.clearScreen();
+        controller(primary).Screen.print("LEFT");
+        controller(primary).rumble(".");
+        chassis.drive_with_voltage(-2, 2);
+    } else if (cmd == "B") {
+        controller(primary).Screen.clearScreen();
+        controller(primary).Screen.print("BACKWARD");
+        controller(primary).rumble(".");
+        chassis.drive_with_voltage(-2, -2);
+    } else if (cmd == "I") {
+        controller(primary).Screen.clearScreen();
+        controller(primary).Screen.print("ROLL");
+        controller(primary).rumble(".");
+        in_take();
+    } else if (cmd == "S") {
+        controller(primary).Screen.clearScreen();
+        controller(primary).Screen.print("SHOOT");
+        controller(primary).rumble(".");
+        score_long();
+    } else {
+        // Unknown command
+        controller(primary).Screen.clearScreen();
+        controller(primary).Screen.print("UNKNOWN: %s", command.c_str());
+        controller(primary).rumble(".");
     }
 }
 
