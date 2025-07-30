@@ -77,7 +77,7 @@ npm run dev
 ## ✅ Success Indicators
 
 - ✅ WebSocket shows "🟢 Connected"
-- ✅ Controller shows " remote on"
+- ✅ Controller shows " connection on"
 - ✅ Voice commands appear in activity log
 - ✅ Robot responds to "move" command
 - ✅ Status updates when "stop" is said

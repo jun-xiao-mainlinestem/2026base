@@ -119,9 +119,11 @@ void buttonLeft_action()
   if(remote_control_mode){
       // Toggle websocket communication listening
     if (!remoteListening) {
+      chassis.driver_control_disabled = true;
       remoteControl.attemptConnection();
       remoteListening = true;
     } else {
+      chassis.driver_control_disabled = false;
       remoteControl.disconnect();
       remoteListening = false;
     }   
