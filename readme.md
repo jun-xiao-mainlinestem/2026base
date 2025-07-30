@@ -11,8 +11,8 @@ This project provides a lightweight c++ template for VEX V5 robotics competition
     *   Download [the source code](https://github.com/ericjiangxiao/2026-base/archive/refs/heads/main.zip) as a ZIP file. Unzip and extract the downloaded file to a local folder.
     *   In VScode, go to `File > Open Folder` and select the extracted folder.
     *  (Optional) Or follow the instructions to [pull the repositry](doc/how_to_clone_and_pull_with_vscode.md) using VScode.
-*   **(Optional) If Using Mac with Apple Silicon**: 
-    *   Copy `.vscode` folder from a new project to overwrite the settings.
+*   **(Optional) If the project cannot build correctly**: 
+    *   [Create a new v5 project](https://kb.vex.com/hc/en-us/articles/20146074601748-Creating-VS-Code-Projects-for-V5#:~:text=Select%20the%20'New%20Project'%20button,and%20select%20the%20corresponding%20icon.). Copy the `src` and the `include` folder to the new project.
 
 ## Project Structure
 
@@ -59,13 +59,13 @@ The project is organized into the following directories:
 *   **(Optional) Auton Parameters:** Create array variables for the auton functions at the top of the file for easy tuning the auton parameters during tournaments.
 
 ## Run sample program
-- Build and download the program to the brain and using game controller to select the program slot and run the program.
+- Build and download the program to the brain and use game controller to select the program slot and run the program.
 - For arcade driving, use the `left stick` to turn and `right stick` to drive forward and backward. After you release the stick, the controller screen shows the current heading. If you press the `B button`, the controller shows the distance drived and reset the motor encoder. For sample button mappings and actions, see [button controls](doc/button_control.md).
 - (Optional) Test autons using the game controller during driver control:
     - Press the controller's `Right button` within 5 seconds of program startup to enter test mode.
     - When in test mode, press the `Right button` to cycle through the list of autonomous routines on the controller screen.
     - Press the `A button` to run the routine shown on the screen. Hold the button to continue pass stops.
-- (Optional) Remotely control the robot in browser to design and test auton routes in real time without rebuilding programs:
+- (Optional) Remotely control the robot in browser to design and test auton routes without rebuilding programs:
     - Read [remote control document](/voice-control-robot/README.md) to understand how it works.
 &nbsp;
 ---

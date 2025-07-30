@@ -26,7 +26,6 @@ bool RemoteControl::connect() {
 
 void RemoteControl::disconnect() {
     if (connected) {
-        send("VEX_BRAIN_DISCONNECTED\n");
         connected = false;
         updateStatus(true, "           connection off");
     }
