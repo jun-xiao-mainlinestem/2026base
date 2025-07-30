@@ -25,7 +25,7 @@ motor rightMotor3 = motor(PORT6, ratio18_1, true);
 // inertial sensor for turning and heading
 inertial inertial1 = inertial(PORT10);
 
-// optical sensor for team color detection
+// (Optional) optical sensor for team color detection
 optical team_optical = optical(PORT9);
 
 // if you want the drive mode to be changeable in you code, remove the "const"
@@ -41,11 +41,6 @@ const float STEER_BIAS = 0.5;
 // end game reminder will start at 85 seconds into the match
 const int END_GAME_SECONDS = 85;
 
-
-// ------------------------------------------------------------------------
-//                     No need to change code below this line
-// ------------------------------------------------------------------------
-
 // The Drive class is a wrapper for the VEX motor_group class.
 // It provides a more intuitive interface for controlling a drivetrain.
 Drive chassis(
@@ -57,9 +52,15 @@ Drive chassis(
   inertial1,
   //wheel diameter:
   2.75,
-  //Gear ratio of motor to wheel: if your motor has an 84-tooth gear and your wheel has a 60-tooth gear, this value will be 1.4.
+  //Gear ratio of motor to wheel: if your motor has an 36-tooth gear and your wheel has a 48-tooth gear, this value will be 0.75.
   0.75
 );
+
+
+// ------------------------------------------------------------------------
+//                     No need to change code below this line
+// ------------------------------------------------------------------------
+
 
 // Resets the chassis to a known state.
 // This function should be called before any autonomous routines.
