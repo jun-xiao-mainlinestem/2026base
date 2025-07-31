@@ -1,18 +1,18 @@
 # RGB BOTS template
 
-This project provides a lightweight c++ template for VEX V5 robotics competition, featuring a modular architecture, a library for autonomous driving control and convenient ways to design and test autons.
+This project provides a lightweight C++ template for VEX V5 robotics competition, featuring a modular architecture, a library for autonomous driving control and convenient ways to test and iterate autons.
 
 ## Installation
 *   **Prerequisites:** Before you begin, make sure:
-    - You have [VScode with VEX extension](https://kb.vex.com/hc/en-us/categories/360002333191-V5?sc=vs-code-extension) installed.
-    - (Optional) You have the [GitHub](https://github.com/) extension in VS Code installed.
-    - (Optional) If you are using Mac with Apple silicon: [install Rosetta](https://support.apple.com/en-us/102527) to simulate intel x86 chip if errors show up with VEX extension.
+    - You have [VSCode with VEX extension](https://kb.vex.com/hc/en-us/categories/360002333191-V5?sc=vs-code-extension) installed.
+    - (Optional) You have the [GitHub](https://github.com/) account and extension in VS Code installed.
+    - (Optional) If you are using Mac with Apple silicon: [install Rosetta](https://support.apple.com/en-us/102527) to simulate Intel chip if errors show up with VEX extension.
 *   **Download and Open the Project:** 
     *   Download [the source code](https://github.com/ericjiangxiao/2026-base/archive/refs/heads/main.zip) as a ZIP file. Unzip and extract the downloaded file to a local folder.
-    *   In VScode, go to `File > Open Folder` and select the extracted folder.
-    *  (Optional) Or follow the instructions to [pull the repositry](doc/how_to_clone_and_pull_with_vscode.md) using VScode.
+    *   In VSCode, go to `File > Open Folder` and select the extracted folder.
+    *  (Optional) Or follow the instructions to [pull the repository](doc/how_to_clone_and_pull_with_vscode.md) from github using VSCode.
 *   **(Optional) If the project cannot build correctly**: 
-    *   [Create a new v5 project](https://kb.vex.com/hc/en-us/articles/20146074601748-Creating-VS-Code-Projects-for-V5#:~:text=Select%20the%20'New%20Project'%20button,and%20select%20the%20corresponding%20icon.). Copy the `src` and the `include` folder to the new project.
+    *   [Create a new v5 project](https://kb.vex.com/hc/en-us/articles/20146074601748-Creating-VS-Code-Projects-for-V5#:~:text=Select%20the%20'New%20Project'%20button,and%20select%20the%20corresponding%20icon.). Copy the dowloaded `src` and the `include` folders to the new project.
 
 ## Project Structure
 
@@ -30,11 +30,13 @@ The project is organized into the following directories:
 
 ## Configuration
 
+For detailed step-by-step configuration instructions, see [Configuration Guide](doc/configuration_guide.md).
+
 ### Drivetrain ([chassis.cpp](src/chassis.cpp))
 
 *   **Motors and Sensors:** Define the 6-motor drivetrain motors and inertial sensor, including ports, gear ratios, and motor direction. By default, the port numbers are 1, 2, 3 for the left side, 4, 5, 6 for the right side and 10 for the inertial sensor. 
 *   **Drive Mode:** Set `DRIVE_TANK_MODE` to `true` for tank control or `false` for arcade control.
-*   **Driver Control Constants:**
+*   **(Optional) Driver Control Constants:**
     *   `TURN_FACTOR`: Slows down the turning speed.
     *   `STEER_BIAS`: Controls the curve of the robot when both joysticks are used.
 *   **(Optional) PID Constants:** If needed, adjust the PID constants for driving and turning in the `reset_chassis()` function for autons. 
@@ -43,7 +45,7 @@ The project is organized into the following directories:
 
 *   **Motor Configuration:** Define your motors and sensors for other subsystems such as intake or lift.
 *   **Number of Motors:** Set `NUMBER_OF_MOTORS` to total number of motors to allow the program to automatically check for disconnected or overheated motors.
-*   **Help functions:** Write helper functions to control the subsystems and declare those functions in [robot-config.h](include/robot-config.h) so that your other cpp files can call them.
+*   **Helper functions:** Write helper functions to control the subsystems and declare those functions in [robot-config.h](include/robot-config.h) so that your other cpp files can call them.
 
 ### Driver Control ([main.cpp](src/main.cpp))
 
@@ -60,16 +62,17 @@ The project is organized into the following directories:
 
 ## Run sample program
 - Build and download the program to the brain and use game controller to select the program slot and run the program.
-- For arcade driving, use the `left stick` to turn and `right stick` to drive forward and backward. After you release the stick, the controller screen shows the current heading. If you press the `B button`, the controller shows the distance drived and reset the motor encoder. For sample button mappings and actions, see [button controls](doc/button_control.md).
-- (Optional) Test autons using the game controller during driver control:
+- For arcade driving, use the `left stick` to turn and `right stick` to drive forward and backward. If you press the `B button`, the controller shows the current heading and the distance driven and resets the motor encoder. For sample button mappings and actions, see [button controls](doc/button_control.md).
+- (Optional) Test all autons during driver control using the game controller:
     - Press the controller's `Right button` within 5 seconds of program startup to enter test mode.
     - When in test mode, press the `Right button` to cycle through the list of autonomous routines on the controller screen.
-    - Press the `A button` to run the routine shown on the screen. Hold the button to continue pass stops.
+    - Press the `A button` to run the routine shown on the screen. Hold the button to continue past stops.
+    - See the complete action flow in [Test Auton Button Flow Explanation](doc/test_auton_buttons.md)
 - (Optional) Remotely control the robot in browser to design and test auton routes without rebuilding programs:
-    - Read [remote control document](/voice-control-robot/README.md) to understand how it works.
+    - Read [remote control document](/voice-control-robot/README.md) for the steps and basic understanding how it works.
 &nbsp;
 ---
-# More Information of the [Library](src/rgb-template/)
+# More on the Programming Interfaces of the [Library](src/rgb-template/)
 ## Drive APIs ([drive.h](include/rgb-template/drive.h))
 
 The `Drive` class provides a set of APIs to control the robot's movement.
