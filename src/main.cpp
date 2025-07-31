@@ -21,7 +21,7 @@ bool remoteControlMode = false;
 
 // This function is called when the L1 button is pressed.
 // It performs color sorting: intake for red, score_middle for blue.
-void buttonL1_action() {
+void buttonL1Action() {
   inTake();
   
   // Wait until the button is released to stop the rollers.
@@ -32,7 +32,7 @@ void buttonL1_action() {
   stopRollers();
 }
 
-void buttonL2_action() {
+void buttonL2Action() {
   outTake();
   // Wait until the button is released to stop the intake.
   while(controller(primary).ButtonL2.pressing()) {
@@ -41,7 +41,7 @@ void buttonL2_action() {
   stopRollers();
 }
 
-void buttonR1_action() {
+void buttonR1Action() {
   chassis.stop(hold);
   scoreLong();
   // Wait until the button is released to stop the intake.
@@ -53,7 +53,7 @@ void buttonR1_action() {
 }
 
 // This function is called when the R2 button is pressed.
-void buttonR2_action() {
+void buttonR2Action() {
   chassis.stop(hold);
   scoreMiddle();
   while(controller(primary).ButtonR2.pressing()) {
@@ -66,7 +66,7 @@ void buttonR2_action() {
 
 // This function is called when the B button is pressed.
 // It holds the drivetrain in place until the button is released.
-void buttonB_action()
+void buttonBAction()
 {
   double distanceTraveled = (chassis.get_left_position_in() + chassis.get_right_position_in()) / 2.0;
   chassis.stop(hold);
@@ -86,7 +86,7 @@ void buttonB_action()
 // Global flag auton_test_mode indicating whether the robot is in autonomous test mode.
 // When true, special button actions allow selection and testing of autonomous routines.
 // This function is called when the Right button is pressed.
-void buttonRight_action()
+void buttonRightAction()
 {
   // Activate test mode if the button is pressed immediately after running the program
   if ((Brain.Timer.time(sec) < 5) && !autonTestMode) {
@@ -102,15 +102,15 @@ void buttonRight_action()
     return;
   }
   // otherwise, run other macro code
-  chassis.driver_control_disabled = true;
+  chassis.driverControlDisabled = true;
   // TODO: Insert test code here. This is a placeholder for future actions triggered by Button Right.
 
-  chassis.driver_control_disabled = false;
+  chassis.driverControlDisabled = false;
 
 }
 
 // This function is called when the Left button is pressed.
-void buttonLeft_action()
+void buttonLeftAction()
 {
     // Activate remote control mode if the button is pressed immediately after running the program
   if ((Brain.Timer.time(sec) < 5) && !remoteControlMode) {
@@ -123,11 +123,11 @@ void buttonLeft_action()
   if(remoteControlMode){
       // Toggle websocket communication listening
     if (!remoteListening) {
-      chassis.driver_control_disabled = true;
+      chassis.driverControlDisabled = true;
       remoteControl.attemptConnection();
       remoteListening = true;
     } else {
-      chassis.driver_control_disabled = false;
+      chassis.driverControlDisabled = false;
       remoteControl.disconnect();
       remoteListening = false;
     }   
@@ -143,19 +143,19 @@ void buttonLeft_action()
   }
 
   // otherwise, run other macro code
-  chassis.driver_control_disabled = true;
+  chassis.driverControlDisabled = true;
   // TODO: Insert test code here. This is a placeholder for future actions triggered by Button Left.
 
-  chassis.driver_control_disabled = false;
+  chassis.driverControlDisabled = false;
 }
 
 // This function is called when the A button is pressed.
-void buttonA_action()
+void buttonAAction()
 {
   // If in test mode, run the selected autonomous routine for testing and displays the run time.
   if (autonTestMode)
   {
-    chassis.driver_control_disabled = true;
+    chassis.driverControlDisabled = true;
     Brain.Timer.clear();
 
     runAutonItem(); 
@@ -164,17 +164,17 @@ void buttonA_action()
     char timeMsg[30];
     sprintf(timeMsg, "run time: %.1f", t);
     print_controller_screen(timeMsg);
-    chassis.driver_control_disabled = false;
+    chassis.driverControlDisabled = false;
 
     return;
   }
 
     // otherwise run macro code 
-  chassis.driver_control_disabled = true;
+  chassis.driverControlDisabled = true;
 
   // TODO: Insert test code here. This is a placeholder for future actions triggered by Button A. 
 
-  chassis.driver_control_disabled = false;
+  chassis.driverControlDisabled = false;
 }
 
 
@@ -191,15 +191,15 @@ int main() {
   Competition.drivercontrol(usercontrol);
 
   // Register the controller button callbacks.
-  controller(primary).ButtonRight.pressed(buttonRight_action);
-  controller(primary).ButtonLeft.pressed(buttonLeft_action);
-  controller(primary).ButtonA.pressed(buttonA_action);
-  controller(primary).ButtonB.pressed(buttonB_action);
+  controller(primary).ButtonRight.pressed(buttonRightAction);
+  controller(primary).ButtonLeft.pressed(buttonLeftAction);
+  controller(primary).ButtonA.pressed(buttonAAction);
+  controller(primary).ButtonB.pressed(buttonBAction);
 
-  controller(primary).ButtonL1.pressed(buttonL1_action);
-  controller(primary).ButtonL2.pressed(buttonL2_action);
-  controller(primary).ButtonR1.pressed(buttonR1_action);
-  controller(primary).ButtonR2.pressed(buttonR2_action);
+  controller(primary).ButtonL1.pressed(buttonL1Action);
+  controller(primary).ButtonL2.pressed(buttonL2Action);
+  controller(primary).ButtonR1.pressed(buttonR1Action);
+  controller(primary).ButtonR2.pressed(buttonR2Action);
 
   // Run the pre-autonomous function.
   pre_auton();

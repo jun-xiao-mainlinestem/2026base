@@ -143,7 +143,7 @@ double curve_function(double x, double curve_scale) {
 }
 
 void Drive::control_arcade(int y, int x, float turnBias) {
-  if (driver_control_disabled) return;
+  if (driverControlDisabled) return;
   float throttle = deadband(y, 5);
   float turn = deadband(x, 5);
 
@@ -188,7 +188,7 @@ void Drive::control_arcade(int y, int x, float turnBias) {
 }
 
 void Drive::control_tank(int left, int right) {
-  if (driver_control_disabled) return;
+  if (driverControlDisabled) return;
   float leftthrottle = curve_function(left, k_throttle);
   float rightthrottle = curve_function(right, k_throttle);
 

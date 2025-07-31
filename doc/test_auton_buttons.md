@@ -54,14 +54,16 @@ if (autonTestMode) {
 
 ```cpp
 if (autonTestMode) {
-    chassis.driver_control_disabled = true;
+    chassis.driverControlDisabled = true;
     Brain.Timer.clear();
     
     runAutonItem(); 
     
     double t = Brain.Timer.time(sec);
-    controller(primary).Screen.print("run time: %.1f   ", t);
-    chassis.driver_control_disabled = false;
+    char timeMsg[30];
+    sprintf(timeMsg, "run time: %.1f", t);
+    print_controller_screen(timeMsg);
+    chassis.driverControlDisabled = false;
     return;
 }
 ```

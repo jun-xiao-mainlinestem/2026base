@@ -124,7 +124,7 @@ Navigate to `src/main.cpp` and locate the button functions.
 Add button functions for your subsystems:
 
 ```cpp
-void buttonL1_action() {
+void buttonL1Action() {
     inTake();
     while(controller(primary).ButtonL1.pressing()) {
         wait(20, msec);
@@ -140,7 +140,7 @@ void buttonL1_action() {
 Find the button mapping section in the `main()` function:
 
 ```cpp
-controller(primary).ButtonL1.pressed(buttonL1_action);
+controller(primary).ButtonL1.pressed(buttonL1Action);
 ```
 
 **Action:** Map your button functions to controller buttons.

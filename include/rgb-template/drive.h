@@ -86,7 +86,7 @@ public:
   // A flag to indicate if the drivetrain needs to be stopped.
   bool drivetrain_needs_stopped = false;
   // A flag to disable driver control.
-  bool driver_control_disabled = false;
+  bool driverControlDisabled = false;
 
   // Controls the robot in arcade mode.
   void control_arcade(int throttle, int turn, float turnBias = 0);
