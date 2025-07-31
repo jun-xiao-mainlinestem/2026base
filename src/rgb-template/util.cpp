@@ -1,25 +1,11 @@
 #include "vex.h"
-#include <iostream>
-#include <string>
 
 float reduce_0_to_360(float angle) {
-  while(!(angle >= 0 && angle < 360)) {
-    if( angle < 0 ) { angle += 360; }
-    if(angle >= 360) { angle -= 360; }
-  }
-  return(angle);
+  return fmod(angle + 360, 360);
 }
 
 float reduce_negative_180_to_180(float angle) {
-  while(!(angle >= -180 && angle < 180)) {
-    if( angle < -180 ) { angle += 360; }
-    if(angle >= 180) { angle -= 360; }
-  }
-  return(angle);
-}
-
-float toDeg(float angle_rad){
-  return(angle_rad*(180.0/M_PI));
+  return fmod(angle + 540, 360) - 180;
 }
 
 float threshold(float input, float min, float max){
@@ -62,6 +48,12 @@ bool checkMotors(int motorCount, int temperatureLimit) {
   return true;
 }
 
+void printControllerScreen(const char* message) {
+  char padded[21];
+  snprintf(padded, sizeof(padded), "%-20s", message);
+  controller(primary).Screen.print("%s", padded);
+}
+
 void print_controller_screen(const char* message) {
   std::string paddedMessage = message;
   
@@ -72,5 +64,27 @@ void print_controller_screen(const char* message) {
   
   // Print the padded message to the controller screen
   controller(primary).Screen.print("%s", paddedMessage.c_str());
+}
+
+// Converts and cleans a command string for processing
+std::string cleanCommand(const std::string& command) {
+    // Remove any whitespace and newlines
+    std::string cmd = command;
+    cmd.erase(0, cmd.find_first_not_of(" \t\r\n"));
+    cmd.erase(cmd.find_last_not_of(" \t\r\n") + 1);
+    
+    // Convert to uppercase for case-insensitive comparison
+    for (char& c : cmd) {
+        c = toupper(c);
+    }
+
+        
+    // Debug: print the cmd value
+    controller(primary).Screen.clearScreen();
+    char cmdDebug[30];
+    sprintf(cmdDebug, "cmd: '%s'", cmd.c_str());
+    printControllerScreen(cmdDebug);
+    
+    return cmd;
 }
 

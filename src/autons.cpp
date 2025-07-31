@@ -78,7 +78,7 @@ void showAutonMenu() {
 void printMenuItem(char const * txt[]) {
   // If the custom test is selected, print "custom test" to the controller screen.
   if (currentAutonSelection < 0) {
-    print_controller_screen("custom test");
+    printControllerScreen("custom test");
     return;
   }    
   // Clears the brain screen.
@@ -88,7 +88,7 @@ void printMenuItem(char const * txt[]) {
   // Prints the selected autonomous routine to the brain screen.
   Brain.Screen.print("%s", txt[currentAutonSelection]);
   // Prints the selected autonomous routine to the controller screen.
-  print_controller_screen(txt[currentAutonSelection]);
+  printControllerScreen(txt[currentAutonSelection]);
 }
 
 // This variable is used to exit the autonomous menu.

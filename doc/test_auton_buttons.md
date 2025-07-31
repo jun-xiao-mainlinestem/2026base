@@ -62,7 +62,7 @@ if (autonTestMode) {
     double t = Brain.Timer.time(sec);
     char timeMsg[30];
     sprintf(timeMsg, "run time: %.1f", t);
-    print_controller_screen(timeMsg);
+    printControllerScreen(timeMsg);
     chassis.driverControlDisabled = false;
     return;
 }

@@ -209,6 +209,6 @@ void Drive::stop(vex::brakeType mode) {
     LDrive.stop(mode);
     RDrive.stop(mode);
     stopMode = mode;
-    chassis.LDrive.resetPosition();
-    chassis.RDrive.resetPosition();
+    LDrive.resetPosition();
+    RDrive.resetPosition();
 }

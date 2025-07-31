@@ -17,6 +17,7 @@
 		"*.tcc": "cpp",
 		"type_traits": "cpp",
 		"typeinfo": "cpp",
-		"iostream": "cpp"
+		"iostream": "cpp",
+		"regex": "cpp"
 	}
 }

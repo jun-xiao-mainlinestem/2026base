@@ -20,4 +20,4 @@ void usercontrol();
 void pre_auton();
 
 // returns true when the joystick is touched.
-bool joystick_touched();
+bool joystickTouched();

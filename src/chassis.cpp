@@ -95,7 +95,7 @@ int endgameTimer() {
     wait(200, msec);
   }
   // Prints a message to the controller screen.
-  print_controller_screen("end game");
+  printControllerScreen("end game");
   // Rumbles the controller.
   controller(primary).rumble("-");
   // Checks the motors every 60 seconds.
@@ -141,7 +141,7 @@ bool setupGyro() {
   controller(primary).rumble("-");
   // If the inertial sensor is not installed, print an error message to the controller screen.
   if (!inertial1.installed()) {
-    print_controller_screen("inertial sensor failure");
+    printControllerScreen("inertial sensor failure");
     controller(primary).rumble("----");
     wait(2, seconds);
     return false;  
@@ -152,9 +152,8 @@ bool setupGyro() {
 
 // This function is called before the autonomous period starts.
 void pre_auton() {
-  bool gyroSetupSuccess = true;
   // Sets up the gyro.
-  gyroSetupSuccess = setupGyro();
+  bool gyroSetupSuccess = setupGyro();
   // Sets up the team color.
   setupTeamColor();
 
@@ -168,7 +167,7 @@ void pre_auton() {
 }
 
 // This function returns true when the joystick is touched.
-bool joystick_touched() {
+bool joystickTouched() {
   float d = fabs(chassis.getLeftPositionIn()) + fabs(chassis.getRightPositionIn());
   if (d > 1) {
     return true;

@@ -12,6 +12,7 @@ private:
     static std::string lineBuffer;
     
     void processCommand(const std::string& command);
+    void executeCommand(const std::string& cmd);
     void updateStatus(bool success, const char* status_message);
     
 public:

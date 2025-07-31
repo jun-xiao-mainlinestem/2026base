@@ -41,7 +41,7 @@ bool RemoteControl::send(const std::string& message) {
 
 void RemoteControl::updateStatus(bool success, const char* status_message) {
     controller(primary).Screen.clearScreen();
-    print_controller_screen(status_message);
+    printControllerScreen(status_message);
     controller(primary).rumble(success ? "." : "--");
 }
 
@@ -62,7 +62,7 @@ void RemoteControl::poll() {
         serialFile = fopen("/dev/serial1", "rb");
         if (!serialFile) {
             controller(primary).Screen.clearScreen();
-            print_controller_screen("can't open port");
+            printControllerScreen("can't open port");
             controller(primary).rumble(".");
             return;
         }
@@ -77,7 +77,7 @@ void RemoteControl::poll() {
                 controller(primary).Screen.clearScreen();
                 char cmdMsg[50];
     sprintf(cmdMsg, "Command: %s", lineBuffer.c_str());
-    print_controller_screen(cmdMsg);
+    printControllerScreen(cmdMsg);
                 processCommand(lineBuffer);
                 lineBuffer.clear();
             }
@@ -89,23 +89,9 @@ void RemoteControl::poll() {
 }
 
 void RemoteControl::processCommand(const std::string& command) {
-    // Remove any whitespace and newlines
-    std::string cmd = command;
-    cmd.erase(0, cmd.find_first_not_of(" \t\r\n"));
-    cmd.erase(cmd.find_last_not_of(" \t\r\n") + 1);
-    
-    // Convert to uppercase for case-insensitive comparison
-    for (char& c : cmd) {
-        c = toupper(c);
-    }
-    
-    // Debug: print the cmd value
-    controller(primary).Screen.clearScreen();
-    char cmdDebug[30];
-    sprintf(cmdDebug, "cmd: '%s'", cmd.c_str());
-    print_controller_screen(cmdDebug);
-    controller(primary).Screen.newLine();
-    
+    // Clean and convert the command string
+    std::string cmd = cleanCommand(command);
+
     // Map command to action
     if (cmd == "FORWARD" || cmd == "MOVE" || cmd == "GO") {
         controller(primary).rumble(".");
@@ -142,8 +128,8 @@ void RemoteControl::processCommand(const std::string& command) {
         wait(2, seconds);
         controller(primary).Screen.clearScreen();
         char unknownMsg[30];
-    sprintf(unknownMsg, "Unknown: %s", cmd.c_str());
-    print_controller_screen(unknownMsg);
+        sprintf(unknownMsg, "Unknown: %s", cmd.c_str());
+        printControllerScreen(unknownMsg);
         controller(primary).rumble(".");
     }
 }

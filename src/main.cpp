@@ -76,7 +76,7 @@ void buttonBAction()
   float h = chassis.getHeading();
   char statusMsg[50];
   sprintf(statusMsg, "heading: %.1f, distance: %.1f", h, distanceTraveled);
-  print_controller_screen(statusMsg);
+  printControllerScreen(statusMsg);
 
   waitUntil(!controller(primary).ButtonB.pressing());
   chassis.stop(coast);
@@ -163,7 +163,7 @@ void buttonAAction()
     double t = Brain.Timer.time(sec);
     char timeMsg[30];
     sprintf(timeMsg, "run time: %.1f", t);
-    print_controller_screen(timeMsg);
+    printControllerScreen(timeMsg);
     chassis.driverControlDisabled = false;
 
     return;

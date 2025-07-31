@@ -60,10 +60,10 @@ void colorSort()
     // Get the detected ball color
     color detectedColor = ballOptical.color();    
     if (detectedColor == color::red) {
-      print_controller_screen("red ball");
+      printControllerScreen("red ball");
     } 
     if (detectedColor == color::blue) {
-      print_controller_screen("blue ball");
+      printControllerScreen("blue ball");
     }     
 
     // If the ball color matches the team color, intake it
@@ -92,9 +92,9 @@ void setupTeamColor(){
     // Sets the team color based on the optical sensor.
     if (teamOptical.color() == color::blue) {
       teamIsRed = false;
-      print_controller_screen("team blue");
+      printControllerScreen("team blue");
     } else {
-      print_controller_screen("team red");
+      printControllerScreen("team red");
     }
     wait(1, seconds);
   } 
