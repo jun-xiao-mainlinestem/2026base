@@ -20,11 +20,14 @@ bool remote_control_mode = false;
 // ----------------------------------------------------------------------------
 
 // This function is called when the L1 button is pressed.
-// It spins the intake motor forward while the button is held down.
+// It performs color sorting: intake for red, score_middle for blue.
 void buttonL1_action() {
   in_take();
-  // Wait until the button is released to stop the intake.
+  // Check the color sensor and perform appropriate action
+  
+  // Wait until the button is released to stop the rollers.
   while(controller(primary).ButtonL1.pressing()) {
+    color_sort();
     wait (20, msec);
   }
   stop_rollers();
@@ -72,7 +75,9 @@ void buttonB_action()
   wait(0.5, sec);
   // Display the distance traveled previously on the controller screen.
   float h = chassis.get_heading();
-  controller(primary).Screen.print("heading: %.1f, distance: %.1f", h, distance_traveled);
+  char status_msg[50];
+  sprintf(status_msg, "heading: %.1f, distance: %.1f", h, distance_traveled);
+  print_controller_screen(status_msg);
 
   waitUntil(!controller(primary).ButtonB.pressing());
   chassis.stop(coast);
@@ -157,7 +162,9 @@ void buttonA_action()
     run_auton_item(); 
 
     double t = Brain.Timer.time(sec);
-    controller(primary).Screen.print("run time: %.1f   ", t);
+    char time_msg[30];
+    sprintf(time_msg, "run time: %.1f", t);
+    print_controller_screen(time_msg);
     chassis.driver_control_disabled = false;
 
     return;
@@ -197,6 +204,9 @@ int main() {
 
   // Run the pre-autonomous function.
   pre_auton();
+
+  // optional: set up the team color
+  setup_team_color();
 
   // Prevent main from exiting with an infinite loop.
   while (true) {

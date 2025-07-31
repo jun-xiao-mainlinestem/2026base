@@ -41,7 +41,7 @@ bool RemoteControl::send(const std::string& message) {
 
 void RemoteControl::updateStatus(bool success, const char* status_message) {
     controller(primary).Screen.clearScreen();
-    controller(primary).Screen.print("%s", status_message);
+    print_controller_screen(status_message);
     controller(primary).rumble(success ? "." : "--");
 }
 
@@ -62,7 +62,7 @@ void RemoteControl::poll() {
         serialFile = fopen("/dev/serial1", "rb");
         if (!serialFile) {
             controller(primary).Screen.clearScreen();
-            controller(primary).Screen.print("can't open port");
+            print_controller_screen("can't open port");
             controller(primary).rumble(".");
             return;
         }
@@ -75,7 +75,9 @@ void RemoteControl::poll() {
             // End of line reached, process the command
             if (!lineBuffer.empty()) {
                 controller(primary).Screen.clearScreen();
-                controller(primary).Screen.print("Command: %s", lineBuffer.c_str());
+                char cmd_msg[50];
+    sprintf(cmd_msg, "Command: %s", lineBuffer.c_str());
+    print_controller_screen(cmd_msg);
                 processCommand(lineBuffer);
                 lineBuffer.clear();
             }
@@ -99,7 +101,9 @@ void RemoteControl::processCommand(const std::string& command) {
     
     // Debug: print the cmd value
     controller(primary).Screen.clearScreen();
-    controller(primary).Screen.print("cmd: '%s'", cmd.c_str());
+    char cmd_debug[30];
+    sprintf(cmd_debug, "cmd: '%s'", cmd.c_str());
+    print_controller_screen(cmd_debug);
     controller(primary).Screen.newLine();
     
     // Map command to action
@@ -137,7 +141,9 @@ void RemoteControl::processCommand(const std::string& command) {
         // Unknown command
         wait(2, seconds);
         controller(primary).Screen.clearScreen();
-        controller(primary).Screen.print("Unknown: %s", cmd.c_str());
+        char unknown_msg[30];
+    sprintf(unknown_msg, "Unknown: %s", cmd.c_str());
+    print_controller_screen(unknown_msg);
         controller(primary).rumble(".");
     }
 }

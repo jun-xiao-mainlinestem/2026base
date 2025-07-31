@@ -1,5 +1,6 @@
 #include "vex.h"
 #include <iostream>
+#include <string>
 
 float reduce_0_to_360(float angle) {
   while(!(angle >= 0 && angle < 360)) {
@@ -59,5 +60,17 @@ bool check_motors(int motor_count, int temperature_limit) {
     return false;
   }
   return true;
+}
+
+void print_controller_screen(const char* message) {
+  std::string padded_message = message;
+  
+  // Pad the string to 20 characters with spaces on the right
+  while (padded_message.length() < 20) {
+    padded_message += " ";
+  }
+  
+  // Print the padded message to the controller screen
+  controller(primary).Screen.print("%s", padded_message.c_str());
 }
 

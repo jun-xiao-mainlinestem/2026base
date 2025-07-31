@@ -12,3 +12,6 @@ void stop_rollers();
 void score_middle();
 void score_long();
 
+void color_sort();
+
+void setup_team_color();

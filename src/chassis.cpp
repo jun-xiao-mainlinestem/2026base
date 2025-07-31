@@ -25,9 +25,6 @@ motor rightMotor3 = motor(PORT6, ratio18_1, true);
 // inertial sensor for turning and heading
 inertial inertial1 = inertial(PORT10);
 
-// (Optional) optical sensor for team color detection
-optical team_optical = optical(PORT9);
-
 // if you want the drive mode to be changeable in you code, remove the "const"
 // true for tank drive, false for arcade drive
 bool DRIVE_TANK_MODE = false;
@@ -98,7 +95,7 @@ int endgame_timer() {
     wait(200, msec);
   }
   // Prints a message to the controller screen.
-  controller(primary).Screen.print("end game ...");
+  print_controller_screen("end game");
   // Rumbles the controller.
   controller(primary).rumble("-");
   // Checks the motors every 60 seconds.
@@ -144,7 +141,7 @@ bool setup_gyro() {
   controller(primary).rumble("-");
   // If the inertial sensor is not installed, print an error message to the controller screen.
   if (!inertial1.installed()) {
-    controller(primary).Screen.print("inertial sensor failure.   ");
+    print_controller_screen("inertial sensor failure");
     controller(primary).rumble("----");
     wait(2, seconds);
     return false;  
@@ -152,19 +149,6 @@ bool setup_gyro() {
   return true;
 }
 
-bool team_is_red = true;
-void setup_team_color(){
-  if (team_optical.installed()) {
-    // Sets the team color based on the optical sensor.
-    if (team_optical.color() == color::blue) {
-      team_is_red = false;
-      controller(primary).Screen.print("               blue");
-    } else {
-      controller(primary).Screen.print("                red");
-    }
-    wait(1, seconds);
-  } 
-}
 
 // This function is called before the autonomous period starts.
 void pre_auton() {

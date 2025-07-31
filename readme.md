@@ -2,6 +2,12 @@
 
 This project provides a lightweight C++ template for VEX V5 robotics competition, featuring a modular architecture, a library for autonomous driving control and convenient ways to test and iterate autons.
 
+## Target Audience
+
+This library is designed specifically for **middle school robotics teams** who are getting started with VEX V5 c++ programming and do not have odometry (tracking wheel) setups. Unlike advanced high school teams who use sophisticated libraries like [JAR-Template](https://github.com/JacksonAreaRobotics/JAR-Template) and [LemLib](https://github.com/LemLib/LemLib) that provide advanced features such as path following, pure pursuit, and complex autonomous routines, this template focuses on simplicity, ease of use and clear documentation. 
+
+It provides essential driving controls, basic autonomous routines, and straightforward configuration that allows teams to quickly get their robot operational without the complexity of advanced positioning systems. The built-in test mode enables rapid auton development and iteration, allowing teams to test and refine their routines during driver control without rebuilding the program. The template includes sample code for 2025-26 Push Back game, demonstrating practical applications of the library's features.
+
 ## Installation
 *   **Prerequisites:** Before you begin, make sure:
     - You have [VSCode with VEX extension](https://kb.vex.com/hc/en-us/categories/360002333191-V5?sc=vs-code-extension) installed.
@@ -25,7 +31,6 @@ The project is organized into the following directories:
     *   `autons.cpp`: Autonomous routines.
     *   `rgb-template/`: Library code.
 *   `include/`: Header files
-*   `vex/`: VEX-specific makefiles.
 *   `doc/`: Additional documentation.
 
 ## Configuration
