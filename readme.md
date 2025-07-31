@@ -61,8 +61,8 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
 ### Autonomous Routines ([autons.cpp](src/autons.cpp))
 
 *   **Auton Functions:** Write your autonomous routines as separate functions.
-*   **Auton Mappings:** Map auton functions to menu items in the `run_auton_item()` function 
-*   **Auton Menu Text:** Add the names of your autonomous functions to the `auton_menu_text` array to make them shown on the brain's and controller's screen.
+*   **Auton Mappings:** Map auton functions to menu items in the `runAutonItem()` function 
+*   **Auton Menu Text:** Add the names of your autonomous functions to the `autonMenuText` array to make them shown on the brain's and controller's screen.
 *   **(Optional) Auton Parameters:** Create array variables for the auton functions at the top of the file for easy tuning the auton parameters during tournaments.
 
 ## Run sample program

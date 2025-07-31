@@ -91,12 +91,12 @@ int NUMBER_OF_MOTORS = 8;  // Total number of motors
 Add helper functions for your subsystems:
 
 ```cpp
-void in_take() {
-    intake_motor.spin(forward, 100, percent);
+void inTake() {
+    intakeMotor.spin(forward, 100, percent);
 }
 
-void stop_rollers() {
-    intake_motor.stop();
+void stopRollers() {
+    intakeMotor.stop();
 }
 ```
 
@@ -106,8 +106,8 @@ void stop_rollers() {
 Open `include/robot-config.h` and add function declarations:
 
 ```cpp
-void in_take();
-void stop_rollers();
+void inTake();
+void stopRollers();
 // Add other function declarations
 ```
 
@@ -125,11 +125,11 @@ Add button functions for your subsystems:
 
 ```cpp
 void buttonL1_action() {
-    in_take();
+    inTake();
     while(controller(primary).ButtonL1.pressing()) {
         wait(20, msec);
     }
-    stop_rollers();
+    stopRollers();
 }
 
 ```
@@ -174,11 +174,11 @@ void auton2() {
 **Action:** Write your autonomous routines using the drive APIs.
 
 ### Step 3: Map Auton Functions
-Find the `run_auton_item()` function:
+Find the `runAutonItem()` function:
 
 ```cpp
-void run_auton_item() {
-    switch (current_auton_selection) {
+void runAutonItem() {
+    switch (currentAutonSelection) {
     case 0:
         auton1();
         break;
@@ -233,7 +233,7 @@ char const * auton_menu_text[] = {
 1. **Motors not responding or in conflict**: Check port numbers and motor directions
 2. **Robot drives in wrong direction**: Reverse motor directions in chassis.cpp
 3. **Buttons not working**: Verify button mappings in main.cpp
-4. **Auton not running**: Check auton function names in run_auton_item()
+4. **Auton not running**: Check auton function names in runAutonItem()
 
 ### Debug Tips:
 1. Use the controller screen to display debug information

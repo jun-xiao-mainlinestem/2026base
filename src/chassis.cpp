@@ -102,7 +102,7 @@ int endgame_timer() {
   while(true)
   {
     wait(60, seconds);
-    check_motors(NUMBER_OF_MOTORS);
+    checkMotors(NUMBER_OF_MOTORS);
   }
   return 1;
 }
@@ -111,7 +111,7 @@ int endgame_timer() {
 // It is called when the driver control period starts.
 void usercontrol(void) {
   // Exits the autonomous menu.
-  exit_auton_menu = true;
+  exitAutonMenu = true;
   // Resets the chassis.
   reset_chassis();
   // Starts the end game timer thread.
@@ -132,7 +132,7 @@ void usercontrol(void) {
 }
 
 // This function sets up the gyro.
-bool setup_gyro() {
+bool setupGyro() {
   // Waits until the inertial sensor is calibrated.
   while (inertial1.isCalibrating()) {
     wait(25, msec);
@@ -152,19 +152,19 @@ bool setup_gyro() {
 
 // This function is called before the autonomous period starts.
 void pre_auton() {
-  bool gyro_setup_success = true;
+  bool gyroSetupSuccess = true;
   // Sets up the gyro.
-  gyro_setup_success = setup_gyro();
+  gyroSetupSuccess = setupGyro();
   // Sets up the team color.
-  setup_team_color();
+  setupTeamColor();
 
-  bool motors_setup_success = true;
+  bool motorsSetupSuccess = true;
   // Checks the motors.
-  motors_setup_success = check_motors(NUMBER_OF_MOTORS);
+  motorsSetupSuccess = checkMotors(NUMBER_OF_MOTORS);
   // Resets the chassis.
   reset_chassis();
   // Shows the autonomous menu.
-  if(gyro_setup_success && motors_setup_success) show_auton_menu();
+  if(gyroSetupSuccess && motorsSetupSuccess) showAutonMenu();
 }
 
 // This function returns true when the joystick is touched.

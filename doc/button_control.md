@@ -1,7 +1,7 @@
 # Button Control
 
 ## L1
-*  Hold to intake balls halls into basket
+*  Hold to intake balls halls into basket (with color sorting: red = intake, blue = score middle)
 *  Release to stop the roller immediately
 
 ## L2
@@ -20,13 +20,18 @@
 *  Activate test mode if pressed within 5 seconds of starting the program
 *  If in test mode, press to scroll through auton menu
 
+## Left
+*  Activate remote control mode if pressed within 5 seconds of starting the program
+*  If in remote control mode, toggle WebSocket communication listening
+*  If in test mode, press to scroll backwards through auton menu
+
 ## A
 *  If in test mode, press to run the selected autonomous routine for testing
 *  If not in test mode, run custom piece of code for testing
 
 ## B
 *  Hold to brake drivetrain
-*  Show distance drived and reset the motor encoder
+*  Show distance driven and reset the motor encoder
 
 ## X
 *  Hold to run macro, current unassigned

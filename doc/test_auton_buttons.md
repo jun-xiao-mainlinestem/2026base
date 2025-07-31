@@ -10,9 +10,9 @@ The test auton system allows you to test autonomous routines during driver contr
 **Button: Right** (within first 5 seconds of program startup)
 
 ```cpp
-if ((Brain.Timer.time(sec) < 5) && !auton_test_mode) {
+if ((Brain.Timer.time(sec) < 5) && !autonTestMode) {
     controller(primary).rumble("-");
-    auton_test_mode = true;
+    autonTestMode = true;
     return;
 }
 ```
@@ -21,7 +21,7 @@ if ((Brain.Timer.time(sec) < 5) && !auton_test_mode) {
 - ✅ Checks if program has been running for less than 5 seconds
 - ✅ Checks if not already in test mode
 - ✅ Controller rumbles with "-" pattern
-- ✅ Sets `auton_test_mode = true`
+- ✅ Sets `autonTestMode = true`
 
 ---
 
@@ -29,17 +29,17 @@ if ((Brain.Timer.time(sec) < 5) && !auton_test_mode) {
 **Button: Right** (when already in test mode)
 
 ```cpp
-if (auton_test_mode) {
-    current_auton_selection = (current_auton_selection + 1) % auton_num;
-    show_auton_menu();
+if (autonTestMode) {
+    currentAutonSelection = (currentAutonSelection + 1) % autonNum;
+    showAutonMenu();
     return;
 }
 ```
 
 **What happens:**
-- ✅ Increments `current_auton_selection` (cycles through available autons)
-- ✅ Calls `show_auton_menu()` which:
-  - Calculates total number of autons (`auton_num`)
+- ✅ Increments `currentAutonSelection` (cycles through available autons)
+- ✅ Calls `showAutonMenu()` which:
+  - Calculates total number of autons (`autonNum`)
   - Displays menu on brain and controller screens
   - Shows current selection (e.g., "auton1", "auton2")
 
@@ -53,11 +53,11 @@ if (auton_test_mode) {
 **Button: A** (when in test mode)
 
 ```cpp
-if (auton_test_mode) {
+if (autonTestMode) {
     chassis.driver_control_disabled = true;
     Brain.Timer.clear();
     
-    run_auton_item(); 
+    runAutonItem(); 
     
     double t = Brain.Timer.time(sec);
     controller(primary).Screen.print("run time: %.1f   ", t);
@@ -69,7 +69,7 @@ if (auton_test_mode) {
 **What happens:**
 - ✅ Disables driver control (prevents interference)
 - ✅ Clears the brain timer
-- ✅ Calls `run_auton_item()` which:
+- ✅ Calls `runAutonItem()` which:
   - Uses `switch` statement to run selected auton
   - Executes the actual autonomous routine
 - ✅ Calculates and displays run time
@@ -79,10 +79,10 @@ if (auton_test_mode) {
 
 ### 4. 🎯 Auton Execution Details
 
-**`run_auton_item()` function:**
+**`runAutonItem()` function:**
 ```cpp
-void run_auton_item() {
-    switch (current_auton_selection) {
+void runAutonItem() {
+    switch (currentAutonSelection) {
     case 0:
         test1();  // Runs auton1
         break;
@@ -99,8 +99,8 @@ void run_auton_item() {
 **Button: A** (hold during auton execution)
 
 ```cpp
-bool should_continue_auton_step() {
-    return !(auton_test_mode && !controller(primary).ButtonA.pressing());
+bool shouldContinueAutonStep() {
+    return !(autonTestMode && !controller(primary).ButtonA.pressing());
 }
 ```
 
@@ -139,21 +139,21 @@ bool should_continue_auton_step() {
 
 ### Global Variables
 ```cpp
-bool auton_test_mode = false;           // Indicates if in test mode
-int current_auton_selection = 0;        // Current auton selection
-int auton_num;                          // Total number of autons
+bool autonTestMode = false;           // Indicates if in test mode
+int currentAutonSelection = 0;        // Current auton selection
+int autonNum;                         // Total number of autons
 ```
 
 ### Key Functions
-- `show_auton_menu()`: Displays current selection on brain/controller
-- `run_auton_item()`: Executes the selected autonomous routine
-- `should_continue_auton_step()`: Controls step-by-step execution
+- `showAutonMenu()`: Displays current selection on brain/controller
+- `runAutonItem()`: Executes the selected autonomous routine
+- `shouldContinueAutonStep()`: Controls step-by-step execution
 
 ### Menu System
-The menu system automatically calculates the number of available autons based on the `auton_menu_text` array in `autons.cpp`:
+The menu system automatically calculates the number of available autons based on the `autonMenuText` array in `autons.cpp`:
 
 ```cpp
-char const * auton_menu_text[] = {
+char const * autonMenuText[] = {
     "auton1",
     "auton2"
 };
@@ -178,4 +178,4 @@ char const * auton_menu_text[] = {
 - **Menu System**: Easy navigation between multiple autons
 - **Timing Feedback**: See execution time for performance optimization
 
-This system allows you to quickly test and iterate on autonomous routines! 
+This system allows you to quickly test and iterate on autonomous routines!

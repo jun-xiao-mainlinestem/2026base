@@ -149,4 +149,4 @@ The `util.h` file contains several utility functions:
 *   `threshold(float input, float min, float max)`
 *   `to_volt(float percent)`
 *   `deadband(float input, float width)`
-*   `check_motors(int motor_count, int temperature_limit)`
+*   `checkMotors(int motorCount, int temperatureLimit)`

@@ -2,16 +2,16 @@ using namespace vex;
 
 extern const int NUMBER_OF_MOTORS;
 
-extern motor roller_bottom;
-extern motor roller_middle;
-extern motor roller_top;
+extern motor rollerBottom;
+extern motor rollerMiddle;
+extern motor rollerTop;
 
-void in_take();
-void out_take();
-void stop_rollers();
-void score_middle();
-void score_long();
+void inTake();
+void outTake();
+void stopRollers();
+void scoreMiddle();
+void scoreLong();
 
-void color_sort();
+void colorSort();
 
-void setup_team_color();
+void setupTeamColor();

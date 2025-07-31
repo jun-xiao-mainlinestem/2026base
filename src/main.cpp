@@ -13,7 +13,7 @@ competition Competition;
 // Global remote control object
 RemoteControl remoteControl;
 bool remoteListening = false;
-bool remote_control_mode = false;
+bool remoteControlMode = false;
 
 // ----------------------------------------------------------------------------
 //                                Controller Callbacks
@@ -22,46 +22,45 @@ bool remote_control_mode = false;
 // This function is called when the L1 button is pressed.
 // It performs color sorting: intake for red, score_middle for blue.
 void buttonL1_action() {
-  in_take();
-  // Check the color sensor and perform appropriate action
+  inTake();
   
   // Wait until the button is released to stop the rollers.
   while(controller(primary).ButtonL1.pressing()) {
-    color_sort();
+    colorSort();
     wait (20, msec);
   }
-  stop_rollers();
+  stopRollers();
 }
 
 void buttonL2_action() {
-  out_take();
+  outTake();
   // Wait until the button is released to stop the intake.
   while(controller(primary).ButtonL2.pressing()) {
     wait (20, msec);
   }
-  stop_rollers();
+  stopRollers();
 }
 
 void buttonR1_action() {
   chassis.stop(hold);
-  score_long();
+  scoreLong();
   // Wait until the button is released to stop the intake.
   while(controller(primary).ButtonR1.pressing()) {
     wait (20, msec);
   }
   chassis.stop(coast);
-  stop_rollers();
+  stopRollers();
 }
 
 // This function is called when the R2 button is pressed.
 void buttonR2_action() {
   chassis.stop(hold);
-  score_middle();
+  scoreMiddle();
   while(controller(primary).ButtonR2.pressing()) {
     wait (20, msec);
   }  
   chassis.stop(coast);
-  stop_rollers();
+  stopRollers();
 
 }
 
@@ -69,15 +68,15 @@ void buttonR2_action() {
 // It holds the drivetrain in place until the button is released.
 void buttonB_action()
 {
-  double distance_traveled = (chassis.get_left_position_in() + chassis.get_right_position_in()) / 2.0;
+  double distanceTraveled = (chassis.get_left_position_in() + chassis.get_right_position_in()) / 2.0;
   chassis.stop(hold);
   controller(primary).rumble(".");
   wait(0.5, sec);
   // Display the distance traveled previously on the controller screen.
   float h = chassis.get_heading();
-  char status_msg[50];
-  sprintf(status_msg, "heading: %.1f, distance: %.1f", h, distance_traveled);
-  print_controller_screen(status_msg);
+  char statusMsg[50];
+  sprintf(statusMsg, "heading: %.1f, distance: %.1f", h, distanceTraveled);
+  print_controller_screen(statusMsg);
 
   waitUntil(!controller(primary).ButtonB.pressing());
   chassis.stop(coast);
@@ -90,16 +89,16 @@ void buttonB_action()
 void buttonRight_action()
 {
   // Activate test mode if the button is pressed immediately after running the program
-  if ((Brain.Timer.time(sec) < 5) && !auton_test_mode) {
+  if ((Brain.Timer.time(sec) < 5) && !autonTestMode) {
     controller(primary).rumble("-");
-    auton_test_mode = true;
+    autonTestMode = true;
     return;
   }
   // if in test mode, scroll through the auton menu
-  if (auton_test_mode)
+  if (autonTestMode)
   {
-    current_auton_selection = (current_auton_selection + 1) % auton_num;
-    show_auton_menu();
+    currentAutonSelection = (currentAutonSelection + 1) % autonNum;
+    showAutonMenu();
     return;
   }
   // otherwise, run other macro code
@@ -114,14 +113,14 @@ void buttonRight_action()
 void buttonLeft_action()
 {
     // Activate remote control mode if the button is pressed immediately after running the program
-  if ((Brain.Timer.time(sec) < 5) && !remote_control_mode) {
+  if ((Brain.Timer.time(sec) < 5) && !remoteControlMode) {
     controller(primary).rumble("-");
-    remote_control_mode = true;
+    remoteControlMode = true;
     remoteControl.attemptConnection();
     return;
   }
 
-  if(remote_control_mode){
+  if(remoteControlMode){
       // Toggle websocket communication listening
     if (!remoteListening) {
       chassis.driver_control_disabled = true;
@@ -136,10 +135,10 @@ void buttonLeft_action()
   }
 
   // if in test mode, scroll through the auton menu
-  if (auton_test_mode)
+  if (autonTestMode)
   {
-    current_auton_selection = (current_auton_selection - 1) % auton_num;
-    show_auton_menu();
+    currentAutonSelection = (currentAutonSelection - 1) % autonNum;
+    showAutonMenu();
     return;
   }
 
@@ -154,17 +153,17 @@ void buttonLeft_action()
 void buttonA_action()
 {
   // If in test mode, run the selected autonomous routine for testing and displays the run time.
-  if (auton_test_mode)
+  if (autonTestMode)
   {
     chassis.driver_control_disabled = true;
     Brain.Timer.clear();
 
-    run_auton_item(); 
+    runAutonItem(); 
 
     double t = Brain.Timer.time(sec);
-    char time_msg[30];
-    sprintf(time_msg, "run time: %.1f", t);
-    print_controller_screen(time_msg);
+    char timeMsg[30];
+    sprintf(timeMsg, "run time: %.1f", t);
+    print_controller_screen(timeMsg);
     chassis.driver_control_disabled = false;
 
     return;
@@ -206,7 +205,7 @@ int main() {
   pre_auton();
 
   // optional: set up the team color
-  setup_team_color();
+  setupTeamColor();
 
   // Prevent main from exiting with an infinite loop.
   while (true) {

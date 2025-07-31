@@ -10,6 +10,10 @@ extern Drive chassis;
 // A flag to switch between tank and arcade drive modes.
 extern bool DRIVE_TANK_MODE;
 
+extern bool teamIsRed;
+// External declaration of the team color optical sensor
+extern optical teamOptical;
+
 // The user control task.
 void usercontrol();
 // The pre-autonomous task.

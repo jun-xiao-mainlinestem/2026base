@@ -9,79 +9,83 @@ using namespace vex;
 // ----------------------------------------------------------------------------
 
 // motor and sensor definitions
-motor roller_bottom = motor(PORT11, ratio18_1, true);
-motor roller_middle = motor(PORT12, ratio18_1, true);
-motor roller_top = motor(PORT13, ratio6_1, true);
+motor rollerBottom = motor(PORT11, ratio18_1, true);
+motor rollerMiddle = motor(PORT12, ratio18_1, true);
+motor rollerTop = motor(PORT13, ratio6_1, true);
 
 // total number of motors, including drivetrain
 const int NUMBER_OF_MOTORS = 9;
 
-void in_take() {
-  roller_bottom.spin(forward, 12, volt);
-  roller_middle.spin(forward, 12, volt);
-  roller_top.stop(coast);
+void inTake() {
+  ballOptical.setLightPower(100, percent);
+  rollerBottom.spin(forward, 12, volt);
+  rollerMiddle.spin(forward, 12, volt);
+  rollerTop.stop(coast);
 }
 
-void out_take() {
-  roller_bottom.spin(forward, -12, volt);
-  roller_middle.spin(forward, -12, volt);
-  roller_top.stop(coast);
+void outTake() {
+  rollerBottom.spin(forward, -12, volt);
+  rollerMiddle.spin(forward, -12, volt);
+  rollerTop.stop(coast);
 }
 
-void stop_rollers() {
+void stopRollers() {
   // Stops the roller motors.
-  roller_bottom.stop(brake);
-  roller_middle.stop(brake);
-  roller_top.stop(brake);
+  rollerBottom.stop(brake);
+  rollerMiddle.stop(brake);
+  rollerTop.stop(brake);
+  ballOptical.setLightPower(0, percent);
+
 }
 
-void score_middle() {
-  roller_bottom.spin(forward, 6, volt);
-  roller_middle.spin(forward, -12, volt);
-  roller_top.spin(forward, -6, volt);
+void scoreMiddle() {
+  rollerBottom.spin(forward, 6, volt);
+  rollerMiddle.spin(forward, -12, volt);
+  rollerTop.spin(forward, -6, volt);
 }
 
-void score_long() {
-  roller_bottom.spin(forward, 12, volt);
-  roller_middle.spin(forward, -12, volt);
-  roller_top.spin(forward, 12, volt);
+void scoreLong() {
+  rollerBottom.spin(forward, 12, volt);
+  rollerMiddle.spin(forward, -12, volt);
+  rollerTop.spin(forward, 12, volt);
 }
 
 // optical sensor for color sorting
-optical ball_optical = optical(PORT8);
-void color_sort()
+optical ballOptical = optical(PORT14);
+void colorSort()
 {
   // Checks if the optical sensor is installed.
-  if (ball_optical.installed()) {
+  if (ballOptical.installed()) {
+    ballOptical.setLightPower(100, percent);
     // If the color detected is red, intake the ball.
-    if (ball_optical.color() == color::red) {
+    if (ballOptical.color() == color::red) {
       print_controller_screen("red ball");
-      in_take();
+      inTake();
     } 
     // If the color detected is blue, score middle.
-    else if (ball_optical.color() == color::blue) {
+    else if (ballOptical.color() == color::blue) {
       print_controller_screen("blue ball");
-      score_middle();
+      scoreMiddle();
     } 
     // If no color is detected, default to intake.
     else {
-      in_take();
-      print_controller_screen("not red or blue");
+      inTake();
+    //  print_controller_screen("not red or blue");
     }
   } else {
     // If no optical sensor is installed, default to intake.
-    in_take();
+    inTake();
   }
 } 
 
 // (Optional) optical sensor for team color detection
-optical team_optical = optical(PORT9);
-bool team_is_red = true;
-void setup_team_color(){
-  if (team_optical.installed()) {
+optical teamOptical = optical(PORT8);
+bool teamIsRed = true;
+void setupTeamColor(){
+  if (teamOptical.installed()) {
     // Sets the team color based on the optical sensor.
-    if (team_optical.color() == color::blue) {
-      team_is_red = false;
+    if (teamOptical.color() == color::blue) {
+      teamIsRed = false;
       print_controller_screen("team blue");
     } else {
       print_controller_screen("team red");

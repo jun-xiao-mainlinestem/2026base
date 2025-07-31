@@ -2,25 +2,25 @@
 #include "rgb-template/drive.h"
 
 // The currently selected autonomous routine.
-extern int current_auton_selection;
+extern int currentAutonSelection;
 // The total number of autonomous routines available.
-extern int auton_num;
+extern int autonNum;
 // A flag to enable autonomous routine testing.
 // A flag to indicate if the robot is on the red team.
-extern bool is_red_team;
+extern bool isRedTeam;
 
 // Displays the autonomous routine selection menu on the brain screen.
-void show_auton_menu();
+void showAutonMenu();
 
 // Runs the selected autonomous routine.
-void run_auton_item();
+void runAutonItem();
 
 // Prints the autonomous selection menu to the brain screen.
-void print_menu(char const * txt[]);
+void printMenu(char const * txt[]);
 
-extern bool exit_auton_menu;
-extern bool auton_test_mode;
-bool should_continue_auton_step();
+extern bool exitAutonMenu;
+extern bool autonTestMode;
+bool shouldContinueAutonStep();
 
 // The autonomous task.
 void autonomous();

@@ -75,9 +75,9 @@ void RemoteControl::poll() {
             // End of line reached, process the command
             if (!lineBuffer.empty()) {
                 controller(primary).Screen.clearScreen();
-                char cmd_msg[50];
-    sprintf(cmd_msg, "Command: %s", lineBuffer.c_str());
-    print_controller_screen(cmd_msg);
+                char cmdMsg[50];
+    sprintf(cmdMsg, "Command: %s", lineBuffer.c_str());
+    print_controller_screen(cmdMsg);
                 processCommand(lineBuffer);
                 lineBuffer.clear();
             }
@@ -101,9 +101,9 @@ void RemoteControl::processCommand(const std::string& command) {
     
     // Debug: print the cmd value
     controller(primary).Screen.clearScreen();
-    char cmd_debug[30];
-    sprintf(cmd_debug, "cmd: '%s'", cmd.c_str());
-    print_controller_screen(cmd_debug);
+    char cmdDebug[30];
+    sprintf(cmdDebug, "cmd: '%s'", cmd.c_str());
+    print_controller_screen(cmdDebug);
     controller(primary).Screen.newLine();
     
     // Map command to action
@@ -115,7 +115,7 @@ void RemoteControl::processCommand(const std::string& command) {
         float current_heading = chassis.get_heading();
         float distance_traveled = (chassis.get_left_position_in() + chassis.get_right_position_in()) / 2.0;
         chassis.stop(brake);
-        stop_rollers();
+        stopRollers();
         
         // Send status back to webpage            
         char status_message[100];
@@ -133,17 +133,17 @@ void RemoteControl::processCommand(const std::string& command) {
         chassis.drive_with_voltage(-2, -2);
     } else if (cmd == "ROLL" || cmd == "INTAKE") {
         controller(primary).rumble(".");
-        in_take();
+        inTake();
     } else if (cmd == "SHOOT" || cmd == "SCORE") {
         controller(primary).rumble(".");
-        score_long();
+        scoreLong();
     } else {
         // Unknown command
         wait(2, seconds);
         controller(primary).Screen.clearScreen();
-        char unknown_msg[30];
-    sprintf(unknown_msg, "Unknown: %s", cmd.c_str());
-    print_controller_screen(unknown_msg);
+        char unknownMsg[30];
+    sprintf(unknownMsg, "Unknown: %s", cmd.c_str());
+    print_controller_screen(unknownMsg);
         controller(primary).rumble(".");
     }
 }
