@@ -61,33 +61,33 @@ Drive chassis(
 
 // Resets the chassis to a known state.
 // This function should be called before any autonomous routines.
-void reset_chassis() {
-  // Resets the heading of the inertial sensor to the current heading.
-  chassis.set_heading(inertial1.heading());
-  // Stops the chassis motors.
+void resetChassis() {
+  // Sets the heading of the chassis to the current heading of the inertial sensor.
+  chassis.setHeading(inertial1.heading());
+  // Stops the chassis.
   chassis.stop(coast);
 
   // Sets the drive constants for the chassis.
   // These constants are used to control the acceleration and deceleration of the chassis.
-  chassis.set_drive_constants(10, 1.5, 0, 10, 0);
+  chassis.setDriveConstants(10, 1.5, 0, 10, 0);
   // Sets the heading constants for the chassis.
   // These constants are used to control the turning of the chassis.
-  chassis.set_heading_constants(6, .4, 1);
+  chassis.setHeadingConstants(6, .4, 1);
   // Sets the turn constants for the chassis.
   // These constants are used to control the turning of the chassis.
-  chassis.set_turn_constants(10, 0.2, .015, 1.5, 7.5);
+  chassis.setTurnConstants(10, 0.2, .015, 1.5, 7.5);
 
   // Sets the exit conditions for the drive functions.
   // These conditions are used to determine when the drive function should exit.
-  chassis.set_drive_exit_conditions(1, 200, 2000);
+  chassis.setDriveExitConditions(1, 200, 2000);
   // Sets the exit conditions for the turn functions.
   // These conditions are used to determine when the turn function should exit.
-  chassis.set_turn_exit_conditions(1.5, 200, 1500);
+  chassis.setTurnExitConditions(1.5, 200, 1500);
 }
 
 
 // This function is a thread that runs in the background to remind the driver of the end game.
-int endgame_timer() {
+int endgameTimer() {
   // Clears the brain timer.
   Brain.Timer.clear();
   // Waits until the end game starts.
@@ -113,18 +113,18 @@ void usercontrol(void) {
   // Exits the autonomous menu.
   exitAutonMenu = true;
   // Resets the chassis.
-  reset_chassis();
+  resetChassis();
   // Starts the end game timer thread.
-  thread endgame_timer_thread = thread(endgame_timer);
+  thread endgameTimer_thread = thread(endgameTimer);
 
   // This loop runs forever, controlling the robot during the driver control period.
   while (1) {
     // This is the tank drive code.
-    if (DRIVE_TANK_MODE) chassis.control_tank(controller(primary).Axis3.position(), controller(primary).Axis2.position());
+    if (DRIVE_TANK_MODE) chassis.controlTank(controller(primary).Axis3.position(), controller(primary).Axis2.position());
     // This is the arcade drive code.
     else {
       // This code reduces the sensitivity of the turn stick
-      chassis.control_arcade(controller(primary).Axis2.position(), controller(primary).Axis4.position() * TURN_FACTOR, STEER_BIAS);
+      chassis.controlArcade(controller(primary).Axis2.position(), controller(primary).Axis4.position() * TURN_FACTOR, STEER_BIAS);
    }
     // This wait prevents the loop from using too much CPU time.
     wait(20, msec); 
@@ -162,14 +162,14 @@ void pre_auton() {
   // Checks the motors.
   motorsSetupSuccess = checkMotors(NUMBER_OF_MOTORS);
   // Resets the chassis.
-  reset_chassis();
+  resetChassis();
   // Shows the autonomous menu.
   if(gyroSetupSuccess && motorsSetupSuccess) showAutonMenu();
 }
 
 // This function returns true when the joystick is touched.
 bool joystick_touched() {
-  float d = fabs(chassis.get_left_position_in()) + fabs(chassis.get_right_position_in());
+  float d = fabs(chassis.getLeftPositionIn()) + fabs(chassis.getRightPositionIn());
   if (d > 1) {
     return true;
   }

@@ -38,49 +38,49 @@ Drive chassis(
 
 The `Drive` class provides several methods for controlling the robot during the autonomous period.
 
-#### `turn_to_heading`
+#### `turnToHeading`
 
 This function turns the robot to a specific heading in degrees.
 
-*   `turn_to_heading(float heading)`: Turns the robot to a specific heading with default parameters.
-*   `turn_to_heading(float heading, float turn_max_voltage)`: Turns the robot to a specific heading with a specified maximum voltage.
-*   `turn_to_heading(float heading, float turn_max_voltage, bool nonstop, ...)`: Turns the robot to a specific heading with more control over the movement.
+*   `turnToHeading(float heading)`: Turns the robot to a specific heading with default parameters.
+*   `turnToHeading(float heading, float turnMaxVoltage)`: Turns the robot to a specific heading with a specified maximum voltage.
+*   `turnToHeading(float heading, float turnMaxVoltage, bool nonstop, ...)`: Turns the robot to a specific heading with more control over the movement.
 
 **Examples from `src/autons.cpp`:**
 
 ```cpp
 // Simple turn
-chassis.turn_to_heading(90);
+chassis.turnToHeading(90);
 
 // Turn with specified max voltage and nonstop flag
-chassis.turn_to_heading(180, 10, true);
+chassis.turnToHeading(180, 10, true);
 ```
 
-#### `drive_distance`
+#### `driveDistance`
 
 This function drives the robot a specific distance in inches.
 
-*   `drive_distance(float distance)`: Drives a specific distance with default parameters.
-*   `drive_distance(float distance, float drive_max_voltage)`: Drives a specific distance with a specified maximum voltage.
-*   `drive_distance(float distance, float drive_max_voltage, float heading, float heading_max_voltage)`: Drives a specific distance while maintaining a specific heading.
-*   `drive_distance(float distance, float drive_max_voltage, float heading, float heading_max_voltage, bool nonstop, ...)`: Drives a specific distance with more control over the movement.
+*   `driveDistance(float distance)`: Drives a specific distance with default parameters.
+*   `driveDistance(float distance, float driveMaxVoltage)`: Drives a specific distance with a specified maximum voltage.
+*   `driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage)`: Drives a specific distance while maintaining a specific heading.
+*   `driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage, bool nonstop, ...)`: Drives a specific distance with more control over the movement.
 
 **Examples from `src/autons.cpp`:**
 
 ```cpp
 // Drive a specific distance with a timeout
-chassis.drive_distance(24);
+chassis.driveDistance(24);
 
 // Drive a specific distance with a timeout and heading
-chassis.drive_distance(24, 10, 0, 6, true);
+chassis.driveDistance(24, 10, 0, 6, true);
 ```
 
 ### Driver Control
 
 The `Drive` class also provides methods for controlling the robot during the driver control period.
 
-*   `control_arcade(int throttle, int turn, float turnBias)`: Controls the robot using arcade-style controls.
-*   `control_tank(int left, int right)`: Controls the robot using tank-style controls.
+*   `controlArcade(int throttle, int turn, float turnBias)`: Controls the robot using arcade-style controls.
+*   `controlTank(int left, int right)`: Controls the robot using tank-style controls.
 
 **Example from `src/chassis.cpp`:**
 
@@ -88,9 +88,9 @@ The `Drive` class also provides methods for controlling the robot during the dri
 void usercontrol(void) {
   // ...
   while (1) {
-    if (DRIVE_TANK_MODE) chassis.control_tank(controller(primary).Axis3.position(), controller(primary).Axis2.position());
+    if (DRIVE_TANK_MODE) chassis.controlTank(controller(primary).Axis3.position(), controller(primary).Axis2.position());
     else {
-        chassis.control_arcade(controller(primary).Axis2.position(), controller(primary).Axis4.position());
+        chassis.controlArcade(controller(primary).Axis2.position(), controller(primary).Axis4.position());
     }
     wait(20, msec); 
   }
@@ -101,25 +101,24 @@ void usercontrol(void) {
 
 The `Drive` class provides several methods for configuring the drivetrain's PID constants and exit conditions.
 
-*   `set_drive_constants(...)`
-*   `set_drive_exit_conditions(...)`
-*   `set_turn_constants(...)`
-*   `set_turn_exit_conditions(...)`
-*   `set_heading_constants(...)`
+*   `setDriveConstants(...)`
+*   `setDriveExitConditions(...)`
+*   `setTurnConstants(...)`
+*   `setTurnExitConditions(...)`
+*   `setHeadingConstants(...)`
 
 **Example from `src/chassis.cpp`:**
 
 ```cpp
-void reset_chassis() {
-  chassis.set_heading(inertial1.heading());
+void resetChassis() {
+  chassis.setHeading(inertial1.heading());
   chassis.stop(coast);
 
-  chassis.set_drive_constants(10, 1.5, 0, 10, 0);
-  chassis.set_heading_constants(6, .4, 1);
-  chassis.set_turn_constants(10, 0.2, .015, 1.5, 7.5);
+  chassis.setHeadingConstants(6, .4, 1);
+  chassis.setTurnConstants(10, 0.2, .015, 1.5, 7.5);
 
-  chassis.set_drive_exit_conditions(1, 200, 2000);
-  chassis.set_turn_exit_conditions(1.5, 200, 1500);
+  chassis.setDriveExitConditions(1, 200, 2000);
+  chassis.setTurnExitConditions(1.5, 200, 1500);
 }
 ```
 
@@ -137,7 +136,7 @@ The `PID` class has two constructors:
 ### Usage
 
 *   `compute(float error)`: Computes the PID output for a given error.
-*   `is_done()`: Returns `true` if the PID controller has settled.
+*   `isDone()`: Returns `true` if the PID controller has settled.
 
 ## `util` Functions
 
@@ -145,8 +144,8 @@ The `util.h` file contains several utility functions:
 
 *   `reduce_0_to_360(float angle)`
 *   `reduce_negative_180_to_180(float angle)`
-*   `to_deg(float angle_rad)`
+*   `toDeg(float angle_rad)`
 *   `threshold(float input, float min, float max)`
-*   `to_volt(float percent)`
+*   `toVolt(float percent)`
 *   `deadband(float input, float width)`
 *   `checkMotors(int motorCount, int temperatureLimit)`

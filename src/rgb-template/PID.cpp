@@ -5,45 +5,45 @@ PID::PID(float error, float kp, float kd) :
   kd(kd)
 {};
 
-PID::PID(float error, float kp, float ki, float kd, float starti, float settle_error, float settle_time, float timeout) :
+PID::PID(float error, float kp, float ki, float kd, float starti, float settleError, float settleTime, float timeout) :
   error(error),
   kp(kp),
   ki(ki),
   kd(kd),
   starti(starti),
-  settle_error(settle_error),
-  settle_time(settle_time),
+  settleError(settleError),
+  settleTime(settleTime),
   timeout(timeout)
 {};
 
 float PID::compute(float error){
   if (fabs(error) < starti){ // StartI is used to prevent integral windup.
-    accumulated_error+=error;
+    accumulatedError+=error;
   }
-  if ((error>0 && previous_error<0)||(error<0 && previous_error>0)){ 
-    accumulated_error = 0; 
+  if ((error>0 && previousError<0)||(error<0 && previousError>0)){ 
+    accumulatedError = 0; 
   } // This if statement checks if the error has crossed 0, and if it has, it eliminates the integral term.
 
-  output = kp*error + ki*accumulated_error + kd*(error-previous_error);
+  output = kp*error + ki*accumulatedError + kd*(error-previousError);
 
-  previous_error=error;
+  previousError=error;
 
-  if(fabs(error)<settle_error){
-    time_spent_settled+=10;
+  if(fabs(error)<settleError){
+    timeSpentSettled+=10;
   } else {
-    time_spent_settled = 0;
+    timeSpentSettled = 0;
   }
 
-  time_spent_running+=10;
+  timeSpentRunning+=10;
 
   return output;
 }
 
-bool PID::is_done(){
-  if (time_spent_running>timeout && timeout != 0){
+bool PID::isDone(){
+  if (timeSpentRunning>timeout && timeout != 0){
     return(true);
   } 
-  if (time_spent_settled>settle_time){
+  if (timeSpentSettled>settleTime){
     return(true);
   }
   return(false);

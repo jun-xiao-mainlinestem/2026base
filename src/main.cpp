@@ -68,12 +68,12 @@ void buttonR2Action() {
 // It holds the drivetrain in place until the button is released.
 void buttonBAction()
 {
-  double distanceTraveled = (chassis.get_left_position_in() + chassis.get_right_position_in()) / 2.0;
+  double distanceTraveled = (chassis.getLeftPositionIn() + chassis.getRightPositionIn()) / 2.0;
   chassis.stop(hold);
   controller(primary).rumble(".");
   wait(0.5, sec);
   // Display the distance traveled previously on the controller screen.
-  float h = chassis.get_heading();
+  float h = chassis.getHeading();
   char statusMsg[50];
   sprintf(statusMsg, "heading: %.1f, distance: %.1f", h, distanceTraveled);
   print_controller_screen(statusMsg);

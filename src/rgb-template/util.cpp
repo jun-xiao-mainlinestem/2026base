@@ -18,7 +18,7 @@ float reduce_negative_180_to_180(float angle) {
   return(angle);
 }
 
-float to_deg(float angle_rad){
+float toDeg(float angle_rad){
   return(angle_rad*(180.0/M_PI));
 }
 
@@ -28,7 +28,7 @@ float threshold(float input, float min, float max){
   return(input);
 }
 
-float to_volt(float percent){
+float toVolt(float percent){
   return(percent*12.0/100.0);
 }
 
@@ -63,14 +63,14 @@ bool checkMotors(int motorCount, int temperatureLimit) {
 }
 
 void print_controller_screen(const char* message) {
-  std::string padded_message = message;
+  std::string paddedMessage = message;
   
   // Pad the string to 20 characters with spaces on the right
-  while (padded_message.length() < 20) {
-    padded_message += " ";
+  while (paddedMessage.length() < 20) {
+    paddedMessage += " ";
   }
   
   // Print the padded message to the controller screen
-  controller(primary).Screen.print("%s", padded_message.c_str());
+  controller(primary).Screen.print("%s", paddedMessage.c_str());
 }
 

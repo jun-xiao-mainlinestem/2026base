@@ -109,28 +109,28 @@ void RemoteControl::processCommand(const std::string& command) {
     // Map command to action
     if (cmd == "FORWARD" || cmd == "MOVE" || cmd == "GO") {
         controller(primary).rumble(".");
-        chassis.drive_with_voltage(2, 2);
+        chassis.driveWithVoltage(2, 2);
     } else if (cmd == "STOP") {
         controller(primary).rumble(".");
-        float current_heading = chassis.get_heading();
-        float distance_traveled = (chassis.get_left_position_in() + chassis.get_right_position_in()) / 2.0;
+        float currentHeading = chassis.getHeading();
+        float distanceTraveled = (chassis.getLeftPositionIn() + chassis.getRightPositionIn()) / 2.0;
         chassis.stop(brake);
         stopRollers();
         
         // Send status back to webpage            
         char status_message[100];
-        sprintf(status_message, "STATUS:%.1f:%.1f\n", current_heading, distance_traveled);
+        sprintf(status_message, "STATUS:%.1f:%.1f\n", currentHeading, distanceTraveled);
         send(status_message);
 
     } else if (cmd == "RIGHT") {
         controller(primary).rumble(".");
-        chassis.drive_with_voltage(2, -2);
+        chassis.driveWithVoltage(2, -2);
     } else if (cmd == "LEFT") {
         controller(primary).rumble(".");
-        chassis.drive_with_voltage(-2, 2);
+        chassis.driveWithVoltage(-2, 2);
     } else if (cmd == "BACKWARD" || cmd == "BACK") {
         controller(primary).rumble(".");
-        chassis.drive_with_voltage(-2, -2);
+        chassis.driveWithVoltage(-2, -2);
     } else if (cmd == "ROLL" || cmd == "INTAKE") {
         controller(primary).rumble(".");
         inTake();

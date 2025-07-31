@@ -44,7 +44,7 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
 *   **(Optional) Driver Control Constants:**
     *   `TURN_FACTOR`: Slows down the turning speed.
     *   `STEER_BIAS`: Controls the curve of the robot when both joysticks are used.
-*   **(Optional) PID Constants:** If needed, adjust the PID constants for driving and turning in the `reset_chassis()` function for autons. 
+*   **(Optional) PID Constants:** If needed, adjust the PID constants for driving and turning in the `resetChassis()` function for autons. 
 
 ### Other Subsystems ([robot-config.cpp](src/robot-config.cpp))
 
@@ -82,7 +82,7 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
 
 The `Drive` class provides a set of APIs to control the robot's movement.
 
-### `drive_with_voltage(float leftVoltage, float rightVoltage)`
+### `driveWithVoltage(float leftVoltage, float rightVoltage)`
 
 This is the most basic drive function. It sets the voltage for the left and right sides of the drivetrain directly.
 
@@ -90,59 +90,59 @@ This is the most basic drive function. It sets the voltage for the left and righ
 
 ```cpp
 // Drive forward at half speed for 1 second
-chassis.drive_with_voltage(6, 6);
+chassis.driveWithVoltage(6, 6);
 wait(1000, msec);
 chassis.stop(coast);
 ```
 
-### `turn_to_heading(...)`
+### `turnToHeading(...)`
 
 This API turns the robot to a specific heading using a PID controller.
 
 **Variations:**
 
-1.  `turn_to_heading(float heading)`: Turns to the specified heading with default parameters.
-2.  `turn_to_heading(float heading, float turn_max_voltage)`: Limits the maximum voltage for a slower, more accurate turn.
-3.  `turn_to_heading(float heading, float turn_max_voltage, bool nonstop, float settle_error = 5, float settle_time = 50)`: Advanced version for faster turns with optional non-blocking execution.
+1.  `turnToHeading(float heading)`: Turns to the specified heading with default parameters.
+2.  `turnToHeading(float heading, float turnMaxVoltage)`: Limits the maximum voltage for a slower, more accurate turn.
+3.  `turnToHeading(float heading, float turnMaxVoltage, bool nonstop, float settleError = 5, float settleTime = 50)`: Advanced version for faster turns with optional non-blocking execution.
 
 **Examples:**
 
 ```cpp
 // Simple turn to 90 degrees
-chassis.turn_to_heading(90);
+chassis.turnToHeading(90);
 
 // Slower, more accurate turn
-chassis.turn_to_heading(90, 6);
+chassis.turnToHeading(90, 6);
 
 // Fast turn without waiting for completion
-chassis.turn_to_heading(90, 12, true);
+chassis.turnToHeading(90, 12, true);
 ```
 
-### `drive_distance(...)`
+### `driveDistance(...)`
 
 This API drives the robot a specific distance using a PID controller, with options for maintaining a heading.
 
 **Variations:**
 
-1.  `drive_distance(float distance)`: Drives the specified distance with default parameters.
-2.  `drive_distance(float distance, float drive_max_voltage)`: Limits the maximum voltage for driving.
-3.  `drive_distance(float distance, float drive_max_voltage, float heading, float heading_max_voltage)`: Drives while maintaining a specific heading (curved drive).
-4.  `drive_distance(float distance, float drive_max_voltage, float heading, float heading_max_voltage, bool nonstop, float drive_settle_error=2, float drive_settle_time=50)`: Advanced version for curved drives with optional non-blocking execution.
+1.  `driveDistance(float distance)`: Drives the specified distance with default parameters.
+2.  `driveDistance(float distance, float driveMaxVoltage)`: Limits the maximum voltage for driving.
+3.  `driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage)`: Drives while maintaining a specific heading (curved drive).
+4.  `driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage, bool nonstop, float driveSettleError=2, float driveSettleTime=50)`: Advanced version for curved driving with optional non-blocking execution.
 
 **Examples:**
 
 ```cpp
 // Drive forward 24 inches
-chassis.drive_distance(24);
+chassis.driveDistance(24);
 
 // Drive forward 24 inches with a maximum voltage of 8
-chassis.drive_distance(24, 8);
+chassis.driveDistance(24, 8);
 
 // Drive forward 24 inches while turning to a heading of 45 degrees
-chassis.drive_distance(24, 10, 45, 6);
+chassis.driveDistance(24, 10, 45, 6);
 
 // Curved drive without waiting for completion
-chassis.drive_distance(24, 10, 45, 6, true);
+chassis.driveDistance(24, 10, 45, 6, true);
 ```
 
 ## PID Control ([PID.h](include/rgb-template/PID.h))

@@ -10,22 +10,22 @@ void test1() {
   int x = auton1Parameters[0];
   int y = auton1Parameters[1];
 
-  chassis.drive_distance(x, 10, 0, 6, true);
+  chassis.driveDistance(x, 10, 0, 6, true);
 
   if (!shouldContinueAutonStep()) return;
 
-  chassis.turn_to_heading(90, 10, true);
-  chassis.drive_distance(y, 10, 90, 6, true);
-  chassis.turn_to_heading(180, 10, true);
-  chassis.drive_distance(x, 10, 180, 6, true);
-  chassis.turn_to_heading(270, 10, true);
-  chassis.drive_distance(y, 10, 270, 6, true);
-  chassis.turn_to_heading(0);
+  chassis.turnToHeading(90, 10, true);
+  chassis.driveDistance(y, 10, 90, 6, true);
+  chassis.turnToHeading(180, 10, true);
+  chassis.driveDistance(x, 10, 180, 6, true);
+  chassis.turnToHeading(270, 10, true);
+  chassis.driveDistance(y, 10, 270, 6, true);
+  chassis.turnToHeading(0);
 }
 
 // The second autonomous routine.
 void test2() {
-  chassis.drive_with_voltage(3, 3);
+  chassis.driveWithVoltage(3, 3);
   wait(1000, msec);
   chassis.stop(brake);
 }

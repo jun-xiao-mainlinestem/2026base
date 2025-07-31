@@ -69,10 +69,10 @@ The voice control system has been fully implemented and tested. All components a
 ## Voice Commands Implementation
 
 ### Supported Commands
-1. **move** → `chassis.drive_with_voltage(2, 2)`
-2. **back** → `chassis.drive_with_voltage(-2, -2)`
-3. **left** → `chassis.drive_with_voltage(-2, 2)`
-4. **right** → `chassis.drive_with_voltage(2, -2)`
+1. **move** → `chassis.driveWithVoltage(2, 2)`
+2. **back** → `chassis.driveWithVoltage(-2, -2)`
+3. **left** → `chassis.driveWithVoltage(-2, 2)`
+4. **right** → `chassis.driveWithVoltage(2, -2)`
 5. **stop** → `chassis.stop(brake)` + status report
 6. **roll** → `in_take()` (continues until stop)
 7. **shoot** → `score_long()` (continues until stop)
@@ -196,14 +196,14 @@ void RemoteControl::processCommand(const std::string& command) {
     
     // Map commands to actions
     if (cmd == "FORWARD" || cmd == "MOVE" || cmd == "GO") {
-        chassis.drive_with_voltage(2, 2);
+        chassis.driveWithVoltage(2, 2);
     } else if (cmd == "STOP") {
         chassis.stop(brake);
         // Send status back
         char status_message[100];
         sprintf(status_message, "STATUS:%.1f:%.1f\n", 
-                chassis.get_heading(), 
-                (chassis.get_left_position_in() + chassis.get_right_position_in()) / 2.0);
+                chassis.getHeading(), 
+                (chassis.getLeftPositionIn() + chassis.getRightPositionIn()) / 2.0);
         send(status_message);
     }
     // ... other commands

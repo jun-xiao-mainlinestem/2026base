@@ -160,12 +160,12 @@ Add your autonomous routines:
 ```cpp
 void auton1() {
     // Drive forward 24 inches
-    chassis.drive_distance(24);
+    chassis.driveDistance(24);
 }
 
 void auton2() {
     // Simple forward movement
-    chassis.drive_with_voltage(6, 6);
+    chassis.driveWithVoltage(6, 6);
     wait(1000, msec);
     chassis.stop(brake);
 }
