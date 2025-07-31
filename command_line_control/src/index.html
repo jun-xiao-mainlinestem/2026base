@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VEX Robot Command Line Interface</title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>VEX Robot Command Line Interface</h1>
+            <div class="connection-status">
+                <span id="status-indicator" class="status-dot disconnected"></span>
+                <span id="status-text">Disconnected</span>
+            </div>
+        </header>
+
+        <main>
+            <div class="command-section">
+                <div class="input-group">
+                    <label for="device-id">Device ID:</label>
+                    <input type="text" id="device-id" placeholder="Enter Device ID" />
+                    <button id="connect-btn">Connect to Robot</button>
+                </div>
+
+                <div class="command-line">
+                    <span class="prompt">robot></span>
+                    <input type="text" id="command-input" placeholder="Type a command..." disabled />
+                    <button id="send-btn" disabled>Send</button>
+                </div>
+
+                <div class="help-section">
+                    <h3>Available Commands:</h3>
+                    <div class="command-list">
+                        <div class="command-group">
+                            <h4>Drive Commands:</h4>
+                            <ul>
+                                <li><code>drive &lt;distance&gt;</code> - Drive forward/backward (inches)</li>
+                                <li><code>drive &lt;distance&gt; &lt;voltage&gt;</code> - Drive with custom voltage</li>
+                                <li><code>drive &lt;distance&gt; &lt;voltage&gt; &lt;heading&gt; &lt;heading-voltage&gt;</code> - Drive while maintaining heading</li>
+                            </ul>
+                        </div>
+                        <div class="command-group">
+                            <h4>Turn Commands:</h4>
+                            <ul>
+                                <li><code>turn &lt;heading&gt;</code> - Turn to heading (degrees)</li>
+                                <li><code>turn &lt;heading&gt; &lt;voltage&gt;</code> - Turn with custom voltage</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="output-section">
+                <div class="output-header">
+                    <h3>Command History</h3>
+                    <div class="output-controls">
+                        <button id="reset-btn" class="control-btn">Reset History</button>
+                        <button id="download-btn" class="control-btn">Download Code</button>
+                    </div>
+                </div>
+                <div id="output-log" class="output-log"></div>
+            </div>
+        </main>
+    </div>
+</body>
+</html> 

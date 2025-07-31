@@ -83,7 +83,7 @@ void buttonBAction()
 }
 
 
-// Global flag auton_test_mode indicating whether the robot is in autonomous test mode.
+// Global flag autonTestMode indicating whether the robot is in autonomous test mode.
 // When true, special button actions allow selection and testing of autonomous routines.
 // This function is called when the Right button is pressed.
 void buttonRightAction()

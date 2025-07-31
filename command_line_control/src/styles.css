@@ -1,0 +1,298 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', monospace;
+    background-color: #1e1e1e;
+    color: #ffffff;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #333;
+}
+
+h1 {
+    color: #00ff00;
+    font-size: 2.5em;
+}
+
+.connection-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.status-dot.connected {
+    background-color: #00ff00;
+    box-shadow: 0 0 10px #00ff00;
+}
+
+.status-dot.disconnected {
+    background-color: #ff0000;
+    box-shadow: 0 0 10px #ff0000;
+}
+
+main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.command-section {
+    background-color: #2d2d2d;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #444;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #00ff00;
+}
+
+.input-group input {
+    width: 200px;
+    padding: 8px;
+    background-color: #1e1e1e;
+    border: 1px solid #444;
+    color: #ffffff;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+.input-group button {
+    padding: 8px 16px;
+    background-color: #0066cc;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.input-group button:hover {
+    background-color: #0052a3;
+}
+
+.command-line {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    background-color: #1e1e1e;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #444;
+}
+
+.prompt {
+    color: #00ff00;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+#command-input {
+    flex: 1;
+    background-color: transparent;
+    border: none;
+    color: #ffffff;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+}
+
+#command-input:focus {
+    outline: none;
+}
+
+#send-btn {
+    padding: 8px 16px;
+    background-color: #00cc00;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+#send-btn:hover {
+    background-color: #00a300;
+}
+
+#send-btn:disabled {
+    background-color: #666;
+    cursor: not-allowed;
+}
+
+.help-section {
+    background-color: #1e1e1e;
+    padding: 15px;
+    border-radius: 4px;
+    border: 1px solid #444;
+}
+
+.help-section h3 {
+    color: #00ff00;
+    margin-bottom: 15px;
+}
+
+.command-group {
+    margin-bottom: 20px;
+}
+
+.command-group h4 {
+    color: #ffff00;
+    margin-bottom: 8px;
+}
+
+.command-group ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.command-group li {
+    margin-bottom: 5px;
+    padding: 5px 0;
+}
+
+.command-group code {
+    background-color: #333;
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: #00ffff;
+}
+
+.output-section {
+    background-color: #2d2d2d;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #444;
+}
+
+.output-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.output-header h3 {
+    color: #00ff00;
+    margin-bottom: 0;
+}
+
+.output-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.control-btn {
+    padding: 6px 12px;
+    background-color: #444;
+    color: white;
+    border: 1px solid #666;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: 'Courier New', monospace;
+}
+
+.control-btn:hover {
+    background-color: #555;
+}
+
+#reset-btn {
+    background-color: #cc6600;
+}
+
+#reset-btn:hover {
+    background-color: #b35900;
+}
+
+#download-btn {
+    background-color: #0066cc;
+}
+
+#download-btn:hover {
+    background-color: #0052a3;
+}
+
+.output-section h3 {
+    color: #00ff00;
+    margin-bottom: 15px;
+}
+
+.output-log {
+    background-color: #1e1e1e;
+    padding: 15px;
+    border-radius: 4px;
+    border: 1px solid #444;
+    height: 400px;
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.output-log .command {
+    color: #00ff00;
+    margin-bottom: 5px;
+}
+
+.output-log .response {
+    color: #ffff00;
+    margin-bottom: 10px;
+    padding-left: 20px;
+}
+
+.output-log .error {
+    color: #ff6666;
+    margin-bottom: 10px;
+    padding-left: 20px;
+}
+
+.output-log .status {
+    color: #00ffff;
+    margin-bottom: 10px;
+    padding-left: 20px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    main {
+        grid-template-columns: 1fr;
+    }
+    
+    header {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    h1 {
+        font-size: 2em;
+    }
+} 
