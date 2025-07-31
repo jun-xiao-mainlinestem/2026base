@@ -16,6 +16,9 @@ motor rollerTop = motor(PORT13, ratio6_1, true);
 // total number of motors, including drivetrain
 const int NUMBER_OF_MOTORS = 9;
 
+// optical sensor for color sorting
+optical ballOptical = optical(PORT14);
+
 void inTake() {
   ballOptical.setLightPower(100, percent);
   rollerBottom.spin(forward, 12, volt);
@@ -50,30 +53,33 @@ void scoreLong() {
   rollerTop.spin(forward, 12, volt);
 }
 
-// optical sensor for color sorting
-optical ballOptical = optical(PORT14);
 void colorSort()
 {
   // Checks if the optical sensor is installed.
-  if (ballOptical.installed()) {
-    ballOptical.setLightPower(100, percent);
-    // If the color detected is red, intake the ball.
-    if (ballOptical.color() == color::red) {
+  if (ballOptical.installed()) {    
+    // Get the detected ball color
+    color detectedColor = ballOptical.color();    
+    if (detectedColor == color::red) {
       print_controller_screen("red ball");
+    } 
+    if (detectedColor == color::blue) {
+      print_controller_screen("blue ball");
+    }     
+
+    // If the ball color matches the team color, intake it
+    if ((teamIsRed && detectedColor == color::red) || (!teamIsRed && detectedColor == color::blue)) {
       inTake();
     } 
-    // If the color detected is blue, score middle.
-    else if (ballOptical.color() == color::blue) {
-      print_controller_screen("blue ball");
-      scoreMiddle();
+    // If the ball color doesn't match team color, eject it by score it
+    else if (detectedColor == color::red || detectedColor == color::blue) {
+      scoreLong();
     } 
-    // If no color is detected, default to intake.
+    // If no red or blue color is detected, default to intake
     else {
       inTake();
-    //  print_controller_screen("not red or blue");
     }
   } else {
-    // If no optical sensor is installed, default to intake.
+    // If no optical sensor is installed, default to intake
     inTake();
   }
 } 

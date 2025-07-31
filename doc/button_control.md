@@ -1,7 +1,8 @@
 # Button Control
 
 ## L1
-*  Hold to intake balls halls into basket (with color sorting: red = intake, blue = score middle)
+*  Hold to intake balls that match team color (team red = intake red balls, team blue = intake blue balls)
+*  Score balls that don't match team color
 *  Release to stop the roller immediately
 
 ## L2
