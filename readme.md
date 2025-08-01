@@ -6,7 +6,7 @@ This project provides a lightweight C++ template for VEX V5 robotics competition
 
 This library is designed specifically for **middle school robotics teams** who are getting started with VEX V5 c++ programming and do not have odometry (tracking wheel) setups. Unlike advanced high school teams who use sophisticated libraries like [JAR-Template](https://github.com/JacksonAreaRobotics/JAR-Template) and [LemLib](https://github.com/LemLib/LemLib) that provide advanced features such as path following, pure pursuit, and complex autonomous routines, this template focuses on simplicity and ease of use. 
 
-It provides essential driving controls, basic autonomous code structure, and straightforward configuration that allows teams to quickly get their robot operational without the complexity of advanced positioning systems. The built-in test mode enables rapid auton development and iteration, allowing teams to test and refine their routines during driver control without having to rebuild the program. Finally, the template includes sample code for 2025-26 Push Back game, demonstrating practical applications of the library's features.
+It provides essential driving controls, basic autonomous code structure, and straightforward configuration that allows teams to quickly get their robot operational without the complexity of advanced positioning systems. The built-in test mode enables rapid auton development and iteration, allowing teams to test all of their auton routines during driver control without having to re-download the program or use the field switch. The template includes sample code for 2025-26 Push Back game, demonstrating practical applications of the library's features. Finally, the companion web applications for robot remote control via typed or voice commands add a new, fun and interactive dimension to controlling a VEX robot. 
 
 ## Installation
 *   **Prerequisites:** Before you begin, make sure:
@@ -40,11 +40,13 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
 ### Drivetrain ([chassis.cpp](src/chassis.cpp))
 
 *   **Motors and Sensors:** Define the 6-motor drivetrain motors and inertial sensor, including ports, gear ratios, and motor direction. By default, the port numbers are 1, 2, 3 for the left side, 4, 5, 6 for the right side and 10 for the inertial sensor. 
-*   **Drive Mode:** Set `DRIVE_TANK_MODE` to `true` for tank control or `false` for arcade control.
+*   **Drive Mode:** Set `DRIVE_MODE` to `0` for arcade control, `1` for tank control, or `2` for mecanum control.
 *   **(Optional) Driver Control Constants:**
     *   `TURN_FACTOR`: Slows down the turning speed.
     *   `STEER_BIAS`: Controls the curve of the robot when both joysticks are used.
-*   **(Optional) PID Constants:** If needed, adjust the PID constants for driving and turning in the `resetChassis()` function for autons. 
+*   **(Optional) Wheel Size and Gear Ratio:**
+    *   Find the Drive constructor and update the wheel diameter and gear ratio parameters for precise auton driving.
+*   **(Optional) PID Constants:** If needed, adjust the PID constants for driving and turning in the `resetChassis()` function for auton driving. 
 
 ### Other Subsystems ([robot-config.cpp](src/robot-config.cpp))
 
@@ -56,18 +58,20 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
 
 *   **Button Functions:** Create button functions by using the helper functions in  [robot-config.cpp](src/robot-config.cpp)
 *   **Button Bindings:** At the bottom of the file, in the `main()` function, map controller buttons to the functions.
-*   **(Optional) Context-Aware Button Actions:** Create functions that allow a single button to perform different actions based on the robot's state. For example, a button could perform one action normally, but a different action if another button is held down simultaneously or if the robot is in a specific mode (e.g. `auton_test_mode`).
 
 ### Autonomous Routines ([autons.cpp](src/autons.cpp))
 
 *   **Auton Functions:** Write your autonomous routines as separate functions.
 *   **Auton Mappings:** Map auton functions to menu items in the `runAutonItem()` function 
 *   **Auton Menu Text:** Add the names of your autonomous functions to the `autonMenuText` array to make them shown on the brain's and controller's screen.
-*   **(Optional) Auton Parameters:** Create array variables for the auton functions at the top of the file for easy tuning the auton parameters during tournaments.
 
 ## Run sample program
 - Build and download the program to the brain and use game controller to select the program slot and run the program.
-- For arcade driving, use the `left stick` to turn and `right stick` to drive forward and backward. If you press the `B button`, the controller shows the current heading and the distance driven and resets the motor encoder. For sample button mappings and actions, see [button controls](doc/button_control.md).
+- Test the selected drive mode:
+  - **Arcade Drive (Mode 0)**: Use left stick to turn and right stick to drive forward/backward
+  - **Tank Drive (Mode 1)**: Use left stick for left side motors, right stick for right side motors  
+  - **Mecanum Drive (Mode 2)**: Use left stick for forward/backward and turning, right stick for strafing
+- If you press the `B button`, the controller shows the current heading and the distance driven and resets the motor encoder. For sample button mappings and actions, see [button controls](doc/button_control.md).
 - (Optional) Test all autons during driver control using the game controller:
     - Press the controller's `Right button` within 5 seconds of program startup to enter test mode.
     - When in test mode, press the `Right button` to cycle through the list of autonomous routines on the controller screen.

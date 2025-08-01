@@ -1,5 +1,11 @@
 # Button Control
 
+## Drive Modes
+The robot supports three drive modes controlled by the `DRIVE_MODE` setting:
+- **Arcade Drive (Mode 0)**: Single joystick control for movement and turning
+- **Tank Drive (Mode 1)**: Dual joystick control for left and right sides
+- **Mecanum Drive (Mode 2)**: Four-wheel independent control for strafing and omnidirectional movement
+
 ## L1
 *  Hold to intake balls that match team color (team red = intake red balls, team blue = intake blue balls)
 *  Score balls that don't match team color

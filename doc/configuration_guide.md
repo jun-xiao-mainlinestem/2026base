@@ -43,10 +43,13 @@ inertial inertial_sensor = inertial(PORT10);
 Locate the drive mode setting:
 
 ```cpp
-bool DRIVE_TANK_MODE = true;  // true for tank, false for arcade
+bool DRIVE_MODE = 0;  // 0 for arcade, 1 for tank, 2 for mecanum
 ```
 
-**Action:** Set to `true` for tank drive, `false` for arcade drive.
+**Action:** Set the drive mode value:
+- `0` for arcade drive (single joystick for movement and turning)
+- `1` for tank drive (left joystick for left side, right joystick for right side)
+- `2` for mecanum drive (four-wheel independent control for strafing)
 
 ### Step 4: Configure Drive Constants
 Find the driver control constants:
@@ -57,6 +60,32 @@ float STEER_BIAS = 0.5;   // Controls curve when both joysticks used
 ```
 
 **Action:** Adjust these values based on your driver's preference.
+
+### Step 5: Configure Wheel Size and Gear Ratio
+Find the Drive constructor and update the wheel diameter and gear ratio parameters:
+
+```cpp
+Drive chassis(
+  //Left Motors:
+  motor_group(leftMotor1, leftMotor2, leftMotor3),
+  //Right Motors:
+  motor_group(rightMotor1, rightMotor2, rightMotor3),
+  //Inertial Sensor:
+  inertial1,
+  //wheel diameter:
+  2.75,
+  //Gear ratio of motor to wheel: if your motor has an 36-tooth gear and your wheel has a 48-tooth gear, this value will be 0.75. For direct drive, this value will be 1.
+  0.75
+);
+```
+
+**Action:** 
+- Set the wheel diameter (currently `2.75`) to your actual wheel diameter in inches
+- Set the gear ratio (currently `0.75`) to your motor-to-wheel gear ratio:
+  - `1.0` for direct drive (motor directly connected to wheel)
+  - `0.75` for 36:48 gear ratio (36-tooth motor gear, 48-tooth wheel gear)
+  - `2.0` for 2:1 gearbox (2 motor rotations = 1 wheel rotation)
+  - `0.5` for 1:2 gearbox (0.5 motor rotations = 1 wheel rotation)
 
 ---
 
@@ -221,7 +250,10 @@ char const * auton_menu_text[] = {
 
 ### Step 3: Test Driver Control
 1. Run the program on the brain
-2. For arcade driving, use the `left stick` to turn and `right stick` to drive forward and backward. 
+2. Test the selected drive mode:
+   - **Arcade Drive (Mode 0)**: Use left stick to turn and right stick to drive forward/backward
+   - **Tank Drive (Mode 1)**: Use left stick for left side motors, right stick for right side motors
+   - **Mecanum Drive (Mode 2)**: Use left stick for forward/backward and turning, right stick for strafing
 3. Verify motors respond correctly
 
 

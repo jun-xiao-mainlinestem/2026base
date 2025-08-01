@@ -25,9 +25,8 @@ motor rightMotor3 = motor(PORT6, ratio18_1, true);
 // inertial sensor for turning and heading
 inertial inertial1 = inertial(PORT10);
 
-// if you want the drive mode to be changeable in you code, remove the "const"
-// true for tank drive, false for arcade drive
-bool DRIVE_TANK_MODE = false;
+// 0: arcade drive, 1: tank drive, 2: mecanum drive
+bool DRIVE_MODE = 0;
 
 // constant definitions for driver control
 // TURN_FACTOR reduces the sensitivity of the turn stick
@@ -120,15 +119,18 @@ void usercontrol(void) {
   // This loop runs forever, controlling the robot during the driver control period.
   while (1) {
     // This is the tank drive code.
-    if (DRIVE_TANK_MODE) chassis.controlTank(controller(primary).Axis3.position(), controller(primary).Axis2.position());
+    if (DRIVE_MODE == 1) chassis.controlTank(controller(primary).Axis3.position(), controller(primary).Axis2.position());
     // This is the arcade drive code.
-    else {
-      // This code reduces the sensitivity of the turn stick
+    else if (DRIVE_MODE == 0)
       chassis.controlArcade(controller(primary).Axis2.position(), controller(primary).Axis4.position() * TURN_FACTOR, STEER_BIAS);
+    else if (DRIVE_MODE == 2)
+    {   
+      // This is the mecanum drive code.
+      chassis.controlMecanum(controller(primary).Axis4.position(), controller(primary).Axis3.position(), controller(primary).Axis2.position(), controller(primary).Axis1.position(), leftMotor1, leftMotor2, rightMotor1, rightMotor2);
+    }
    }
     // This wait prevents the loop from using too much CPU time.
     wait(20, msec); 
-  }
 }
 
 // This function sets up the gyro.

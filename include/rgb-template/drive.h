@@ -92,6 +92,7 @@ public:
   void controlArcade(int throttle, int turn, float turnBias = 0);
   // Controls the robot in tank mode.
   void controlTank(int left, int right);
+  void controlMecanum(int x, int y, int acc, int steer, motor DriveLF, motor DriveLR, motor DriveRF, motor DriveRB);
 
   // Sets the PID constants for driving.
   void setDriveConstants(float driveMaxVoltage, float driveKp, float driveKi, float driveKd, float driveStarti);

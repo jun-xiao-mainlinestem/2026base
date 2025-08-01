@@ -7,27 +7,24 @@ int auton1Parameters[] = {12, 20};
 
 // The first autonomous routine.
 void test1() {
-  int x = auton1Parameters[0];
-  int y = auton1Parameters[1];
-
-  chassis.driveDistance(x, 10, 0, 6, true);
-
-  if (!shouldContinueAutonStep()) return;
-
-  chassis.turnToHeading(90, 10, true);
-  chassis.driveDistance(y, 10, 90, 6, true);
-  chassis.turnToHeading(180, 10, true);
-  chassis.driveDistance(x, 10, 180, 6, true);
-  chassis.turnToHeading(270, 10, true);
-  chassis.driveDistance(y, 10, 270, 6, true);
-  chassis.turnToHeading(0);
+  chassis.driveWithVoltage(3, 3);
+  wait(1000, msec);
+  chassis.stop(brake);
 }
 
 // The second autonomous routine.
 void test2() {
-  chassis.driveWithVoltage(3, 3);
-  wait(1000, msec);
-  chassis.stop(brake);
+  chassis.driveDistance(12);
+
+  if (!shouldContinueAutonStep()) return;
+
+  chassis.turnToHeading(90);
+  chassis.driveDistance(12);
+  chassis.turnToHeading(180);
+  chassis.driveDistance(12);
+  chassis.turnToHeading(270);
+  chassis.driveDistance(12);
+  chassis.turnToHeading(0);
 }
 
 // Runs the selected autonomous routine.

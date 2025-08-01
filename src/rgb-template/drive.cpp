@@ -205,6 +205,47 @@ void Drive::controlTank(int left, int right) {
   }
 }
 
+
+void Drive::controlMecanum(int x, int y, int acc, int steer, motor DriveLF, motor DriveRF, motor DriveLB, motor DriveRB) {
+  if (driverControlDisabled) return;
+
+  float throttle = deadband(y, 5);
+  float strafe = deadband(x, 5);
+  float straight = deadband(acc, 5);
+  float turn = deadband(steer, 5);
+  straight = curveFunction(straight, kThrottle);
+  turn = curveFunction(turn, kTurn);
+//  throttle = curveFunction(throttle, kThrottle);
+//  strafe = curveFunction(strafe, kThrottle);
+
+
+  if (turn == 0 && strafe == 0 && throttle == 0 && straight == 0) {
+    if (drivetrainNeedsStopped) {
+      LDrive.stop(stopMode);
+      RDrive.stop(stopMode);
+      drivetrainNeedsStopped = false;
+      return;
+    }
+  } 
+
+  if (turn == 0 && straight == 0) {
+    DriveLF.spin(fwd, toVolt(throttle + turn + strafe), volt);
+    DriveRF.spin(fwd, toVolt(throttle - turn - strafe), volt);
+    DriveLB.spin(fwd, toVolt(throttle + turn - strafe), volt);
+    DriveRB.spin(fwd, toVolt(throttle - turn + strafe), volt);
+  }
+  //aracade drive
+  else
+  {
+    float leftPower = toVolt(throttle + turn);
+    float rightPower = toVolt(throttle - turn);
+    LDrive.spin(fwd, leftPower, volt);
+    RDrive.spin(fwd, rightPower, volt);
+    drivetrainNeedsStopped = true;
+  }
+}
+
+
 void Drive::stop(vex::brakeType mode) {
     LDrive.stop(mode);
     RDrive.stop(mode);
