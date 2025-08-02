@@ -52,6 +52,12 @@ private:
   // The inertial sensor.
   inertial Gyro;
 
+  // Turns the robot to a specific heading with advanced options.
+  void turnToHeading(float heading, float turnMaxVoltage, bool chaining, float settleError = 5, float settleTime = 50);
+
+  // Drives the robot a specific distance with advanced options.
+  void driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage, bool chaining, float driveSettleError=2, float driveSettleTime=50) ;
+
 public: 
   // The desired heading of the robot.
   float desiredHeading;
@@ -71,8 +77,6 @@ public:
   void turnToHeading(float heading);
   // Turns the robot to a specific heading with a maximum voltage.
   void turnToHeading(float heading, float turnMaxVoltage);
-  // Turns the robot to a specific heading with advanced options.
-  void turnToHeading(float heading, float turnMaxVoltage, bool nonstop, float settleError = 5, float settleTime = 50);
 
   // Drives the robot a specific distance.
   void driveDistance(float distance);
@@ -80,8 +84,6 @@ public:
   void driveDistance(float distance, float driveMaxVoltage);
   // Drives the robot a specific distance while maintaining a heading.
   void driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage);
-  // Drives the robot a specific distance with advanced options.
-  void driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage, bool nonstop, float driveSettleError=2, float driveSettleTime=50) ;
 
   // A flag to indicate if the drivetrain needs to be stopped.
   bool drivetrainNeedsStopped = false;

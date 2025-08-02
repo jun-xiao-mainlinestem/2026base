@@ -1,10 +1,5 @@
 #include "vex.h"
 
-// This array helps tuning the auton1 routine without changing the code.
-// The first element is the distance to drive in inches, and the second element is the distance
-// to drive in inches after the turn.
-int auton1Parameters[] = {12, 20};
-
 // The first autonomous routine.
 void test1() {
   chassis.driveWithVoltage(3, 3);

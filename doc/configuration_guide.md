@@ -43,7 +43,7 @@ inertial inertial_sensor = inertial(PORT10);
 Locate the drive mode setting:
 
 ```cpp
-bool DRIVE_MODE = 0;  // 0 for arcade, 1 for tank, 2 for mecanum
+int DRIVE_MODE = 0;  // 0 for arcade, 1 for tank, 2 for mecanum
 ```
 
 **Action:** Set the drive mode value:

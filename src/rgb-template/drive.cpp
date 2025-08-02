@@ -77,12 +77,12 @@ void Drive::turnToHeading(float heading, float turnMaxVoltage) {
  * Turns the robot to a specified angle using PID control.
  * - heading: Target heading to turn to (in degrees).
  * - turn_max_voltage: Maximum voltage for the turn 
- * - nonstop: If false, stops the robot at the end; if true, allows chaining.
+ * - chaining: If false, stops the robot at the end; if true, allows chaining.
  * - settle_error: error range for start calcuating the settle time.
  * - settle_time: settle time for existing the PID loop (in milliseconds).
  */
 
-void Drive::turnToHeading(float heading, float turnMaxVoltage, bool nonstop, float settleError, float settleTime) {
+void Drive::turnToHeading(float heading, float turnMaxVoltage, bool chaining, float settleError, float settleTime) {
   desiredHeading = reduce_0_to_360(heading);
   PID turnPID(reduce_negative_180_to_180(heading - getHeading()), turnKp, turnKi, turnKd, turnStarti, settleError, settleTime, turnTimeout);
   while (!turnPID.isDone()) {
@@ -92,7 +92,7 @@ void Drive::turnToHeading(float heading, float turnMaxVoltage, bool nonstop, flo
     driveWithVoltage(output, -output);
     wait(10, msec);
   }
-  if (!nonstop) {
+  if (!chaining) {
     LDrive.stop(hold);
     RDrive.stop(hold);
   }
@@ -111,7 +111,7 @@ void Drive::driveDistance(float distance, float driveMaxVoltage, float heading, 
 
 }
 
-void Drive::driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage, bool nonstop, float driveSettleError, float driveSettleTime) {
+void Drive::driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage, bool chaining, float driveSettleError, float driveSettleTime) {
   desiredHeading = reduce_0_to_360(heading);
 
   PID drivePID(distance, driveKp, driveKi, driveKd, driveStarti, driveSettleError, driveSettleTime, driveTimeout);
@@ -132,7 +132,7 @@ void Drive::driveDistance(float distance, float driveMaxVoltage, float heading, 
     wait(10, msec);
   }
   drivetrainNeedsStopped = false;
-  if (!nonstop) {
+  if (!chaining) {
     LDrive.stop(hold);
     RDrive.stop(hold);
   }

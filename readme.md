@@ -107,7 +107,7 @@ This API turns the robot to a specific heading using a PID controller.
 
 1.  `turnToHeading(float heading)`: Turns to the specified heading with default parameters.
 2.  `turnToHeading(float heading, float turnMaxVoltage)`: Limits the maximum voltage for a slower, more accurate turn.
-3.  `turnToHeading(float heading, float turnMaxVoltage, bool nonstop, float settleError = 5, float settleTime = 50)`: Advanced version for faster turns with optional non-blocking execution.
+3.  `turnToHeading(float heading, float turnMaxVoltage, bool chaining, float settleError = 5, float settleTime = 50)`: Advanced version for faster turns with optional non-blocking execution.
 
 **Examples:**
 
@@ -131,7 +131,7 @@ This API drives the robot a specific distance using a PID controller, with optio
 1.  `driveDistance(float distance)`: Drives the specified distance with default parameters.
 2.  `driveDistance(float distance, float driveMaxVoltage)`: Limits the maximum voltage for driving.
 3.  `driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage)`: Drives while maintaining a specific heading (curved drive).
-4.  `driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage, bool nonstop, float driveSettleError=2, float driveSettleTime=50)`: Advanced version for curved driving with optional non-blocking execution.
+4.  `driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage, bool chaining, float driveSettleError=2, float driveSettleTime=50)`: Advanced version for curved driving with optional non-blocking execution.
 
 **Examples:**
 
@@ -144,9 +144,6 @@ chassis.driveDistance(24, 8);
 
 // Drive forward 24 inches while turning to a heading of 45 degrees
 chassis.driveDistance(24, 10, 45, 6);
-
-// Curved drive without waiting for completion
-chassis.driveDistance(24, 10, 45, 6, true);
 ```
 
 ## PID Control ([PID.h](include/rgb-template/PID.h))

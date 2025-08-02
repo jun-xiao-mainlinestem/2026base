@@ -26,7 +26,7 @@ motor rightMotor3 = motor(PORT6, ratio18_1, true);
 inertial inertial1 = inertial(PORT10);
 
 // 0: arcade drive, 1: tank drive, 2: mecanum drive
-bool DRIVE_MODE = 0;
+int DRIVE_MODE = 0;
 
 // constant definitions for driver control
 // TURN_FACTOR reduces the sensitivity of the turn stick

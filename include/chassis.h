@@ -8,7 +8,7 @@ class Drive;
 // A global instance of the Drive class.
 extern Drive chassis;
 // A flag to switch between tank and arcade drive modes.
-extern bool DRIVE_MODE;
+extern int DRIVE_MODE;
 
 extern bool teamIsRed;
 // External declaration of the team color optical sensor
