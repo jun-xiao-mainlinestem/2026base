@@ -1,12 +1,12 @@
 # RGB BOTS template
 
-This project provides a lightweight C++ template for VEX V5 robotics competition, featuring a modular architecture, a library for autonomous driving control and convenient ways to test and iterate autons.
+This project provides a lightweight C++ template for VEX V5 robotics competition, featuring a modular architecture, a library for autonomous driving control and companion web applications for robot remote control via typed or voice commands.
 
 ## Target Audience
 
-This library is designed specifically for **middle school robotics teams** who are getting started with VEX V5 c++ programming and do not have odometry (tracking wheel) setups. Unlike advanced high school teams who use sophisticated libraries like [JAR-Template](https://github.com/JacksonAreaRobotics/JAR-Template) and [LemLib](https://github.com/LemLib/LemLib) that provide advanced features such as path following, pure pursuit, and complex autonomous routines, this template focuses on simplicity and ease of use. 
+This library is designed specifically for **middle school robotics teams** who are getting started with VEX V5 c++ programming and do not have odometry (tracking wheel) setups. Unlike advanced high school teams who use sophisticated libraries like [JAR-Template](https://github.com/JacksonAreaRobotics/JAR-Template) and [LemLib](https://github.com/LemLib/LemLib) that provide advanced features such as path following and pure pursuit, this template focuses on simplicity and ease of use. 
 
-It provides essential driving controls, basic autonomous code structure, and straightforward configuration that allows teams to quickly get their robot operational without the complexity of advanced positioning systems. The built-in test mode enables rapid auton development and iteration, allowing teams to test all of their auton routines during driver control without having to re-download the program or use the field switch. The template includes sample code for 2025-26 Push Back game, demonstrating practical applications of the library's features. Finally, the companion web applications for robot remote control via typed or voice commands add a new, fun and interactive dimension to controlling a VEX robot. 
+It provides essential driving controls, simple autonomous code structure, and straightforward configuration that allows teams to quickly get their robot operational without the complexity of advanced positioning systems. The built-in test mode allows teams to test all of their auton routines during driver control without having to re-download the program or use the field switch. The template provides a scaffold with sample code for the 2025-26 Push Back game, allowing teams to quickly extend and adapt the core functionality to their specific needs. Finally, the companion web applications for robot remote control via typed or voice commands add a new, fun, and interactive dimension to controlling a VEX robot. 
 
 ## Installation
 *   **Prerequisites:** Before you begin, make sure:
@@ -46,7 +46,7 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
     *   `STEER_BIAS`: Controls the curve of the robot when both joysticks are used.
 *   **(Optional) Wheel Size and Gear Ratio:**
     *   Find the Drive constructor and update the wheel diameter and gear ratio parameters for precise auton driving.
-*   **(Optional) PID Constants:** If needed, adjust the PID constants for driving and turning in the `resetChassis()` function for auton driving. 
+*   **(Optional) PID Constants:** If needed, adjust the PID constants for autonomous driving and turning in the `resetChassis()` function for auton driving. 
 
 ### Other Subsystems ([robot-config.cpp](src/robot-config.cpp))
 
