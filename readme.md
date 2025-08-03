@@ -6,7 +6,7 @@ This project provides a lightweight C++ template for VEX V5 robotics competition
 
 This library is designed specifically for **middle school robotics teams** who are getting started with VEX V5 c++ programming and do not have odometry (tracking wheel) setups. Unlike advanced high school teams who use sophisticated libraries like [JAR-Template](https://github.com/JacksonAreaRobotics/JAR-Template) and [LemLib](https://github.com/LemLib/LemLib) that provide advanced features such as path following and pure pursuit, this template focuses on simplicity and ease of use. 
 
-It provides essential driving controls, simple autonomous code structure, and straightforward configuration that allows teams to quickly get their robot operational without the complexity of advanced positioning systems. The built-in test mode allows teams to test all of their auton routines during driver control without having to re-download the program or use the field switch. The template provides a scaffold with sample code for the 2025-26 Push Back game, allowing teams to quickly extend and adapt the core functionality to their specific needs. Finally, the companion web applications for robot remote control via typed or voice commands add a new, fun, and interactive dimension to controlling a VEX robot. 
+It provides essential driving controls, simple autonomous code structure, and straightforward configuration that allows teams to quickly get their robot operational without the complexity of advanced positioning systems. The built-in test mode allows teams to test all of their auton routines during driver control without having to re-download the program or use the field switch. The template provides a scaffold with sample code for the 2025-26 Push Back game, allowing teams to quickly extend and adapt the core functionality to their specific needs. Finally, the companion mobile web applications for robot remote control via typed or voice commands add a fun and interactive dimension to controlling a VEX robot. 
 
 ## Installation
 *   **Prerequisites:** Before you begin, make sure:
@@ -71,7 +71,9 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
   - **Arcade Drive (Mode 0)**: Use left stick to turn and right stick to drive forward/backward
   - **Tank Drive (Mode 1)**: Use left stick for left side motors, right stick for right side motors  
   - **Mecanum Drive (Mode 2)**: Use left stick for forward/backward and turning, right stick for strafing
-- If you press the `B button`, the controller shows the current heading and the distance driven and resets the motor encoder. For sample button mappings and actions, see [button controls](doc/button_control.md).
+- (Optional) Change drive mode
+    -  Press the controller's `Left button` within 5 seconds of program startup to enter toggle between tank and arcade drive mode.
+    - For all sample button mappings and actions, see [button controls](doc/button_control.md).
 - (Optional) Test all autons during driver control using the game controller:
     - Press the controller's `Right button` within 5 seconds of program startup to enter test mode.
     - When in test mode, press the `Right button` to cycle through the list of autonomous routines on the controller screen.

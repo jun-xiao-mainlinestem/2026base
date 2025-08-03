@@ -28,8 +28,7 @@ The robot supports three drive modes controlled by the `DRIVE_MODE` setting:
 *  If in test mode, press to scroll through auton menu
 
 ## Left
-*  Activate remote control mode if pressed within 5 seconds of starting the program
-*  If in remote control mode, toggle WebSocket communication listening
+*  toggle tank or arcade drive mode if the button is pressed immediately after running the program
 *  If in test mode, press to scroll backwards through auton menu
 
 ## A

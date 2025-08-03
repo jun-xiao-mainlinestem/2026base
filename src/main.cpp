@@ -12,8 +12,7 @@ competition Competition;
 
 // Global remote control object
 RemoteControl remoteControl;
-bool remoteListening = false;
-bool remoteControlMode = false;
+bool REMOTE_CONTROL_MODE = true;
 
 // ----------------------------------------------------------------------------
 //                                Controller Callbacks
@@ -112,28 +111,17 @@ void buttonRightAction()
 // This function is called when the Left button is pressed.
 void buttonLeftAction()
 {
-    // Activate remote control mode if the button is pressed immediately after running the program
-  if ((Brain.Timer.time(sec) < 5) && !remoteControlMode) {
+  // toggle tank or arcade drive mode if the button is pressed immediately after running the program
+  if ((Brain.Timer.time(sec) < 5)) {
     controller(primary).rumble("-");
-    remoteControlMode = true;
-    remoteControl.attemptConnection();
-    return;
-  }
-
-  if(remoteControlMode){
-      // Toggle websocket communication listening
-    if (!remoteListening) {
-      chassis.driverControlDisabled = true;
-      remoteControl.attemptConnection();
-      remoteListening = true;
+    DRIVE_MODE = (DRIVE_MODE == 0) ? 1 : 0;
+    if (DRIVE_MODE == 1) {
+      printControllerScreen("Drive Mode: Tank");
     } else {
-      chassis.driverControlDisabled = false;
-      remoteControl.disconnect();
-      remoteListening = false;
-    }   
+      printControllerScreen("Drive Mode: Arcade");
+    }
     return;
   }
-
   // if in test mode, scroll through the auton menu
   if (autonTestMode)
   {
@@ -209,7 +197,7 @@ int main() {
 
   // Prevent main from exiting with an infinite loop.
   while (true) {
-    if (remoteListening) {
+    if (REMOTE_CONTROL_MODE) {
       remoteControl.poll();
     }
     wait(100, msec);
