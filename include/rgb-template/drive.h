@@ -18,9 +18,11 @@ private:
   float turnKi;
   float turnKd;
   float turnStarti;
-  float turnSettleError;
-  float turnSettleTime;
-  float turnTimeout;
+
+  // turn eixit conditions.
+  float turnSettleError = 1.5;
+  float turnSettleTime = 200;
+  float turnTimeout = 1500;
 
   // PID constants for driving.
   float driveMaxVoltage;
@@ -28,9 +30,11 @@ private:
   float driveKi;
   float driveKd;
   float driveStarti;
-  float driveSettleError;
-  float driveSettleTime;
-  float driveTimeout;
+
+  // drive exit conditions.
+  float driveSettleError = 1;
+  float driveSettleTime = 200;
+  float driveTimeout = 2000;
 
   // PID constants for maintaining heading while driving.
   float headingMaxVoltage;
@@ -102,18 +106,17 @@ public:
   void controlMecanum(int x, int y, int acc, int steer, motor DriveLF, motor DriveLR, motor DriveRF, motor DriveRB);
 
   // Sets the PID constants for driving.
-  void setDriveConstants(float driveMaxVoltage, float driveKp, float driveKi, float driveKd, float driveStarti);
+  void setDrivePID(float driveMaxVoltage, float driveKp, float driveKi, float driveKd, float driveStarti);
   // Sets the exit conditions for driving.
   void setDriveExitConditions(float driveSettleError, float driveSettleTime, float driveTimeout);
   // Sets the PID constants for maintaining heading.
-  void setHeadingConstants(float headingMaxVoltage, float headingKp, float headingKd);
+  void setHeadingPID(float headingMaxVoltage, float headingKp, float headingKd);
   // Sets the exit conditions for turning.
   void setTurnExitConditions(float turnSettleError, float turnSettleTime, float turnTimeout);
   // Sets the PID constants for turning.
-  void setTurnConstants(float turnMaxVoltage, float turnKp, float turnKi, float turnKd, float turnStarti); 
+  void setTurnPID(float turnMaxVoltage, float turnKp, float turnKi, float turnKd, float turnStarti); 
   // Sets the constants for arcade drive.
   void setArcadeConstants(float kBrake, float kTurnBias, float kTurnDamping);
-
 
   // Stops the drivetrain.
   void stop(vex::brakeType mode);

@@ -8,7 +8,7 @@ Drive::Drive(motor_group LDrive, motor_group RDrive, inertial gyro, float wheelD
   RDrive(RDrive),
   Gyro(gyro) {}
 
-void Drive::setTurnConstants(float turnMaxVoltage, float turnKp, float turnKi, float turnKd, float turnStarti) {
+void Drive::setTurnPID(float turnMaxVoltage, float turnKp, float turnKi, float turnKd, float turnStarti) {
   this -> turnMaxVoltage = turnMaxVoltage;
   this -> turnKp = turnKp;
   this -> turnKi = turnKi;
@@ -16,7 +16,7 @@ void Drive::setTurnConstants(float turnMaxVoltage, float turnKp, float turnKi, f
   this -> turnStarti = turnStarti;
 }
 
-void Drive::setDriveConstants(float driveMaxVoltage, float driveKp, float driveKi, float driveKd, float driveStarti) {
+void Drive::setDrivePID(float driveMaxVoltage, float driveKp, float driveKi, float driveKd, float driveStarti) {
   this -> driveMaxVoltage = driveMaxVoltage;
   this -> driveKp = driveKp;
   this -> driveKi = driveKi;
@@ -24,7 +24,7 @@ void Drive::setDriveConstants(float driveMaxVoltage, float driveKp, float driveK
   this -> driveStarti = driveStarti;
 }
 
-void Drive::setHeadingConstants(float headingMaxVoltage, float headingKp, float headingKd) {
+void Drive::setHeadingPID(float headingMaxVoltage, float headingKp, float headingKd) {
   this -> headingMaxVoltage = headingMaxVoltage;
   this -> headingKp = headingKp;
   this -> headingKd = headingKd;

@@ -4,10 +4,6 @@
 // All vex classes and functions are in the vex namespace
 using namespace vex;
 
-// ----------------------------------------------------------------------------
-//                                Robot Configuration
-// ----------------------------------------------------------------------------
-
 // motor and sensor definitions
 motor rollerBottom = motor(PORT11, ratio18_1, true);
 motor rollerMiddle = motor(PORT12, ratio18_1, true);
@@ -20,7 +16,6 @@ const int NUMBER_OF_MOTORS = 9;
 optical ballOptical = optical(PORT14);
 
 void inTake() {
-  ballOptical.setLightPower(100, percent);
   rollerBottom.spin(forward, 12, volt);
   rollerMiddle.spin(forward, 12, volt);
   rollerTop.stop(coast);
@@ -37,8 +32,7 @@ void stopRollers() {
   rollerBottom.stop(brake);
   rollerMiddle.stop(brake);
   rollerTop.stop(brake);
-  ballOptical.setLightPower(0, percent);
-
+  if (ballOptical.installed()) ballOptical.setLightPower(0, percent);
 }
 
 void scoreMiddle() {
@@ -53,10 +47,15 @@ void scoreLong() {
   rollerTop.spin(forward, 12, volt);
 }
 
+void ejectBalls() {
+  scoreMiddle();
+}
+
 void colorSort()
 {
   // Checks if the optical sensor is installed.
   if (ballOptical.installed()) {    
+    ballOptical.setLightPower(100, percent);
     // Get the detected ball color
     color detectedColor = ballOptical.color();    
     if (detectedColor == color::red) {
@@ -68,7 +67,7 @@ void colorSort()
 
     // If the ball color does not match the team color, eject it
     if ((teamIsRed && detectedColor == color::blue) || (!teamIsRed && detectedColor == color::red)) {
-      scoreMiddle();
+      ejectBalls();
       wait(0.5, sec); // Wait for the rollers to finish ejecting the ball
     } 
   }

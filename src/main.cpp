@@ -10,16 +10,12 @@ using namespace rgb;
 // This object is used to register callbacks for the autonomous and driver control periods.
 competition Competition;
 
-// Global remote control object
-RemoteControl remoteControl;
-bool REMOTE_CONTROL_MODE = true;
-
 // ----------------------------------------------------------------------------
 //                                Controller Callbacks
 // ----------------------------------------------------------------------------
 
 // This function is called when the L1 button is pressed.
-// It performs color sorting: intake for red, score_middle for blue.
+// It performs color sorting.
 void buttonL1Action() {
   inTake();
   
@@ -33,7 +29,7 @@ void buttonL1Action() {
 
 void buttonL2Action() {
   outTake();
-  // Wait until the button is released to stop the intake.
+  // Wait until the button is released to stop the rollers.
   while(controller(primary).ButtonL2.pressing()) {
     wait (20, msec);
   }
@@ -43,7 +39,7 @@ void buttonL2Action() {
 void buttonR1Action() {
   chassis.stop(hold);
   scoreLong();
-  // Wait until the button is released to stop the intake.
+  // Wait until the button is released to stop the rollers.
   while(controller(primary).ButtonR1.pressing()) {
     wait (20, msec);
   }
@@ -74,7 +70,6 @@ void setupButtonMapping() {
 //                     No need to change code below this line
 // ------------------------------------------------------------------------
 
-
 // This function is called when the B button is pressed.
 // It holds the drivetrain in place until the button is released.
 void holdDrivetrain()
@@ -83,7 +78,7 @@ void holdDrivetrain()
   chassis.stop(hold);
   controller(primary).rumble(".");
   wait(0.5, sec);
-  // Display the distance traveled previously on the controller screen.
+  // Display heading and the distance traveled previously on the controller screen.
   float h = chassis.getHeading();
   char statusMsg[50];
   sprintf(statusMsg, "heading: %.1f, distance: %.1f", h, distanceTraveled);
@@ -171,7 +166,6 @@ void testAutons()
 
     // otherwise run macro code 
   chassis.driverControlDisabled = true;
-
   // TODO: Insert test code here. This is a placeholder for future actions triggered by Button A. 
 
   chassis.driverControlDisabled = false;
@@ -179,6 +173,9 @@ void testAutons()
 
 
 
+// Global remote control object
+RemoteControl remoteControl;
+bool REMOTE_CONTROL_MODE = true;
 // ----------------------------------------------------------------------------
 //                                Main
 // ----------------------------------------------------------------------------
@@ -190,7 +187,7 @@ int main() {
   Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
 
-  // Register the controller button callbacks.
+  // Register the default controller button callbacks.
   controller(primary).ButtonRight.pressed(enterTestMode);
   controller(primary).ButtonLeft.pressed(changeDriveMode);
   controller(primary).ButtonA.pressed(testAutons);

@@ -101,11 +101,11 @@ void usercontrol(void) {
 
 The `Drive` class provides several methods for configuring the drivetrain's PID constants and exit conditions.
 
-*   `setDriveConstants(...)`
+*   `setDrivePID(...)`
 *   `setDriveExitConditions(...)`
-*   `setTurnConstants(...)`
+*   `setTurnPID(...)`
 *   `setTurnExitConditions(...)`
-*   `setHeadingConstants(...)`
+*   `setHeadingPID(...)`
 
 **Example from `src/chassis.cpp`:**
 
@@ -114,8 +114,8 @@ void resetChassis() {
   chassis.setHeading(inertial1.heading());
   chassis.stop(coast);
 
-  chassis.setHeadingConstants(6, .4, 1);
-  chassis.setTurnConstants(10, 0.2, .015, 1.5, 7.5);
+  chassis.setHeadingPID(6, .4, 1);
+  chassis.setTurnPID(10, 0.2, .015, 1.5, 7.5);
 
   chassis.setDriveExitConditions(1, 200, 2000);
   chassis.setTurnExitConditions(1.5, 200, 1500);

@@ -33,15 +33,12 @@ char const * autonMenuText[] = {
   "auton2"
 };
 
-// The default autonomous routine selection.
-int currentAutonSelection = 0;
-
-
-
 // ----------------------------------------------------------------------------
 //                     No need to change code below this line
 // ----------------------------------------------------------------------------
 
+// The default autonomous routine selection.
+int currentAutonSelection = 0;
 
 // When true, the autonomous routine will stop at each step if the 'A' button is hold.
 bool autonTestMode = false;

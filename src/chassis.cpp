@@ -7,13 +7,8 @@ using namespace vex;
 // A global instance of brain used for printing to the V5 Brain screen
 brain Brain;
 
-// ----------------------------------------------------------------------------
-//                                Drivetrain
-// ----------------------------------------------------------------------------
-// motor definitions
-// The first parameter is the port number.
-// The second parameter is the gear ratio.
-// The third parameter is whether the motor is reversed or not.
+//drivetrain motor definitions. 
+//If you only have 4  motors (or mecanum drive), assign leftMotor3, rightMotor3 to unused ports.
 motor leftMotor1 = motor(PORT1, ratio6_1, true);
 motor leftMotor2 = motor(PORT2, ratio6_1, true);
 motor leftMotor3 = motor(PORT3, ratio18_1, false);
@@ -22,7 +17,8 @@ motor rightMotor1 = motor(PORT4, ratio6_1, false);
 motor rightMotor2 = motor(PORT5, ratio6_1, false);
 motor rightMotor3 = motor(PORT6, ratio18_1, true);
 
-// inertial sensor for turning and heading
+// inertial sensor for auton turning and heading
+// If you do not have an inertial sensor, assign it to an unused port. Ignore the warning at the start of the program.
 inertial inertial1 = inertial(PORT10);
 
 // 0: arcade drive, 1: tank drive, 2: mecanum drive
@@ -33,8 +29,6 @@ int DRIVE_MODE = 0;
 //                     No need to change code below this line
 // ------------------------------------------------------------------------
 
-// The Drive class is a wrapper for the VEX motor_group class.
-// It provides a more intuitive interface for controlling a drivetrain.
 Drive chassis(
   //Left Motors:
   motor_group(leftMotor1, leftMotor2, leftMotor3),
@@ -48,9 +42,6 @@ Drive chassis(
   0.75
 );
 
-// end game reminder will start at 85 seconds into the match
-const int END_GAME_SECONDS = 85;
-
 // Resets the chassis constants.
 void resetChassis() {
   // Sets the heading of the chassis to the current heading of the inertial sensor.
@@ -60,25 +51,21 @@ void resetChassis() {
 
   // Sets the drive constants for the chassis.
   // These constants are used to control the acceleration and deceleration of the chassis.
-  chassis.setDriveConstants(10, 1.5, 0, 10, 0);
+  chassis.setDrivePID(10, 1.5, 0, 10, 0);
   // Sets the turn constants for the chassis.
   // These constants are used to control the turning of the chassis.
-  chassis.setTurnConstants(10, 0.2, .015, 1.5, 7.5);
-
-  // Sets the exit conditions for the drive functions.
-  // These conditions are used to determine when the drive function should exit.
-  chassis.setDriveExitConditions(1, 200, 2000);
-  // Sets the exit conditions for the turn functions.
-  // These conditions are used to determine when the turn function should exit.
-  chassis.setTurnExitConditions(1.5, 200, 1500);
-
+  chassis.setTurnPID(10, 0.2, .015, 1.5, 7.5);
   // Sets the heading constants for the chassis.
   // These constants are used to control the heading adjustment of the chassis.
-  chassis.setHeadingConstants(6, .4, 1);
+  chassis.setHeadingPID(6, .4, 1);
 
+  // Sets the arcade drive constants for the chassis.
+  // These constants are used to control the arcade drive of the chassis.
   chassis.setArcadeConstants(0.16, 0.5, 0.85);
 }
 
+// end game reminder will start at 85 seconds into the match
+const int END_GAME_SECONDS = 85;
 // This function is a thread that runs in the background to remind the driver of the end game.
 int endgameTimer() {
   // Clears the brain timer.
@@ -113,9 +100,9 @@ void usercontrol(void) {
   // This loop runs forever, controlling the robot during the driver control period.
   while (1) {
     // This is the tank drive code.
-    if(controller(primary).Axis1.position() == 0 && controller(primary).Axis2.position() == 0 
-    && controller(primary).Axis3.position() == 0 && controller(primary).Axis4.position() == 0) {
-      // If all axes are at 0, stop the chassis.
+    if(controller(primary).Axis1.position() != 0 || controller(primary).Axis2.position() != 0 
+   || controller(primary).Axis3.position() != 0 || controller(primary).Axis4.position() != 0) {
+      chassis.joystickTouched = true;
     }
     if (DRIVE_MODE == 1) chassis.controlTank(controller(primary).Axis3.position(), controller(primary).Axis2.position());
     // This is the arcade drive code.
