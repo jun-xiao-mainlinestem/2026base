@@ -94,11 +94,12 @@ void enterTestMode()
   // Activate test mode if the button is pressed immediately after running the program
   if ((Brain.Timer.time(sec) < 5) && autonTestStep == 0) {
     controller(primary).rumble("-");
-    autonTestStep = true;
+    autonTestMode = true;
+    autonTestStep = 1;
     return;
   }
   // if in test mode, scroll through the auton menu
-  if (autonTestStep > 0)
+  if (autonTestMode)
   {
     // Reset the auton test step to 1 and change the current auton selection.
     currentAutonSelection = (currentAutonSelection + 1) % autonNum;
@@ -129,7 +130,7 @@ void changeDriveMode()
     return;
   }
   // if in test mode, scroll through the auton menu
-  if (autonTestStep > 0)
+  if (autonTestMode)
   {
     // Reset the auton test step to 1 and change the current auton selection.
     autonTestStep = 1;
@@ -149,7 +150,7 @@ void changeDriveMode()
 void testAutons()
 {
   // If in test mode, run the selected autonomous routine for testing and displays the run time.
-  if (autonTestStep>0)
+  if (autonTestMode)
   {
     chassis.driverControlDisabled = true;
     Brain.Timer.clear();

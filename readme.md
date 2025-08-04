@@ -6,7 +6,7 @@ This project provides a lightweight C++ template for VEX V5 robotics competition
 
 This library is designed specifically for **middle school robotics teams** who are getting started with VEX V5 c++ programming and do not have odometry (tracking wheel) setups. Advanced high school teams often use comprehensive libraries like [JAR-Template](https://github.com/JacksonAreaRobotics/JAR-Template) and [LemLib](https://github.com/LemLib/LemLib) that provide features such as path following and pure pursuit. In contrast, this template focuses on simplicity and ease of use, allows teams to quickly get their robot operational without the complexity of advanced positioning systems.
 
-It provides essential driving controls, simple autonomous code structure, and straightforward configuration so that teams can quickly extend and adapt the core functionality to their specific needs. The built-in test mode allows teams to test all of their auton routines during driver control without having to re-download the program or use the field switch. Finally, the companion mobile web applications for robot remote control via typed or voice commands add a fun and interactive dimension to controlling a VEX robot. 
+It provides essential driving controls, simple autonomous code structure, and straightforward configuration so that teams can quickly extend and adapt the core functionality to their specific needs. The built-in test mode allows teams to test all of their auton routines during driver control and in steps without having to re-download the program or use the field switch. Finally, the companion mobile web applications for robot remote control via typed or voice commands add a fun and interactive dimension to controlling a VEX robot. 
 
 ## Installation
 *   **Prerequisites:** Before you begin, make sure:
@@ -43,7 +43,7 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
 *   **Drive Mode:** Set `DRIVE_MODE` to `0` for arcade control, `1` for tank control, or `2` for mecanum control.
 *   **(Optional) Wheel Size and Gear Ratio:**
     *   Find the Drive constructor and update the wheel diameter and gear ratio parameters for precise auton driving.
-*   **(Optional) Drive Constants:** If needed, adjust any of constants for the drive train in the `resetChassis()` function. 
+*   **(Optional) Drive Constants:** If needed, adjust any of constants for the drivetrain in the `resetChassis()` function. 
 
 ### Other Subsystems ([robot-config.cpp](src/robot-config.cpp))
 
@@ -64,23 +64,24 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
 
 ## Run sample program
 - Build and download the program to the brain and use game controller to select the program slot and run the program.
-- Test the selected drive mode:
-  - **Arcade Drive (Mode 0)**: Use left stick to turn and right stick to drive forward/backward
-  - **Tank Drive (Mode 1)**: Use left stick for left side motors, right stick for right side motors  
-  - **Mecanum Drive (Mode 2)**: Use left stick for forward/backward and turning, right stick for strafing
-- (Optional) Change drive mode
-    -  Press the controller's `Left button` within 5 seconds of program startup to enter toggle between tank and arcade drive mode.
-    - For all sample button mappings and actions, see [button controls](doc/button_control.md).
-- (Optional) Test all autons during driver control using the game controller:
+- Drive mode:
+  - Arcade Drive (default): Use left stick to turn and right stick to drive forward/backward
+  - Tank Drive: Use left stick for left side motors, right stick for right side motors  
+  - Mecanum Drive: Use left stick for forward/backward and turning, right stick for strafing
+  - Change drive mode during driver control: Press the controller's `Left button` within 5 seconds of program startup to toggle between tank and arcade drive mode.
+- Run individual auton:
+  - Set default auton: Set the `currentAutonSelection` value in `auton.cpp` and run `timed run`.
+  - Auton Selection:  Before autonomous period is started via field switch, press brain screen to scroll through the list of autons.
+- (Optional) Test all autons during driver control:
     - Press the controller's `Right button` within 5 seconds of program startup to enter test mode.
-    - When in test mode, press the `Right button` to cycle through the list of autonomous routines on the controller screen.
-    - Press the `A button` to run the routine shown on the screen. Hold the button to continue past stops.
+    - When in test mode, press the `Left Button` or the `Right button` to cycle through the list of autonomous routines on the controller screen.
+    - Press the `A button` to run the routine shown on the controller screen in steps.
     - See the complete action flow in [Test Auton Button Flow Explanation](doc/test_auton_buttons.md)
-- (Optional) Remotely control the robot in browser to design and test auton routes without rebuilding programs:
+- (Optional) Remotely control the robot with companion web applications:
     - Read [remote control document](/voice-control-robot/README.md) for the steps and basic understanding how it works.
 &nbsp;
 ---
-# More on the Programming Interfaces of the [Library](src/rgb-template/)
+# Programming Interfaces of the library
 ## Drive APIs ([drive.h](include/rgb-template/drive.h))
 
 The `Drive` class provides a set of APIs to control the robot's movement.

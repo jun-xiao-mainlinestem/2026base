@@ -19,6 +19,7 @@ void runAutonItem(int step);
 void printMenu(char const * txt[]);
 
 extern bool exitAutonMenu;
+extern bool autonTestMode;
 
 // The autonomous task.
 void autonomous();

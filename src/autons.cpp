@@ -1,34 +1,45 @@
 #include "vex.h"
 
 // The first autonomous routine.
-void test1() {
+void auton1() {
   chassis.driveWithVoltage(3, 3);
   wait(1000, msec);
   chassis.stop(brake);
 }
 
 // The second autonomous routine.
-void test2(int step) {
+// This routine is broken into steps to allow for testing.
+// Each step can be run independently by passing the step number to the function.
+// This allows for easier debugging and testing of individual parts of the autonomous routine.
+void auton2(int step) {
   if (step == 1) 
   {
-    chassis.driveDistance(12);
+    chassis.turnToHeading(180);
     step++;
+    if (autonTestMode) return; // If in test mode, stop here for testing.
   }
-  if (step == 2) 
+  if (step == 2)  
   {
-    chassis.turnToHeading(chassis.getHeading() + 90);
     chassis.driveDistance(12);
+    chassis.turnToHeading(chassis.getHeading() + 90); // Turn right
+    step++;
+    if (autonTestMode) return; // If in test mode, stop here for testing.
   } 
+  if(step == 3) 
+  {
+    chassis.turnToHeading(chassis.getHeading() - 90); // Turn left
+    chassis.driveDistance(-12);
+  }
 }
 
 // Runs the selected autonomous routine.
 void runAutonItem(int step=1) {
   switch (currentAutonSelection) {
   case 0:
-    test1();
+    auton1();
     break;
   case 1:
-    test2(step);
+    auton2(step);
     break;
   }
 }
@@ -39,12 +50,14 @@ char const * autonMenuText[] = {
   "auton2"
 };
 
+// The default autonomous routine selection.
+int currentAutonSelection = 1;
+
 // ----------------------------------------------------------------------------
 //                     No need to change code below this line
 // ----------------------------------------------------------------------------
 
-// The default autonomous routine selection.
-int currentAutonSelection = 0;
+
 
 // The total number of autonomous routines. This is calculated in showAutonMenu().
 int autonNum;
@@ -75,6 +88,9 @@ void printMenuItem(char const * txt[]) {
 
 // This variable is used to exit the autonomous menu.
 bool exitAutonMenu = false;
+
+// When true, the autonomous routine will stop at each step for testing.
+bool autonTestMode = false;
 
 // This function displays the autonomous menu on the brain screen.
 void printMenu(char const * txt[]) {
