@@ -19,3 +19,4 @@ void usercontrol();
 // The pre-autonomous task.
 void pre_auton();
 
+bool changeDriveMode();

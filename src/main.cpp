@@ -124,24 +124,12 @@ void buttonAAction()
   chassis.driverControlDisabled = false;
 }
 
-
-bool abortMacro = false;
 void buttonBAction()
 {
-  // toggle tank or arcade drive mode if the button is pressed immediately after running the program
-  if ((Brain.Timer.time(sec) < 5)) {
-    controller(primary).rumble("-");
-    DRIVE_MODE = (DRIVE_MODE == 0) ? 1 : 0;
-    if (DRIVE_MODE == 1) {
-      printControllerScreen("Drive Mode: Tank");
-    } else {
-      printControllerScreen("Drive Mode: Arcade");
-    }
-    return;
-  }
+  if (changeDriveMode()) return;
 
   // otherwise brakes the drivetrain until the button is released.
-  abortMacro = true;
+  chassis.drivetrainNeedsStopped = true;
   double distanceTraveled = (chassis.getLeftPositionIn() + chassis.getRightPositionIn()) / 2.0;
   chassis.stop(hold);
   controller(primary).rumble(".");

@@ -87,6 +87,21 @@ int endgameTimer() {
   return 1;
 }
 
+bool changeDriveMode(){
+  // toggle tank or arcade drive mode if the button is pressed immediately after running the program
+  if ((Brain.Timer.time(sec) < 5)) {
+    controller(primary).rumble("-");
+    DRIVE_MODE = (DRIVE_MODE == 0) ? 1 : 0;
+    if (DRIVE_MODE == 1) {
+      printControllerScreen("Drive Mode: Tank");
+    } else {
+      printControllerScreen("Drive Mode: Arcade");
+    }
+    return true;
+  }
+  return false;
+}
+
 // This is the user control function.
 // It is called when the driver control period starts.
 void usercontrol(void) {

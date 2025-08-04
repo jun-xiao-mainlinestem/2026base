@@ -71,7 +71,7 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
   - Change drive mode during driver control: Press the controller's `B button` within 5 seconds of program startup to switch from tank to arcade drive mode and vice versa.
 - Run individual auton:
   - Set default auton: Set the `currentAutonSelection` value in `auton.cpp` and run `timed run`.
-  - Auton Selection:  Before autonomous period is started via field switch, press brain screen to scroll through the list of autons.
+  - Auton Selection:  Before autonomous period is started via the field switch, press the brain screen to scroll through the list of autons.
 - (Optional) Test all autons during driver control:
     - Press the controller's `Right button` within 5 seconds of program startup to enter test mode.
     - When in test mode, press the `A button` to run the selected auton or current step.

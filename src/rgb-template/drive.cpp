@@ -85,14 +85,14 @@ void Drive::turnToHeading(float heading, float turnMaxVoltage) {
 void Drive::turnToHeading(float heading, float turnMaxVoltage, bool chaining, float settleError, float settleTime) {
   desiredHeading = reduce_0_to_360(heading);
   PID turnPID(reduce_negative_180_to_180(heading - getHeading()), turnKp, turnKi, turnKd, turnStarti, settleError, settleTime, turnTimeout);
-  while (!turnPID.isDone()) {
+  while (!turnPID.isDone() && !drivetrainNeedsStopped) {
     float error = reduce_negative_180_to_180(heading - getHeading());
     float output = turnPID.compute(error);
     output = threshold(output, -turnMaxVoltage, turnMaxVoltage);
     driveWithVoltage(output, -output);
     wait(10, msec);
   }
-  if (!chaining) {
+  if (!chaining || drivetrainNeedsStopped) {
     LDrive.stop(hold);
     RDrive.stop(hold);
   }
@@ -131,8 +131,7 @@ void Drive::driveDistance(float distance, float driveMaxVoltage, float heading, 
     driveWithVoltage(driveOutput + headingOutput, driveOutput - headingOutput);
     wait(10, msec);
   }
-  drivetrainNeedsStopped = false;
-  if (!chaining) {
+  if (!chaining || drivetrainNeedsStopped) {
     LDrive.stop(hold);
     RDrive.stop(hold);
   }
@@ -148,7 +147,6 @@ void Drive::setArcadeConstants(float kBrake, float kTurnBias, float kTurnDamping
   this->kTurnBias = kTurnBias;
   this->kTurnDamping = kTurnDamping;
 }
-
 
 void Drive::controlArcade(int y, int x) {
   if (driverControlDisabled) return;
@@ -213,7 +211,6 @@ void Drive::controlTank(int left, int right) {
   }
 }
 
-
 void Drive::controlMecanum(int x, int y, int acc, int steer, motor DriveLF, motor DriveRF, motor DriveLB, motor DriveRB) {
   if (driverControlDisabled) return;
 
@@ -223,9 +220,6 @@ void Drive::controlMecanum(int x, int y, int acc, int steer, motor DriveLF, moto
   float turn = deadband(steer, 5);
   straight = curveFunction(straight, kThrottle);
   turn = curveFunction(turn, kTurn);
-//  throttle = curveFunction(throttle, kThrottle);
-//  strafe = curveFunction(strafe, kThrottle);
-
 
   if (turn == 0 && strafe == 0 && throttle == 0 && straight == 0) {
     if (drivetrainNeedsStopped) {
@@ -252,7 +246,6 @@ void Drive::controlMecanum(int x, int y, int acc, int steer, motor DriveLF, moto
     drivetrainNeedsStopped = true;
   }
 }
-
 
 void Drive::stop(vex::brakeType mode) {
     LDrive.stop(mode);
