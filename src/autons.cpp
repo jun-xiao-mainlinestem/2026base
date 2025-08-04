@@ -8,10 +8,16 @@ void auton1() {
 }
 
 // The second autonomous routine.
+void auton2() {
+  chassis.setHeading(0);  
+  chassis.driveDistance(12, 3);
+}
+
+// The long autonomous skill routine.
 // This routine is broken into steps to allow for testing.
 // Each step can be run independently based on gloabl variable autonTestStep.
 // This allows for easier debugging and testing of individual parts of the autonomous routine.
-void auton2() {
+void auton_skill() {
   if (autonTestStep == 1) 
   {
     chassis.turnToHeading(180);
@@ -39,13 +45,17 @@ void runAutonItem() {
   case 1:
     auton2();
     break;
+  case 2:
+    auton_skill();
+    break;
   }
 }
 
 // The names of the autonomous routines to be displayed in the menu.
 char const * autonMenuText[] = {
   "auton1",
-  "auton2"
+  "auton2",
+  "auton_skill"
 };
 
 // The default autonomous routine selection.
