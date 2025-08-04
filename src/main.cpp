@@ -66,70 +66,67 @@ void setupButtonMapping() {
 //               Only change code below this line when necessary
 // ------------------------------------------------------------------------
 
-// In auton test mode, set the value to positive integer.
-int autonTestStep = 0;
 // This function is called when the Right button is pressed.
-void enterTestMode()
+void buttonRightAction()
 {
-  // Activate test mode if the button is pressed immediately after running the program
-  if ((Brain.Timer.time(sec) < 5) && autonTestStep == 0) {
-    controller(primary).rumble("-");
-    printControllerScreen("Test Mode: ON");
-    wait(1, sec);
-    showAutonMenu();
-    autonTestMode = true;
-    autonTestStep = 1;
-    return;
-  }
-  // if in test mode, scroll through the auton menu
-  if (autonTestMode)
-  {
-    // Reset the auton test step to 1 and change the current auton selection.
-    currentAutonSelection = (currentAutonSelection + 1) % autonNum;
-    autonTestStep = 1;
-    showAutonMenu();
-    return;
-  }
+  if (enterTestMode()) return;
+  if (nextAutonMenu()) return;
+ 
   // otherwise, run other macro code
   chassis.driverControlDisabled = true;
   // TODO: Insert test code here. This is a placeholder for future actions triggered by Button Right.
 
   chassis.driverControlDisabled = false;
-
 }
 
-// This function is called when the B button is pressed.
-// It brakes the drivetrain until the button is released.
-bool abortMacro = false;
-void brakeDrivetrain()
+void buttonLeftAction()
 {
-    // if in test mode, scroll back through the auton menu
-  if (autonTestMode)
-  {
-    // Reset the auton test step to 1 and change the current auton selection.
-    autonTestStep = 1;
-    currentAutonSelection = (currentAutonSelection - 1 + autonNum) % autonNum;
-    showAutonMenu();
-    return;
-  }
+  if (prevAutonMenu()) return;
+ 
+  // otherwise, run other macro code
+  chassis.driverControlDisabled = true;
+  // TODO: Insert test code here. This is a placeholder for future actions triggered by Button Right.
 
-  abortMacro = true;
-  double distanceTraveled = (chassis.getLeftPositionIn() + chassis.getRightPositionIn()) / 2.0;
-  chassis.stop(hold);
-  controller(primary).rumble(".");
-  wait(0.5, sec);
-  // Display heading and the distance traveled previously on the controller screen.
-  float h = chassis.getHeading();
-  char statusMsg[50];
-  sprintf(statusMsg, "heading: %.1f, distance: %.1f", h, distanceTraveled);
-  printControllerScreen(statusMsg);
-
-  waitUntil(!controller(primary).ButtonB.pressing());
-  chassis.stop(coast);
+  chassis.driverControlDisabled = false;
 }
 
-// This function is called when the Left button is pressed.
-void changeDriveMode()
+void buttonDownAction()
+{
+  if (nextAutonStep()) return;
+
+    // otherwise run macro code 
+  chassis.driverControlDisabled = true;
+  // TODO: Insert test code here. This is a placeholder for future actions triggered by Button A. 
+
+  chassis.driverControlDisabled = false;
+}
+
+void buttonUpAction()
+{
+  if (prevAutonStep()) return;
+
+    // otherwise run macro code 
+  chassis.driverControlDisabled = true;
+  // TODO: Insert test code here. This is a placeholder for future actions triggered by Button A. 
+
+  chassis.driverControlDisabled = false;
+}
+
+
+void buttonAAction()
+{
+  if (runAutonTest()) return;
+
+    // otherwise run macro code 
+  chassis.driverControlDisabled = true;
+  // TODO: Insert test code here. This is a placeholder for future actions triggered by Button A. 
+
+  chassis.driverControlDisabled = false;
+}
+
+
+bool abortMacro = false;
+void buttonBAction()
 {
   // toggle tank or arcade drive mode if the button is pressed immediately after running the program
   if ((Brain.Timer.time(sec) < 5)) {
@@ -143,39 +140,20 @@ void changeDriveMode()
     return;
   }
 
-  // otherwise, run other macro code
-  chassis.driverControlDisabled = true;
-  // TODO: Insert test code here. This is a placeholder for future actions triggered by Button Left.
+  // otherwise brakes the drivetrain until the button is released.
+  abortMacro = true;
+  double distanceTraveled = (chassis.getLeftPositionIn() + chassis.getRightPositionIn()) / 2.0;
+  chassis.stop(hold);
+  controller(primary).rumble(".");
+  wait(0.5, sec);
+  // Display heading and the distance traveled previously on the controller screen.
+  float h = chassis.getHeading();
+  char statusMsg[50];
+  sprintf(statusMsg, "heading: %.1f, distance: %.1f", h, distanceTraveled);
+  printControllerScreen(statusMsg);
 
-  chassis.driverControlDisabled = false;
-}
-
-// This function is called when the A button is pressed.
-void testAutons()
-{
-  // If in test mode, run the selected autonomous routine for testing and displays the run time.
-  if (autonTestMode)
-  {
-    double t1 = Brain.Timer.time(sec);
-    chassis.driverControlDisabled = true;
-
-    runAutonItem(autonTestStep); 
-    autonTestStep++;
-
-    double t2 = Brain.Timer.time(sec);
-    char timeMsg[30];
-    sprintf(timeMsg, "run time: %.1f", t2-t1);
-    printControllerScreen(timeMsg);
-    chassis.driverControlDisabled = false;
-
-    return;
-  }
-
-    // otherwise run macro code 
-  chassis.driverControlDisabled = true;
-  // TODO: Insert test code here. This is a placeholder for future actions triggered by Button A. 
-
-  chassis.driverControlDisabled = false;
+  waitUntil(!controller(primary).ButtonB.pressing());
+  chassis.stop(coast);
 }
 
 
@@ -194,10 +172,12 @@ int main() {
   Competition.drivercontrol(usercontrol);
 
   // Register the default controller button callbacks.
-  controller(primary).ButtonRight.pressed(enterTestMode);
-  controller(primary).ButtonLeft.pressed(changeDriveMode);
-  controller(primary).ButtonA.pressed(testAutons);
-  controller(primary).ButtonB.pressed(brakeDrivetrain);
+  controller(primary).ButtonRight.pressed(buttonRightAction);
+  controller(primary).ButtonLeft.pressed(buttonLeftAction);
+  controller(primary).ButtonDown.pressed(buttonDownAction);
+  controller(primary).ButtonUp.pressed(buttonUpAction);
+  controller(primary).ButtonA.pressed(buttonAAction);
+  controller(primary).ButtonB.pressed(buttonBAction);
 
   // Set up the button mapping for the controller.
   setupButtonMapping();

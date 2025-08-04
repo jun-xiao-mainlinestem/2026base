@@ -3,23 +3,25 @@
 
 // The currently selected autonomous routine.
 extern int currentAutonSelection;
-// The total number of autonomous routines available.
-extern int autonNum;
-// A flag to enable autonomous routine testing.
-// A flag to indicate if the robot is on the red team.
-extern bool isRedTeam;
+extern int autonTestStep;
+extern bool autonTestMode;
 
 // Displays the autonomous routine selection menu on the brain screen.
 void showAutonMenu();
-
 // Runs the selected autonomous routine.
-void runAutonItem(int step);
-
+void runAutonItem();
 // Prints the autonomous selection menu to the brain screen.
 void printMenu(char const * txt[]);
 
 extern bool exitAutonMenu;
-extern bool autonTestMode;
 
 // The autonomous task.
 void autonomous();
+
+bool enterTestMode();
+bool prevAutonMenu();
+bool nextAutonMenu();
+bool runAutonTest();
+bool prevAutonStep();
+bool nextAutonStep();
+bool continueAutonStep();

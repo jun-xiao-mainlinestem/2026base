@@ -9,37 +9,35 @@ void auton1() {
 
 // The second autonomous routine.
 // This routine is broken into steps to allow for testing.
-// Each step can be run independently by passing the step number to the function.
+// Each step can be run independently based on gloabl variable autonTestStep.
 // This allows for easier debugging and testing of individual parts of the autonomous routine.
-void auton2(int step) {
-  if (step == 1) 
+void auton2() {
+  if (autonTestStep == 1) 
   {
     chassis.turnToHeading(180);
-    step++;
-    if (autonTestMode) return; // If in test mode, stop here for testing.
+    if (!continueAutonStep()) return; // If in test mode, stop here for testing.
   }
-  if (step == 2)  
+  if (autonTestStep == 2)  
   {
-    chassis.driveDistance(12);
+    chassis.driveDistance(5);
     chassis.turnToHeading(chassis.getHeading() + 90); // Turn right
-    step++;
-    if (autonTestMode) return; // If in test mode, stop here for testing.
+    if (!continueAutonStep()) return; // If in test mode, stop here for testing.
   } 
-  if(step == 3) 
+  if(autonTestStep == 3) 
   {
     chassis.turnToHeading(chassis.getHeading() - 90); // Turn left
-    chassis.driveDistance(-12);
+    chassis.driveDistance(-5);
   }
 }
 
 // Runs the selected autonomous routine.
-void runAutonItem(int step=1) {
+void runAutonItem() {
   switch (currentAutonSelection) {
   case 0:
     auton1();
     break;
   case 1:
-    auton2(step);
+    auton2();
     break;
   }
 }
@@ -52,12 +50,15 @@ char const * autonMenuText[] = {
 
 // The default autonomous routine selection.
 int currentAutonSelection = 1;
+// The current step in the autonomous test mode.
+int autonTestStep = 1;
+// When true, the autonomous routine will stop at each step for testing.
+bool autonTestMode = false;
+
 
 // ----------------------------------------------------------------------------
 //                     No need to change code below this line
 // ----------------------------------------------------------------------------
-
-
 
 // The total number of autonomous routines. This is calculated in showAutonMenu().
 int autonNum;
@@ -89,9 +90,6 @@ void printMenuItem(char const * txt[]) {
 // This variable is used to exit the autonomous menu.
 bool exitAutonMenu = false;
 
-// When true, the autonomous routine will stop at each step for testing.
-bool autonTestMode = false;
-
 // This function displays the autonomous menu on the brain screen.
 void printMenu(char const * txt[]) {
   // Sets the font to mono30.
@@ -120,6 +118,108 @@ void printMenu(char const * txt[]) {
   // Sets the font to mono20.
   Brain.Screen.setFont(mono20);
 }
+
+bool enterTestMode()
+{
+  // Activate test mode if the button is pressed immediately after running the program
+  if ((Brain.Timer.time(sec) < 5) && !autonTestMode) {
+    controller(primary).rumble("-");
+    printControllerScreen("Test Mode: ON");
+    wait(1, sec);
+    showAutonMenu();
+    autonTestMode = true;
+    autonTestStep = 1;
+    return true;
+  }
+  return false;
+}
+
+bool nextAutonMenu()
+{
+  // if in test mode, scroll through the auton menu
+  if (autonTestMode)
+  {
+    controller(primary).rumble(".");
+    // Reset the auton test step to 1 and change the current auton selection.
+    currentAutonSelection = (currentAutonSelection + 1) % autonNum;
+    autonTestStep = 1;
+    showAutonMenu();
+    return true;
+  }
+  return false;
+}
+
+bool prevAutonMenu()
+{
+  // if in test mode, scroll through the auton menu
+  if (autonTestMode)
+  {
+    controller(primary).rumble(".");
+    // Reset the auton test step to 1 and change the current auton selection.
+    currentAutonSelection = (currentAutonSelection - 1 + autonNum) % autonNum;
+    autonTestStep = 1;
+    showAutonMenu();
+    return true;
+  }
+  return false;
+}
+
+bool prevAutonStep(){
+  // If in test mode, go to the previous step.
+  if (autonTestMode) {
+    controller(primary).rumble(".");
+    if (autonTestStep > 1) autonTestStep--;
+    controller(primary).Screen.print("Step: %d         ", autonTestStep);
+    return true;
+  }
+  return false;
+}
+
+bool nextAutonStep()
+{
+  // If in test mode, go to the next step.
+  if (autonTestMode) {
+    controller(primary).rumble(".");
+    autonTestStep++;
+    controller(primary).Screen.print("Step: %d           ", autonTestStep);
+    return true;
+  }
+  return false; 
+}
+
+bool continueAutonStep()
+{
+  autonTestStep++;
+  if (autonTestMode) {
+    return false;
+  }
+  return true; 
+}
+
+bool runAutonTest()
+{
+  // If in test mode, run the selected autonomous routine for testing and displays the run time.
+  if (autonTestMode)
+  {
+    controller(primary).rumble(".");
+
+    double t1 = Brain.Timer.time(sec);
+    chassis.driverControlDisabled = true;
+
+    runAutonItem(); 
+
+    double t2 = Brain.Timer.time(sec);
+    char timeMsg[30];
+    sprintf(timeMsg, "run time: %.0f", t2-t1);
+    printControllerScreen(timeMsg);
+    chassis.driverControlDisabled = false;
+    chassis.stop(brake);
+
+    return true;
+  }
+  return false;
+}
+
 
 // This is the autonomous function.
 // It is called when the autonomous period starts.

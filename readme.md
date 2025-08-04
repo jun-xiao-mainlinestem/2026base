@@ -68,14 +68,14 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
   - Arcade Drive (default): Use left stick to turn and right stick to drive forward/backward
   - Tank Drive: Use left stick for left side motors, right stick for right side motors  
   - Mecanum Drive: Use left stick for forward/backward and turning, right stick for strafing
-  - Change drive mode during driver control: Press the controller's `Left button` within 5 seconds of program startup to switch from tank to arcade drive mode and vice versa.
+  - Change drive mode during driver control: Press the controller's `B button` within 5 seconds of program startup to switch from tank to arcade drive mode and vice versa.
 - Run individual auton:
   - Set default auton: Set the `currentAutonSelection` value in `auton.cpp` and run `timed run`.
   - Auton Selection:  Before autonomous period is started via field switch, press brain screen to scroll through the list of autons.
 - (Optional) Test all autons during driver control:
     - Press the controller's `Right button` within 5 seconds of program startup to enter test mode.
-    - When in test mode, press the `Right button` and the `B button` to cycle through the list of autonomous routines on the controller screen.
-    - When in test mode, Press the `A button` to run the routine shown on the controller screen in steps.
+    - When in test mode, press the `A button` to run the routine shown on the controller screen in steps.
+    - When in test mode, press the `Left, Right, Up, Down` buttons to cycle through the list of autonomous routines and steps on the controller screen.
     - See the complete action flow in [Test Auton Button Flow Explanation](doc/test_auton_buttons.md)
 - (Optional) Remotely control the robot with companion web applications:
     - Read [remote control document](/voice-control-robot/README.md) for the steps and basic understanding how it works.
