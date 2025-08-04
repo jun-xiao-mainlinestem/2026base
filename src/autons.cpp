@@ -8,21 +8,27 @@ void test1() {
 }
 
 // The second autonomous routine.
-void test2() {
-  chassis.driveDistance(12);
-  if (!shouldContinueAutonStep()) return;
-  chassis.turnToHeading(90);
-  chassis.driveDistance(12);
+void test2(int step) {
+  if (step == 1) 
+  {
+    chassis.driveDistance(12);
+    step++;
+  }
+  if (step == 2) 
+  {
+    chassis.turnToHeading(chassis.getHeading() + 90);
+    chassis.driveDistance(12);
+  } 
 }
 
 // Runs the selected autonomous routine.
-void runAutonItem() {
+void runAutonItem(int step=1) {
   switch (currentAutonSelection) {
   case 0:
     test1();
     break;
   case 1:
-    test2();
+    test2(step);
     break;
   }
 }
@@ -39,12 +45,6 @@ char const * autonMenuText[] = {
 
 // The default autonomous routine selection.
 int currentAutonSelection = 0;
-
-// When true, the autonomous routine will stop at each step if the 'A' button is hold.
-bool autonTestMode = false;
-bool shouldContinueAutonStep() {
-  return !(autonTestMode && !controller(primary).ButtonA.pressing());
-}
 
 // The total number of autonomous routines. This is calculated in showAutonMenu().
 int autonNum;

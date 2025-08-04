@@ -26,7 +26,7 @@ int DRIVE_MODE = 0;
 
 
 // ------------------------------------------------------------------------
-//                     No need to change code below this line
+//               Only change code below this line when necessary
 // ------------------------------------------------------------------------
 
 Drive chassis(

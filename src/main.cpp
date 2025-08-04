@@ -10,10 +10,6 @@ using namespace rgb;
 // This object is used to register callbacks for the autonomous and driver control periods.
 competition Competition;
 
-// ----------------------------------------------------------------------------
-//                                Controller Callbacks
-// ----------------------------------------------------------------------------
-
 // This function is called when the L1 button is pressed.
 // It performs color sorting.
 void buttonL1Action() {
@@ -67,13 +63,15 @@ void setupButtonMapping() {
 
 
 // ------------------------------------------------------------------------
-//                     No need to change code below this line
+//               Only change code below this line when necessary
 // ------------------------------------------------------------------------
 
 // This function is called when the B button is pressed.
-// It holds the drivetrain in place until the button is released.
-void holdDrivetrain()
+// It brakes the drivetrain until the button is released.
+bool abortMacro = false;
+void brakeDrivetrain()
 {
+  abortMacro = true;
   double distanceTraveled = (chassis.getLeftPositionIn() + chassis.getRightPositionIn()) / 2.0;
   chassis.stop(hold);
   controller(primary).rumble(".");
@@ -88,22 +86,23 @@ void holdDrivetrain()
   chassis.stop(coast);
 }
 
-
-// Global flag autonTestMode indicating whether the robot is in autonomous test mode.
-// When true, special button actions allow selection and testing of autonomous routines.
+// In auton test mode, set the value to positive integer.
+int autonTestStep = 0;
 // This function is called when the Right button is pressed.
 void enterTestMode()
 {
   // Activate test mode if the button is pressed immediately after running the program
-  if ((Brain.Timer.time(sec) < 5) && !autonTestMode) {
+  if ((Brain.Timer.time(sec) < 5) && autonTestStep == 0) {
     controller(primary).rumble("-");
-    autonTestMode = true;
+    autonTestStep = true;
     return;
   }
   // if in test mode, scroll through the auton menu
-  if (autonTestMode)
+  if (autonTestStep > 0)
   {
+    // Reset the auton test step to 1 and change the current auton selection.
     currentAutonSelection = (currentAutonSelection + 1) % autonNum;
+    autonTestStep = 1;
     showAutonMenu();
     return;
   }
@@ -130,8 +129,10 @@ void changeDriveMode()
     return;
   }
   // if in test mode, scroll through the auton menu
-  if (autonTestMode)
+  if (autonTestStep > 0)
   {
+    // Reset the auton test step to 1 and change the current auton selection.
+    autonTestStep = 1;
     currentAutonSelection = (currentAutonSelection - 1) % autonNum;
     showAutonMenu();
     return;
@@ -148,12 +149,13 @@ void changeDriveMode()
 void testAutons()
 {
   // If in test mode, run the selected autonomous routine for testing and displays the run time.
-  if (autonTestMode)
+  if (autonTestStep>0)
   {
     chassis.driverControlDisabled = true;
     Brain.Timer.clear();
 
-    runAutonItem(); 
+    runAutonItem(autonTestStep); 
+    autonTestStep++;
 
     double t = Brain.Timer.time(sec);
     char timeMsg[30];
@@ -170,7 +172,6 @@ void testAutons()
 
   chassis.driverControlDisabled = false;
 }
-
 
 
 // Global remote control object
@@ -191,7 +192,7 @@ int main() {
   controller(primary).ButtonRight.pressed(enterTestMode);
   controller(primary).ButtonLeft.pressed(changeDriveMode);
   controller(primary).ButtonA.pressed(testAutons);
-  controller(primary).ButtonB.pressed(holdDrivetrain);
+  controller(primary).ButtonB.pressed(brakeDrivetrain);
 
   // Set up the button mapping for the controller.
   setupButtonMapping();

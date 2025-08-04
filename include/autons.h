@@ -13,14 +13,12 @@ extern bool isRedTeam;
 void showAutonMenu();
 
 // Runs the selected autonomous routine.
-void runAutonItem();
+void runAutonItem(int step);
 
 // Prints the autonomous selection menu to the brain screen.
 void printMenu(char const * txt[]);
 
 extern bool exitAutonMenu;
-extern bool autonTestMode;
-bool shouldContinueAutonStep();
 
 // The autonomous task.
 void autonomous();
