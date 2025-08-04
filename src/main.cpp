@@ -66,26 +66,6 @@ void setupButtonMapping() {
 //               Only change code below this line when necessary
 // ------------------------------------------------------------------------
 
-// This function is called when the B button is pressed.
-// It brakes the drivetrain until the button is released.
-bool abortMacro = false;
-void brakeDrivetrain()
-{
-  abortMacro = true;
-  double distanceTraveled = (chassis.getLeftPositionIn() + chassis.getRightPositionIn()) / 2.0;
-  chassis.stop(hold);
-  controller(primary).rumble(".");
-  wait(0.5, sec);
-  // Display heading and the distance traveled previously on the controller screen.
-  float h = chassis.getHeading();
-  char statusMsg[50];
-  sprintf(statusMsg, "heading: %.1f, distance: %.1f", h, distanceTraveled);
-  printControllerScreen(statusMsg);
-
-  waitUntil(!controller(primary).ButtonB.pressing());
-  chassis.stop(coast);
-}
-
 // In auton test mode, set the value to positive integer.
 int autonTestStep = 0;
 // This function is called when the Right button is pressed.
@@ -94,6 +74,9 @@ void enterTestMode()
   // Activate test mode if the button is pressed immediately after running the program
   if ((Brain.Timer.time(sec) < 5) && autonTestStep == 0) {
     controller(primary).rumble("-");
+    printControllerScreen("Test Mode: ON");
+    wait(1, sec);
+    showAutonMenu();
     autonTestMode = true;
     autonTestStep = 1;
     return;
@@ -115,6 +98,36 @@ void enterTestMode()
 
 }
 
+// This function is called when the B button is pressed.
+// It brakes the drivetrain until the button is released.
+bool abortMacro = false;
+void brakeDrivetrain()
+{
+    // if in test mode, scroll back through the auton menu
+  if (autonTestMode)
+  {
+    // Reset the auton test step to 1 and change the current auton selection.
+    autonTestStep = 1;
+    currentAutonSelection = (currentAutonSelection - 1 + autonNum) % autonNum;
+    showAutonMenu();
+    return;
+  }
+
+  abortMacro = true;
+  double distanceTraveled = (chassis.getLeftPositionIn() + chassis.getRightPositionIn()) / 2.0;
+  chassis.stop(hold);
+  controller(primary).rumble(".");
+  wait(0.5, sec);
+  // Display heading and the distance traveled previously on the controller screen.
+  float h = chassis.getHeading();
+  char statusMsg[50];
+  sprintf(statusMsg, "heading: %.1f, distance: %.1f", h, distanceTraveled);
+  printControllerScreen(statusMsg);
+
+  waitUntil(!controller(primary).ButtonB.pressing());
+  chassis.stop(coast);
+}
+
 // This function is called when the Left button is pressed.
 void changeDriveMode()
 {
@@ -127,15 +140,6 @@ void changeDriveMode()
     } else {
       printControllerScreen("Drive Mode: Arcade");
     }
-    return;
-  }
-  // if in test mode, scroll through the auton menu
-  if (autonTestMode)
-  {
-    // Reset the auton test step to 1 and change the current auton selection.
-    autonTestStep = 1;
-    currentAutonSelection = (currentAutonSelection - 1) % autonNum;
-    showAutonMenu();
     return;
   }
 
@@ -152,15 +156,15 @@ void testAutons()
   // If in test mode, run the selected autonomous routine for testing and displays the run time.
   if (autonTestMode)
   {
+    double t1 = Brain.Timer.time(sec);
     chassis.driverControlDisabled = true;
-    Brain.Timer.clear();
 
     runAutonItem(autonTestStep); 
     autonTestStep++;
 
-    double t = Brain.Timer.time(sec);
+    double t2 = Brain.Timer.time(sec);
     char timeMsg[30];
-    sprintf(timeMsg, "run time: %.1f", t);
+    sprintf(timeMsg, "run time: %.1f", t2-t1);
     printControllerScreen(timeMsg);
     chassis.driverControlDisabled = false;
 
