@@ -66,22 +66,13 @@ void colorSort()
       printControllerScreen("blue ball");
     }     
 
-    // If the ball color matches the team color, intake it
-    if ((teamIsRed && detectedColor == color::red) || (!teamIsRed && detectedColor == color::blue)) {
-      inTake();
+    // If the ball color does not match the team color, eject it
+    if ((teamIsRed && detectedColor == color::blue) || (!teamIsRed && detectedColor == color::red)) {
+      scoreMiddle();
+      wait(0.5, sec); // Wait for the rollers to finish ejecting the ball
     } 
-    // If the ball color doesn't match team color, eject it by score it
-    else if (detectedColor == color::red || detectedColor == color::blue) {
-      scoreLong();
-    } 
-    // If no red or blue color is detected, default to intake
-    else {
-      inTake();
-    }
-  } else {
-    // If no optical sensor is installed, default to intake
-    inTake();
   }
+  inTake();
 } 
 
 // (Optional) optical sensor for team color detection

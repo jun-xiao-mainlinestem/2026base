@@ -19,5 +19,3 @@ void usercontrol();
 // The pre-autonomous task.
 void pre_auton();
 
-// returns true when the joystick is touched.
-bool joystickTouched();

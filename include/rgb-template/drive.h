@@ -37,8 +37,12 @@ private:
   float headingKp;
   float headingKd;
 
-  // Constants for driver control.
+  // Constants for arcade drive.
   float kBrake = 0.16;
+  float kTurnBias = 0.5; 
+  float kTurnDamping = 0.85;
+
+  // allows for a non-proportional steering response
   float kThrottle = 5;
   float kTurn = 10;
 
@@ -89,9 +93,10 @@ public:
   bool drivetrainNeedsStopped = false;
   // A flag to disable driver control.
   bool driverControlDisabled = false;
+  bool joystickTouched = false;
 
   // Controls the robot in arcade mode.
-  void controlArcade(int throttle, int turn, float turnBias = 0);
+  void controlArcade(int throttle, int turn);
   // Controls the robot in tank mode.
   void controlTank(int left, int right);
   void controlMecanum(int x, int y, int acc, int steer, motor DriveLF, motor DriveLR, motor DriveRF, motor DriveRB);
@@ -106,6 +111,10 @@ public:
   void setTurnExitConditions(float turnSettleError, float turnSettleTime, float turnTimeout);
   // Sets the PID constants for turning.
   void setTurnConstants(float turnMaxVoltage, float turnKp, float turnKi, float turnKd, float turnStarti); 
+  // Sets the constants for arcade drive.
+  void setArcadeConstants(float kBrake, float kTurnBias, float kTurnDamping);
+
+
   // Stops the drivetrain.
   void stop(vex::brakeType mode);
 

@@ -60,12 +60,24 @@ void buttonR2Action() {
   }  
   chassis.stop(coast);
   stopRollers();
-
 }
+
+void setupButtonMapping() {
+  controller(primary).ButtonL1.pressed(buttonL1Action);
+  controller(primary).ButtonL2.pressed(buttonL2Action);
+  controller(primary).ButtonR1.pressed(buttonR1Action);
+  controller(primary).ButtonR2.pressed(buttonR2Action);
+}
+
+
+// ------------------------------------------------------------------------
+//                     No need to change code below this line
+// ------------------------------------------------------------------------
+
 
 // This function is called when the B button is pressed.
 // It holds the drivetrain in place until the button is released.
-void buttonBAction()
+void holdDrivetrain()
 {
   double distanceTraveled = (chassis.getLeftPositionIn() + chassis.getRightPositionIn()) / 2.0;
   chassis.stop(hold);
@@ -85,7 +97,7 @@ void buttonBAction()
 // Global flag autonTestMode indicating whether the robot is in autonomous test mode.
 // When true, special button actions allow selection and testing of autonomous routines.
 // This function is called when the Right button is pressed.
-void buttonRightAction()
+void enterTestMode()
 {
   // Activate test mode if the button is pressed immediately after running the program
   if ((Brain.Timer.time(sec) < 5) && !autonTestMode) {
@@ -109,7 +121,7 @@ void buttonRightAction()
 }
 
 // This function is called when the Left button is pressed.
-void buttonLeftAction()
+void changeDriveMode()
 {
   // toggle tank or arcade drive mode if the button is pressed immediately after running the program
   if ((Brain.Timer.time(sec) < 5)) {
@@ -138,7 +150,7 @@ void buttonLeftAction()
 }
 
 // This function is called when the A button is pressed.
-void buttonAAction()
+void testAutons()
 {
   // If in test mode, run the selected autonomous routine for testing and displays the run time.
   if (autonTestMode)
@@ -179,15 +191,13 @@ int main() {
   Competition.drivercontrol(usercontrol);
 
   // Register the controller button callbacks.
-  controller(primary).ButtonRight.pressed(buttonRightAction);
-  controller(primary).ButtonLeft.pressed(buttonLeftAction);
-  controller(primary).ButtonA.pressed(buttonAAction);
-  controller(primary).ButtonB.pressed(buttonBAction);
+  controller(primary).ButtonRight.pressed(enterTestMode);
+  controller(primary).ButtonLeft.pressed(changeDriveMode);
+  controller(primary).ButtonA.pressed(testAutons);
+  controller(primary).ButtonB.pressed(holdDrivetrain);
 
-  controller(primary).ButtonL1.pressed(buttonL1Action);
-  controller(primary).ButtonL2.pressed(buttonL2Action);
-  controller(primary).ButtonR1.pressed(buttonR1Action);
-  controller(primary).ButtonR2.pressed(buttonR2Action);
+  // Set up the button mapping for the controller.
+  setupButtonMapping();
 
   // Run the pre-autonomous function.
   pre_auton();

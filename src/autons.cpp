@@ -10,16 +10,9 @@ void test1() {
 // The second autonomous routine.
 void test2() {
   chassis.driveDistance(12);
-
   if (!shouldContinueAutonStep()) return;
-
   chassis.turnToHeading(90);
   chassis.driveDistance(12);
-  chassis.turnToHeading(180);
-  chassis.driveDistance(12);
-  chassis.turnToHeading(270);
-  chassis.driveDistance(12);
-  chassis.turnToHeading(0);
 }
 
 // Runs the selected autonomous routine.

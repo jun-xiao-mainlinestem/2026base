@@ -142,10 +142,18 @@ double curveFunction(double x, double curveScale) {
   return (powf(2.718, -(curveScale / 10)) + powf(2.718, (fabs(x) - 100) / 10) * (1 - powf(2.718, -(curveScale / 10)))) * x;
 }
 
-void Drive::controlArcade(int y, int x, float turnBias) {
+void Drive::setArcadeConstants(float kBrake, float kTurnBias, float kTurnDamping)
+{
+  this->kBrake = kBrake;
+  this->kTurnBias = kTurnBias;
+  this->kTurnDamping = kTurnDamping;
+}
+
+
+void Drive::controlArcade(int y, int x) {
   if (driverControlDisabled) return;
   float throttle = deadband(y, 5);
-  float turn = deadband(x, 5);
+  float turn = deadband(x, 5) * kTurnDamping;
 
   turn = curveFunction(turn, kTurn);
   throttle = curveFunction(throttle, kThrottle);
@@ -153,12 +161,12 @@ void Drive::controlArcade(int y, int x, float turnBias) {
   float leftPower = toVolt(throttle + turn);
   float rightPower = toVolt(throttle - turn);
 
-  if (turnBias > 0) {
+  if (kTurnBias > 0) {
     if (fabs(throttle) + fabs(turn) > 100) {
       int oldThrottle = throttle;
       int oldTurn = turn;
-      throttle *= (1 - turnBias * fabs(oldTurn / 100.0));
-      turn *= (1 - (1 - turnBias) * fabs(oldThrottle / 100.0));
+      throttle *= (1 - kTurnBias * fabs(oldTurn / 100.0));
+      turn *= (1 - (1 - kTurnBias) * fabs(oldThrottle / 100.0));
     }
     leftPower = toVolt(throttle + turn);
     rightPower = toVolt(throttle - turn);

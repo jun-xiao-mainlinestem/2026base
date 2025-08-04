@@ -28,14 +28,10 @@ inertial inertial1 = inertial(PORT10);
 // 0: arcade drive, 1: tank drive, 2: mecanum drive
 int DRIVE_MODE = 0;
 
-// constant definitions for driver control
-// TURN_FACTOR reduces the sensitivity of the turn stick
-const float TURN_FACTOR = 0.85;
-// STEER_BIAS allows for a non-proportional steering response
-const float STEER_BIAS = 0.5;
 
-// end game reminder will start at 85 seconds into the match
-const int END_GAME_SECONDS = 85;
+// ------------------------------------------------------------------------
+//                     No need to change code below this line
+// ------------------------------------------------------------------------
 
 // The Drive class is a wrapper for the VEX motor_group class.
 // It provides a more intuitive interface for controlling a drivetrain.
@@ -52,14 +48,10 @@ Drive chassis(
   0.75
 );
 
+// end game reminder will start at 85 seconds into the match
+const int END_GAME_SECONDS = 85;
 
-// ------------------------------------------------------------------------
-//                     No need to change code below this line
-// ------------------------------------------------------------------------
-
-
-// Resets the chassis to a known state.
-// This function should be called before any autonomous routines.
+// Resets the chassis constants.
 void resetChassis() {
   // Sets the heading of the chassis to the current heading of the inertial sensor.
   chassis.setHeading(inertial1.heading());
@@ -69,9 +61,6 @@ void resetChassis() {
   // Sets the drive constants for the chassis.
   // These constants are used to control the acceleration and deceleration of the chassis.
   chassis.setDriveConstants(10, 1.5, 0, 10, 0);
-  // Sets the heading constants for the chassis.
-  // These constants are used to control the turning of the chassis.
-  chassis.setHeadingConstants(6, .4, 1);
   // Sets the turn constants for the chassis.
   // These constants are used to control the turning of the chassis.
   chassis.setTurnConstants(10, 0.2, .015, 1.5, 7.5);
@@ -82,8 +71,13 @@ void resetChassis() {
   // Sets the exit conditions for the turn functions.
   // These conditions are used to determine when the turn function should exit.
   chassis.setTurnExitConditions(1.5, 200, 1500);
-}
 
+  // Sets the heading constants for the chassis.
+  // These constants are used to control the heading adjustment of the chassis.
+  chassis.setHeadingConstants(6, .4, 1);
+
+  chassis.setArcadeConstants(0.16, 0.5, 0.85);
+}
 
 // This function is a thread that runs in the background to remind the driver of the end game.
 int endgameTimer() {
@@ -119,18 +113,23 @@ void usercontrol(void) {
   // This loop runs forever, controlling the robot during the driver control period.
   while (1) {
     // This is the tank drive code.
+    if(controller(primary).Axis1.position() == 0 && controller(primary).Axis2.position() == 0 
+    && controller(primary).Axis3.position() == 0 && controller(primary).Axis4.position() == 0) {
+      // If all axes are at 0, stop the chassis.
+    }
     if (DRIVE_MODE == 1) chassis.controlTank(controller(primary).Axis3.position(), controller(primary).Axis2.position());
     // This is the arcade drive code.
     else if (DRIVE_MODE == 0)
-      chassis.controlArcade(controller(primary).Axis2.position(), controller(primary).Axis4.position() * TURN_FACTOR, STEER_BIAS);
+      chassis.controlArcade(controller(primary).Axis2.position(), controller(primary).Axis4.position());
     else if (DRIVE_MODE == 2)
     {   
       // This is the mecanum drive code.
       chassis.controlMecanum(controller(primary).Axis4.position(), controller(primary).Axis3.position(), controller(primary).Axis2.position(), controller(primary).Axis1.position(), leftMotor1, leftMotor2, rightMotor1, rightMotor2);
     }
-   }
+    
     // This wait prevents the loop from using too much CPU time.
-    wait(20, msec); 
+    wait(20, msec);
+   } 
 }
 
 // This function sets up the gyro.
@@ -151,7 +150,6 @@ bool setupGyro() {
   return true;
 }
 
-
 // This function is called before the autonomous period starts.
 void pre_auton() {
   // Sets up the gyro.
@@ -168,14 +166,5 @@ void pre_auton() {
   if(gyroSetupSuccess && motorsSetupSuccess) showAutonMenu();
 }
 
-// This function returns true when the joystick is touched.
-bool joystickTouched() {
-  float d = fabs(chassis.getLeftPositionIn()) + fabs(chassis.getRightPositionIn());
-  if (d > 1) {
-    return true;
-  }
-  else {
-    return false;
-  }
-}
+
 

@@ -51,17 +51,7 @@ int DRIVE_MODE = 0;  // 0 for arcade, 1 for tank, 2 for mecanum
 - `1` for tank drive (left joystick for left side, right joystick for right side)
 - `2` for mecanum drive (four-wheel independent control for strafing)
 
-### Step 4: Configure Drive Constants
-Find the driver control constants:
-
-```cpp
-float TURN_FACTOR = 0.75;  // Slows down turning speed
-float STEER_BIAS = 0.5;   // Controls curve when both joysticks used
-```
-
-**Action:** Adjust these values based on your driver's preference.
-
-### Step 5: Configure Wheel Size and Gear Ratio
+### (optional) Step 4: Configure Wheel Size and Gear Ratio
 Find the Drive constructor and update the wheel diameter and gear ratio parameters:
 
 ```cpp
@@ -88,6 +78,11 @@ Drive chassis(
   - `0.5` for 1:2 gearbox (0.5 motor rotations = 1 wheel rotation)
 
 ---
+
+
+### (optional) Step 5: Configure Drive Constants
+Find the chassis constants in `resetChassis()` function:
+**Action:** Adjust these values based on your tuning of the chassis driving behavior.
 
 ## Subsystem Configuration *(Optional)*
 
@@ -166,7 +161,7 @@ void buttonL1Action() {
 **Action:** Create button functions for each action you want to control.
 
 ### Step 3: Map Buttons to Functions
-Find the button mapping section in the `main()` function:
+Find the button mapping section in the `setupButtonMapping()` function:
 
 ```cpp
 controller(primary).ButtonL1.pressed(buttonL1Action);
