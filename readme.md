@@ -74,8 +74,9 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
   - Auton Selection:  Before autonomous period is started via field switch, press brain screen to scroll through the list of autons.
 - (Optional) Test all autons during driver control:
     - Press the controller's `Right button` within 5 seconds of program startup to enter test mode.
-    - When in test mode, press the `A button` to run the routine shown on the controller screen in steps.
-    - When in test mode, press the `Left, Right, Up, Down` buttons to cycle through the list of autonomous routines and steps on the controller screen.
+    - When in test mode, press the `A button` to run the selected auton or current step.
+    - When in test mode, press the `Right/Left buttons` to cycle through the list of autonomous routines.
+    - When in test mode, press the `Up/Down buttons` to navigate through individual steps of the current auton.
     - See the complete action flow in [Test Auton Button Flow Explanation](doc/test_auton_buttons.md)
 - (Optional) Remotely control the robot with companion web applications:
     - Read [remote control document](/voice-control-robot/README.md) for the steps and basic understanding how it works.

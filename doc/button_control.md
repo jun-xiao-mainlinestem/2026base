@@ -25,22 +25,26 @@ The robot supports three drive modes controlled by the `DRIVE_MODE` setting:
 
 ## Right
 *  Activate test mode if pressed within 5 seconds of starting the program
-*  If in test mode, press to scroll through auton menu
+*  If in test mode, press to scroll forward through auton menu
 
 ## Left
-*  toggle tank or arcade drive mode if the button is pressed immediately after running the program
-*  If in test mode, press to scroll backwards through auton menu
+*  If in test mode, press to scroll backward through auton menu
+
+## Up
+*  If in test mode, press to go to previous step in the current auton
+
+## Down
+*  If in test mode, press to go to next step in the current auton
 
 ## A
-*  If in test mode, press to run the selected autonomous routine for testing
+*  If in test mode, press to run the selected autonomous routine or current step for testing
 *  If not in test mode, run custom piece of code for testing
 
 ## B
-*  Hold to brake drivetrain
-*  Show distance driven and reset the motor encoder
+*  Hold to brake drivetrain and show distance driven and heading
+*  Toggle tank or arcade drive mode if the button is pressed immediately after running the program
+*  Emergency stop during auton testing
 
-## X
-*  Hold to run macro, current unassigned
 
 
 

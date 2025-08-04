@@ -24,17 +24,17 @@ Find the motor definitions and update the port numbers:
 
 ```cpp
 // Left side motors
-motor left_front = motor(PORT1, ratio18_1, false);
-motor left_middle = motor(PORT2, ratio18_1, false);
-motor left_back = motor(PORT3, ratio18_1, false);
+motor leftMotor1 = motor(PORT1, ratio18_1, false);
+motor leftMotor2 = motor(PORT2, ratio18_1, false);
+motor leftMotor3 = motor(PORT3, ratio18_1, false);
 
 // Right side motors
-motor right_front = motor(PORT4, ratio18_1, true);
-motor right_middle = motor(PORT5, ratio18_1, true);
-motor right_back = motor(PORT6, ratio18_1, true);
+motor rightMotor1 = motor(PORT4, ratio18_1, true);
+motor rightMotor2 = motor(PORT5, ratio18_1, true);
+motor rightMotor3 = motor(PORT6, ratio18_1, true);
 
 // Inertial sensor
-inertial inertial_sensor = inertial(PORT10);
+inertial inertial1 = inertial(PORT10);
 ```
 
 **Action:** Replace `PORT1`, `PORT2`, etc. with your actual motor port numbers.
@@ -47,7 +47,7 @@ int DRIVE_MODE = 0;  // 0 for arcade, 1 for tank, 2 for mecanum
 ```
 
 **Action:** Set the drive mode value:
-- `0` for arcade drive (single joystick for movement and turning)
+- `0` for arcade drive (different joystick for movement and turning)
 - `1` for tank drive (left joystick for left side, right joystick for right side)
 - `2` for mecanum drive (four-wheel independent control for strafing)
 
@@ -209,6 +209,9 @@ void runAutonItem() {
     case 1:
         auton2();
         break;
+    case 2:
+        auton_skill();
+        break;
     }
 }
 ```
@@ -216,16 +219,40 @@ void runAutonItem() {
 **Action:** Add your auton functions to the switch statement.
 
 ### Step 4: Add Menu Text
-Find the `auton_menu_text` array:
+Find the `autonMenuText` array:
 
 ```cpp
-char const * auton_menu_text[] = {
+char const * autonMenuText[] = {
     "auton1",
-    "auton2"
+    "auton2",
+    "auton_skill"
 };
 ```
 
 **Action:** Add names for your autonomous routines.
+
+### Step 5: Step-by-Step Testing (Optional)
+For complex autons, you can add step-by-step testing capability:
+
+```cpp
+void auton_skill() {
+    if (autonTestStep == 1) {
+        chassis.turnToHeading(180);
+        if (!continueAutonStep()) return; // Stop here if in test mode
+    }
+    if (autonTestStep == 2) {
+        chassis.driveDistance(5);
+        chassis.turnToHeading(chassis.getHeading() + 90);
+        if (!continueAutonStep()) return; // Stop here if in test mode
+    } 
+    if(autonTestStep == 3) {
+        chassis.turnToHeading(chassis.getHeading() - 90);
+        chassis.driveDistance(-5);
+    }
+}
+```
+
+**Action:** Use `continueAutonStep()` to enable step-by-step testing of complex autons.
 
 ---
 
@@ -251,6 +278,13 @@ char const * auton_menu_text[] = {
    - **Mecanum Drive (Mode 2)**: Use left stick for forward/backward and turning, right stick for strafing
 3. Verify motors respond correctly
 
+### Step 4: Test Autonomous Routines
+1. **Enter Test Mode**: Press the `Right button` within 5 seconds of program startup
+2. **Navigate Autons**: Use `Right/Left buttons` to cycle through available autons
+3. **Navigate Steps**: Use `Up/Down buttons` to navigate through individual steps (for step-enabled autons)
+4. **Run Auton**: Press `A button` to execute the selected auton or current step
+5. **View Results**: Check controller screen for execution time and step information
+
 
 ---
 
@@ -261,6 +295,8 @@ char const * auton_menu_text[] = {
 2. **Robot drives in wrong direction**: Reverse motor directions in chassis.cpp
 3. **Buttons not working**: Verify button mappings in main.cpp
 4. **Auton not running**: Check auton function names in runAutonItem()
+5. **Test mode not working**: Ensure you press Right button within 5 seconds of startup
+6. **Steps not advancing**: Check that `continueAutonStep()` is called in step-enabled autons
 
 ### Debug Tips:
 1. Use the controller screen to display debug information
