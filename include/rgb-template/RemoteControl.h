@@ -5,7 +5,7 @@
 
 namespace rgb {
 
-class RemoteControl {
+class SampleRemoteControl {
 private:
     static FILE* serialFile;
     static std::string lineBuffer;
@@ -13,8 +13,8 @@ private:
     void processCommand(const std::string& command);
     
 public:
-    RemoteControl();
-    ~RemoteControl();
+    SampleRemoteControl();
+    ~SampleRemoteControl();
     
     // Communication methods
     bool send(const std::string& message);

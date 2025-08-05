@@ -1,12 +1,12 @@
 # RGB BOTS template
 
-This project provides a lightweight C++ template for VEX V5 robotics competition, featuring a modular architecture, a library for autonomous driving control and companion web applications for robot remote control via typed or voice commands.
+This project provides a lightweight C++ template for VEX V5 robotics competition and beyond, featuring a modular architecture, a library for autonomous driving control and companion web applications for precise robot remote driving via typed or voice commands using mobile devices.
 
 ## Target Audience
 
 This library is designed specifically for **middle school robotics teams** who are getting started with VEX V5 c++ programming and do not have odometry (tracking wheel) setups. Advanced high school teams often use comprehensive libraries like [JAR-Template](https://github.com/JacksonAreaRobotics/JAR-Template) and [LemLib](https://github.com/LemLib/LemLib) that provide features such as path following and pure pursuit. In contrast, this template focuses on simplicity and ease of use, allows teams to quickly get their robot operational without the complexity of advanced positioning systems.
 
-It provides essential driving controls, simple autonomous code structure, and straightforward configuration so that teams can quickly extend and adapt the core functionality to their specific needs. The built-in test mode allows teams to test all of their auton routines during driver control and in steps without having to re-download the program or use the field switch. Finally, the companion mobile web applications for robot remote control via typed or voice commands add a fun and interactive dimension to controlling a VEX robot. 
+It provides essential driving controls, a simple autonomous code structure, and a straightforward configuration that allows teams to quickly extend and adapt the core functionality to their specific needs. The built-in test mode allows teams to step through and test all of their autonomous routines during driver control, providing a unique way to debug and iterate on their logic without having to re-download the program or use the field switch. Finally, the companion web applications for robot remote driving via typed or voice commands on mobile devices add a fun and interactive dimension to controlling a VEX robot beyond V5RC competitions.
 
 ## Installation
 *   **Prerequisites:** Before you begin, make sure:

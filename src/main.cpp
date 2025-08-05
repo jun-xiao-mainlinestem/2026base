@@ -146,7 +146,7 @@ void buttonBAction()
 
 
 // Global remote control object
-RemoteControl remoteControl;
+SampleRemoteControl remoteControl;
 bool REMOTE_CONTROL_MODE = true;
 // ----------------------------------------------------------------------------
 //                                Main

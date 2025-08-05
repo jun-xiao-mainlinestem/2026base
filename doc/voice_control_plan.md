@@ -39,7 +39,7 @@ Voice Commands → Web Interface → WebSocket → VEX Extension → Serial → 
 - **Message Routing**: Handle bidirectional communication
 
 #### 3. VEX Brain
-- **RemoteControl Module**: Handle serial communication via USB user port
+- **SampleRemoteControl Module**: Handle serial communication via USB user port
 - **Command Execution**: Execute robot movements and mechanism control
 - **Status Reporting**: Send robot state back to web interface
 - **Error Handling**: Provide feedback for failed operations
@@ -204,7 +204,7 @@ Voice commands are mapped to complete word serial commands for reliable transmis
 ## Serial Communication Strategy
 
 ### Communication Protocol
-The system uses a robust serial communication protocol through the RemoteControl module:
+The system uses a robust serial communication protocol through the SampleRemoteControl module:
 
 #### Command Transmission
 - **Complete word commands**: "FORWARD", "STOP", "LEFT", etc.
@@ -221,7 +221,7 @@ The system uses a robust serial communication protocol through the RemoteControl
 ### Serial Port Reading Implementation
 
 #### File-Based Serial Communication
-The RemoteControl module uses file-based serial communication on the VEX brain:
+The SampleRemoteControl module uses file-based serial communication on the VEX brain:
 
 ```cpp
 // Open serial port for reading

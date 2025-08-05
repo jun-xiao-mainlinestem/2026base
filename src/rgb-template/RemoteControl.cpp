@@ -1,21 +1,23 @@
 #include "rgb-template/RemoteControl.h"
 #include "chassis.h"
+#include "rgb-template/util.h"
+#include "robot-config.h"
 #include <cstring>
 
 namespace rgb {
 
 // Static member initialization
-FILE* RemoteControl::serialFile = nullptr;
-std::string RemoteControl::lineBuffer = "";
+FILE* SampleRemoteControl::serialFile = nullptr;
+std::string SampleRemoteControl::lineBuffer = "";
 
-RemoteControl::RemoteControl() {
+SampleRemoteControl::SampleRemoteControl() {
     // Only open if not already open
     if (!serialFile) {
         serialFile = fopen("/dev/serial1", "rb");
     }
 }
 
-RemoteControl::~RemoteControl() {
+SampleRemoteControl::~SampleRemoteControl() {
     // Clean up resources
     if (serialFile) {
         fclose(serialFile);
@@ -24,13 +26,13 @@ RemoteControl::~RemoteControl() {
     lineBuffer.clear();
 }
 
-bool RemoteControl::send(const std::string& message) {    
+bool SampleRemoteControl::send(const std::string& message) {    
     // Send data back to the computer via printf
     printf("%s", message.c_str());
     return true;
 }
 
-void RemoteControl::poll() {
+void SampleRemoteControl::poll() {
     // Open serial port if not already open
     if (!serialFile) {
         serialFile = fopen("/dev/serial1", "rb");
@@ -69,7 +71,7 @@ void RemoteControl::poll() {
     }
 }
 
-void RemoteControl::processCommand(const std::string& command) {
+void SampleRemoteControl::processCommand(const std::string& command) {
     // Clean and convert the command string
     std::string cmd = cleanCommand(command);
     controller(primary).rumble(".");

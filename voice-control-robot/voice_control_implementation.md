@@ -24,7 +24,7 @@ The voice control system has been fully implemented and tested. All components a
 - **Location**: `src/main.cpp` and `src/rgb-template/RemoteControl.cpp`
 - **Status**: ✅ Complete
 - **Features**:
-  - RemoteControl module for serial communication
+  - SampleRemoteControl module for serial communication
   - Voice command processing
   - Status reporting
   - Mechanism control
@@ -59,7 +59,7 @@ The voice control system has been fully implemented and tested. All components a
 │   └── ...
 ├── include/
 │   ├── rgb-template/
-│   │   └── RemoteControl.h       # RemoteControl header
+│   │   └── RemoteControl.h       # SampleRemoteControl header
 │   └── ...
 └── doc/
     ├── voice_control_plan.md     # Original plan
@@ -149,12 +149,12 @@ npm run dev
 - **Confidence**: Displayed in activity log
 - **Fallback**: Manual command entry possible
 
-## RemoteControl Module Implementation
+## SampleRemoteControl Module Implementation
 
 ### Serial Port Reading
 
 #### File-Based Communication
-The RemoteControl module uses file-based serial communication on the VEX brain:
+The SampleRemoteControl module uses file-based serial communication on the VEX brain:
 
 ```cpp
 // Open serial port for reading
@@ -183,7 +183,7 @@ if (fread(&c, 1, 1, serialFile) == 1) {
 
 #### Command Processing
 ```cpp
-void RemoteControl::processCommand(const std::string& command) {
+void SampleRemoteControl::processCommand(const std::string& command) {
     // Remove whitespace and newlines
     std::string cmd = command;
     cmd.erase(0, cmd.find_first_not_of(" \t\r\n"));
@@ -211,7 +211,7 @@ void RemoteControl::processCommand(const std::string& command) {
 ```
 
 #### Polling Integration
-The RemoteControl module is integrated into the main loop:
+The SampleRemoteControl module is integrated into the main loop:
 
 ```cpp
 // In main.cpp

@@ -13,7 +13,7 @@ This is a standard VEX V5 project that follows a typical structure for a competi
 
 The code is modularized into the following components:
 
-*   **`main.cpp`**: This is the entry point of the program. It sets up the competition functions for autonomous and driver control modes, and it maps controller buttons to specific actions. It also integrates the RemoteControl module for voice command processing.
+*   **`main.cpp`**: This is the entry point of the program. It sets up the competition functions for autonomous and driver control modes, and it maps controller buttons to specific actions. It also integrates the SampleRemoteControl module for voice command processing.
 
 *   **`chassis.h` / `chassis.cpp`**: This module encapsulates the robot's drivetrain logic. It provides functions for user control (`usercontrol`) and autonomous control (`autonomous`). It also has a `Drive` class that represents the chassis.
 
@@ -25,12 +25,12 @@ The code is modularized into the following components:
     *   **`drive.h` / `drive.cpp`**: This defines a `Drive` class that encapsulates the robot's drivetrain. It provides methods for controlling the robot's movement, including turning to a specific heading and driving a specific distance. It also includes logic for driver control with arcade and tank modes.
     *   **`PID.h` / `PID.cpp`**: This implements a PID (Proportional-Integral-Derivative) controller, which is a common control loop feedback mechanism used in robotics for precise movements.
     *   **`util.h` / `util.cpp`**: This contains various utility functions, such as for angle conversions and motor checks.
-    *   **`RemoteControl.h` / `RemoteControl.cpp`**: This implements serial communication for voice control. It handles reading commands from the USB serial port, processing voice commands, and executing robot actions. It also manages status reporting back to the web interface.
+    *   **`RemoteControl.h` / `RemoteControl.cpp`**: This implements serial communication for voice control via the SampleRemoteControl class. It handles reading commands from the USB serial port, processing voice commands, and executing robot actions. It also manages status reporting back to the web interface.
 
 ## Voice Control Integration
 
-### RemoteControl Module
-The RemoteControl module is a key component that enables voice control of the robot:
+### SampleRemoteControl Module
+The SampleRemoteControl module is a key component that enables voice control of the robot:
 
 #### Key Features
 - **Serial Communication**: Reads commands from `/dev/serial1` via file-based I/O
@@ -46,7 +46,7 @@ The RemoteControl module is a key component that enables voice control of the ro
 
 #### Communication Flow
 ```
-Web Interface → WebSocket → VEX Extension → Serial → RemoteControl → Robot Actions
+Web Interface → WebSocket → VEX Extension → Serial → SampleRemoteControl → Robot Actions
 ```
 
 ## Control Flow
@@ -56,7 +56,7 @@ Web Interface → WebSocket → VEX Extension → Serial → RemoteControl → R
 3.  **Competition Modes**: The VEX Competition switch determines whether the robot enters the `autonomous` or `usercontrol` function.
     *   **`autonomous()`**: This function, likely defined in `chassis.cpp`, executes the selected autonomous routine from the `autons` module.
     *   **`usercontrol()`**: This function, also likely in `chassis.cpp`, handles driver control, translating controller input into robot actions. It also calls other functions based on button presses, such as those for the intake and clamp.
-4.  **Voice Control Loop**: When enabled via Button X, the main loop continuously polls the RemoteControl module for new voice commands.
+4.  **Voice Control Loop**: When enabled via Button X, the main loop continuously polls the SampleRemoteControl module for new voice commands.
 
 ## Error Handling and Debugging
 
@@ -73,7 +73,7 @@ Web Interface → WebSocket → VEX Extension → Serial → RemoteControl → R
 
 ## Summary
 
-This project has a well-defined architecture that separates concerns into distinct modules. The addition of the RemoteControl module provides voice control capabilities while maintaining the existing autonomous and driver control functionality. The use of a makefile-based build system is also a standard practice for this type of project.
+This project has a well-defined architecture that separates concerns into distinct modules. The addition of the SampleRemoteControl module provides voice control capabilities while maintaining the existing autonomous and driver control functionality. The use of a makefile-based build system is also a standard practice for this type of project.
 
 The modular design makes the code easier to understand, maintain, and extend. The voice control integration demonstrates how modern web technologies can be effectively combined with VEX robotics for enhanced user experience.
 
