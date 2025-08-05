@@ -1,6 +1,7 @@
 using namespace vex;
 
 extern const int NUMBER_OF_MOTORS;
+extern bool teamIsRed;
 
 extern motor rollerBottom;
 extern motor rollerMiddle;

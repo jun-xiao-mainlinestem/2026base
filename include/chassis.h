@@ -10,7 +10,6 @@ extern Drive chassis;
 // A flag to switch between tank and arcade drive modes.
 extern int DRIVE_MODE;
 
-extern bool teamIsRed;
 // External declaration of the team color optical sensor
 extern optical teamOptical;
 

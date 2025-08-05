@@ -1,10 +1,10 @@
 // vex.h includes all of the headers for the VEX V5 library
 #include "vex.h"
-#include "rgb-template/RemoteControl.h"
+#include "SampleRemoteControl.h"
+#include "ai.h"
 
 // All vex classes and functions are in the vex namespace
 using namespace vex;
-using namespace rgb;
 
 // A global instance of competition
 // This object is used to register callbacks for the autonomous and driver control periods.
@@ -60,6 +60,7 @@ void setupButtonMapping() {
   controller(primary).ButtonR1.pressed(buttonR1Action);
   controller(primary).ButtonR2.pressed(buttonR2Action);
 }
+
 
 
 // ------------------------------------------------------------------------
@@ -166,6 +167,8 @@ int main() {
   controller(primary).ButtonUp.pressed(buttonUpAction);
   controller(primary).ButtonA.pressed(buttonAAction);
   controller(primary).ButtonB.pressed(buttonBAction);
+
+    controller(primary).ButtonX.pressed(aiAction);
 
   // Set up the button mapping for the controller.
   setupButtonMapping();

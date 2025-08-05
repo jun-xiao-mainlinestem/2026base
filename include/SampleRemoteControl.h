@@ -3,8 +3,6 @@
 #include "vex.h"
 #include <string>
 
-namespace rgb {
-
 class SampleRemoteControl {
 private:
     static FILE* serialFile;
@@ -17,8 +15,6 @@ public:
     ~SampleRemoteControl();
     
     // Communication methods
-    bool send(const std::string& message);
+    void send(const std::string& message);
     void poll();
 };
-
-} // namespace rgb 

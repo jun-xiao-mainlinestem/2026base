@@ -23,6 +23,4 @@ bool checkMotors(int motorCount, int temperatureLimit = 45);
 // Prints a message to the controller screen with right-padding to 20 characters.
 void printControllerScreen(const char* message);
 
-// Converts and cleans a command string for processing
-std::string cleanCommand(const std::string& command);
 

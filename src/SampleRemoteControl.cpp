@@ -1,20 +1,13 @@
-#include "rgb-template/RemoteControl.h"
+#include "SampleRemoteControl.h"
 #include "chassis.h"
-#include "rgb-template/util.h"
 #include "robot-config.h"
 #include <cstring>
 
-namespace rgb {
-
-// Static member initialization
 FILE* SampleRemoteControl::serialFile = nullptr;
 std::string SampleRemoteControl::lineBuffer = "";
 
 SampleRemoteControl::SampleRemoteControl() {
-    // Only open if not already open
-    if (!serialFile) {
-        serialFile = fopen("/dev/serial1", "rb");
-    }
+    serialFile = fopen("/dev/serial1", "rb");
 }
 
 SampleRemoteControl::~SampleRemoteControl() {
@@ -26,10 +19,9 @@ SampleRemoteControl::~SampleRemoteControl() {
     lineBuffer.clear();
 }
 
-bool SampleRemoteControl::send(const std::string& message) {    
+void SampleRemoteControl::send(const std::string& message) {    
     // Send data back to the computer via printf
     printf("%s", message.c_str());
-    return true;
 }
 
 void SampleRemoteControl::poll() {
@@ -63,7 +55,6 @@ void SampleRemoteControl::poll() {
         }
     } else if (ferror(serialFile)) {
         // Handle read error
-        controller(primary).Screen.clearScreen();
         printControllerScreen("serial read error");
         controller(primary).rumble(".");
         fclose(serialFile);
@@ -72,10 +63,11 @@ void SampleRemoteControl::poll() {
 }
 
 void SampleRemoteControl::processCommand(const std::string& command) {
-    // Clean and convert the command string
-    std::string cmd = cleanCommand(command);
+    std::string cmd = command;
+    cmd.erase(0, cmd.find_first_not_of(" \t\r\n"));
+    cmd.erase(cmd.find_last_not_of(" \t\r\n") + 1);
+    
     controller(primary).rumble(".");
-
     // Map command to action
     if (cmd == "FORWARD" || cmd == "MOVE" || cmd == "GO") {
         chassis.driveWithVoltage(2, 2);
@@ -100,5 +92,3 @@ void SampleRemoteControl::processCommand(const std::string& command) {
         printControllerScreen(unknownMsg);
     }
 }
-
-} // namespace rgb 
