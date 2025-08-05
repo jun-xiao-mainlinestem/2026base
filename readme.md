@@ -1,12 +1,12 @@
 # RGB BOTS template
 
-This project provides a lightweight C++ template for VEX V5 robotics competition and beyond, featuring a modular architecture, a library for autonomous driving control and a companion web application for robot remote driving via typed or voice commands.
+This project provides a lightweight C++ template for VEX V5 robotics competition and beyond, featuring a modular architecture, a library for autonomous driving control and a companion web application for robot remote driving via form or speech input.
 
 ## Target Audience
 
 This library is designed specifically for **middle school robotics teams** who are getting started with VEX V5 c++ programming and do not have odometry (tracking wheel) setups. Advanced high school teams often use comprehensive libraries like [JAR-Template](https://github.com/JacksonAreaRobotics/JAR-Template) and [LemLib](https://github.com/LemLib/LemLib) that provide features such as path following and pure pursuit. In contrast, this template focuses on simplicity and ease of use, allows teams to quickly get their robot operational without the complexity of advanced positioning systems.
 
-It provides essential driving controls, a simple autonomous code structure, and a straightforward configuration that allows teams to quickly extend and adapt the core functionality to their specific needs. The built-in test mode allows teams to step through and test all of their autonomous routines during driver control, providing an alternative way to debug and iterate on their logic without having to re-download the program or use the field switch. Finally, the companion web application for robot remote driving via typed or voice commands on mobile devices add a fun and interactive dimension to controlling a VEX robot beyond V5RC competitions.
+It provides essential PID driving controls, a simple autonomous code structure, and a straightforward robot configuration that allows teams to quickly extend and adapt the core functionality to their specific needs. The built-in test mode allows teams to step through and test all of their autonomous routines during driver control, providing an alternative way to debug and iterate on their logic without having to re-download the program or use the field switch. Finally, the companion web application for robot remote driving via form or speech input on mobile devices add a fun and interactive dimension to controlling a VEX robot beyond V5RC competitions.
 
 ## Installation
 *   **Prerequisites:** Before you begin, make sure:
@@ -78,8 +78,13 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
     - When in test mode, press the `Right/Left buttons` to cycle through the list of autonomous routines.
     - When in test mode, press the `Up/Down buttons` to navigate through individual steps of the current auton.
     - See the complete action flow in [Test Auton Button Flow Explanation](doc/test_auton_buttons.md)
-- (Optional) Remotely control the robot with companion web applications:
-    - Read [remote control document](/voice-control-robot/README.md) for the steps and basic understanding how it works.
+- (Optional) Remotely control the robot with the companion web application:
+    - Enable Websocket Server in VS Code VEX Extension 
+    - Connect the controller to the computer via USB and download the program to the brain.
+    - Find the device ID of the brain and the ip address of the computer.
+    - Open the website on your mobile device (on the same wifi network).
+    - For detailed step-by-step setup instructions, see [setup Guide](doc/remote_setup_guide.md).
+   
 &nbsp;
 ---
 # Programming Interfaces of the library
