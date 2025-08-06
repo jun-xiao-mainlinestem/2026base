@@ -1,4 +1,5 @@
 # RGB BOTS template
+By Haverford Robotics Team 169 (The Cavalry) and RGB Bots Team 99009A (the little red pony).
 
 This project provides a lightweight C++ template for VEX V5 robotics competition and beyond, featuring a modular architecture, a library for autonomous driving control and a companion web application for robot remote driving via form or speech input.
 
