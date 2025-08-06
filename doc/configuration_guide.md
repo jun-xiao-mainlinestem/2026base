@@ -92,9 +92,9 @@ chassis.setArcadeConstants(0.16, 0.5, 0.85);
 **Available Constants:**
 - **kBrake (0.16)**: Controls how quickly the robot stops when joysticks are released
 - **kTurnBias (0.5)**: Controls the balance between forward/backward and turning movement
-- **kTurnDamping (0.85)**: **Controls turn sensitivity** - lower values make turning less sensitive, higher values make turning more sensitive
+- **kTurnDampingFactor (0.85)**: **Controls turn sensitivity** - lower values make turning less sensitive, higher values make turning more sensitive
 
-**Action:** Adjust these values based on your tuning of the chassis driving behavior. **To adjust turn sensitivity, modify the `kTurnDamping` value:**
+**Action:** Adjust these values based on your tuning of the chassis driving behavior. **To adjust turn sensitivity, modify the `kTurnDampingFactor` value:**
 - **Decrease value (e.g., 0.5)**: Makes turning less sensitive
 - **Increase value (e.g., 1.0)**: Makes turning more sensitive
 
@@ -124,6 +124,16 @@ int NUMBER_OF_MOTORS = 8;  // Total number of motors
 ```
 
 **Action:** Update to match your total number of motors.
+
+**⚠️ Motor Monitoring System:**
+The program automatically monitors motor health and will alert the driver if:
+- **Disconnected motors**: Controller vibrates with "---" pattern and displays "X motor is disconnected"
+- **Overheated motors**: Controller vibrates with "---" pattern and displays "motor X is Y°C" (default temperature limit: 45°C)
+
+**When alerts occur:**
+- Controller will vibrate to get driver's attention
+- Error message appears on controller screen
+- Check motor connections and temperatures immediately
 
 ### Step 4: Create Helper Functions
 Add helper functions for your subsystems:
@@ -319,7 +329,8 @@ void auton_skill() {
 4. **Auton not running**: Check auton function names in runAutonItem()
 5. **Test mode not working**: Ensure you press Right button within 5 seconds of startup
 6. **Steps not advancing**: Check that `continueAutonStep()` is called in step-enabled autons
-7. **Turn sensitivity too high/low**: Adjust `kTurnDamping` value in `setArcadeConstants()` - higher values increase sensitivity, lower values decrease sensitivity
+7. **Turn sensitivity too high/low**: Adjust `kTurnDampingFactor` value in `setArcadeConstants()` - higher values increase sensitivity, lower values decrease sensitivity
+8. **Controller vibrating with "---" pattern**: Check for disconnected or overheated motors - the system automatically monitors motor health
 
 ### Debug Tips:
 1. Use the controller screen to display debug information

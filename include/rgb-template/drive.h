@@ -44,7 +44,7 @@ private:
   // Constants for arcade drive.
   float kBrake = 0.16;
   float kTurnBias = 0.5; 
-  float kTurnDamping = 0.85;
+  float kTurnDampingFactor = 0.85;
 
   // allows for a non-proportional steering response
   float kThrottle = 5;
@@ -116,7 +116,7 @@ public:
   // Sets the PID constants for turning.
   void setTurnPID(float turnMaxVoltage, float turnKp, float turnKi, float turnKd, float turnStarti); 
   // Sets the constants for arcade drive.
-  void setArcadeConstants(float kBrake, float kTurnBias, float kTurnDamping);
+  void setArcadeConstants(float kBrake, float kTurnBias, float kTurnDampingFactor);
 
   // Stops the drivetrain.
   void stop(vex::brakeType mode);

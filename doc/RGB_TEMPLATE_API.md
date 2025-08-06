@@ -149,3 +149,31 @@ The `util.h` file contains several utility functions:
 *   `toVolt(float percent)`
 *   `deadband(float input, float width)`
 *   `checkMotors(int motorCount, int temperatureLimit)`
+
+### Motor Health Monitoring
+
+The `checkMotors()` function automatically monitors motor health and provides driver alerts:
+
+**Function:** `checkMotors(int motorCount, int temperatureLimit)`
+
+**Parameters:**
+- `motorCount`: Total number of motors expected to be connected
+- `temperatureLimit`: Maximum temperature in Celsius (default: 45°C)
+
+**Alerts:**
+- **Disconnected motors**: Controller vibrates with "---" pattern and displays "X motor is disconnected"
+- **Overheated motors**: Controller vibrates with "---" pattern and displays "motor X is Y°C"
+
+**Usage:**
+```cpp
+// Check motors with default temperature limit (45°C)
+bool motorsOK = checkMotors(NUMBER_OF_MOTORS);
+
+// Check motors with custom temperature limit
+bool motorsOK = checkMotors(NUMBER_OF_MOTORS, 50);
+```
+
+**Automatic Monitoring:**
+The system automatically calls `checkMotors()` during:
+- Program startup (pre-autonomous)
+- End game timer (every 60 seconds)

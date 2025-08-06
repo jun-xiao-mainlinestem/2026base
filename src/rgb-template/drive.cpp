@@ -141,17 +141,17 @@ double curveFunction(double x, double curveScale) {
   return (powf(2.718, -(curveScale / 10)) + powf(2.718, (fabs(x) - 100) / 10) * (1 - powf(2.718, -(curveScale / 10)))) * x;
 }
 
-void Drive::setArcadeConstants(float kBrake, float kTurnBias, float kTurnDamping)
+void Drive::setArcadeConstants(float kBrake, float kTurnBias, float kTurnDampingFactor)
 {
   this->kBrake = kBrake;
   this->kTurnBias = kTurnBias;
-  this->kTurnDamping = kTurnDamping;
+  this->kTurnDampingFactor = kTurnDampingFactor;
 }
 
 void Drive::controlArcade(int y, int x) {
   if (driverControlDisabled) return;
   float throttle = deadband(y, 5);
-  float turn = deadband(x, 5) * kTurnDamping;
+  float turn = deadband(x, 5) * kTurnDampingFactor;
 
   turn = curveFunction(turn, kTurn);
   throttle = curveFunction(throttle, kThrottle);

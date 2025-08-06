@@ -43,12 +43,12 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
 *   **Drive Mode:** Set `DRIVE_MODE` to `0` for arcade control, `1` for tank control, or `2` for mecanum control.
 *   **(Optional) Wheel Size and Gear Ratio:**
     *   Find the Drive constructor and update the wheel diameter and gear ratio parameters for precise auton driving.
-*   **(Optional) Drive Constants:** If needed, adjust any of constants for the drivetrain in the `resetChassis()` function. For example, adjust the `kTurnDamping` value in `setArcadeConstants()` to control turn sensitivity - lower values make turning less sensitive, higher values make turning more sensitive. 
+*   **(Optional) Drive Constants:** If needed, adjust any of constants for the drivetrain in the `resetChassis()` function. For example, adjust the `kTurnDampingFactor` value in `setArcadeConstants()` to control turn sensitivity - lower values make turning less sensitive, higher values make turning more sensitive. 
 
 ### Other Subsystems ([robot-config.cpp](src/robot-config.cpp))
 
 *   **Motor Configuration:** Define your motors and sensors for other subsystems such as intake or lift.
-*   **Number of Motors:** Set `NUMBER_OF_MOTORS` to total number of motors to allow the program to automatically check for disconnected or overheated motors.
+*   **Number of Motors:** Set `NUMBER_OF_MOTORS` to total number of motors to allow the program to automatically check for disconnected or overheated motors. The controller will vibrate with "---" pattern and display warning messages if any motor issues are detected.
 *   **Helper functions:** Write helper functions to control the subsystems and declare those functions in [robot-config.h](include/robot-config.h) so that your other cpp files can call them.
 
 ### Driver Control ([main.cpp](src/main.cpp))
@@ -84,6 +84,7 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
     - Find the device ID of the brain and the ip address of the computer.
     - Open the website on your mobile device (on the same wifi network).
     - For detailed step-by-step setup instructions, see [setup Guide](doc/remote_setup_guide.md).
+- **Motor Health Monitoring**: The controller will vibrate with "---" pattern and display warning messages if any motors are disconnected or overheated (temperature limit: 45°C). Check motor connections and temperatures immediately when alerts occur.
    
 &nbsp;
 ---
