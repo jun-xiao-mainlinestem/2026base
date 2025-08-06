@@ -14,7 +14,7 @@ It provides essential PID driving controls, a simple autonomous code structure, 
     - (Optional) You have the [GitHub](https://github.com/) account and extension in VS Code installed.
     - (Optional) If you are using Mac with Apple silicon: [install Rosetta](https://support.apple.com/en-us/102527) to simulate Intel chip if errors show up with VEX extension.
 *   **Download and Open the Project:** 
-    *   Download [the source code](https://github.com/ericjiangxiao/2026-base/archive/refs/heads/main.zip) as a ZIP file. Unzip and extract the downloaded file to a local folder.
+    *   Download [the source code]() as a ZIP file. Unzip and extract the downloaded file to a local folder.
     *   In VSCode, go to `File > Open Folder` and select the extracted folder.
     *  (Optional) Or follow the instructions to [pull the repository](doc/how_to_clone_and_pull_with_vscode.md) from github using VSCode.
 *   **(Optional) If the project cannot build correctly**: 
@@ -43,7 +43,7 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
 *   **Drive Mode:** Set `DRIVE_MODE` to `0` for arcade control, `1` for tank control, or `2` for mecanum control.
 *   **(Optional) Wheel Size and Gear Ratio:**
     *   Find the Drive constructor and update the wheel diameter and gear ratio parameters for precise auton driving.
-*   **(Optional) Drive Constants:** If needed, adjust any of constants for the drivetrain in the `resetChassis()` function. 
+*   **(Optional) Drive Constants:** If needed, adjust any of constants for the drivetrain in the `resetChassis()` function. For example, adjust the `kTurnDamping` value in `setArcadeConstants()` to control turn sensitivity - lower values make turning less sensitive, higher values make turning more sensitive. 
 
 ### Other Subsystems ([robot-config.cpp](src/robot-config.cpp))
 
@@ -88,13 +88,22 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
 &nbsp;
 ---
 # Programming Interfaces of the library
+
+## Voltage Limits
+**Important:** The VEX V5 brain operates on a 12V system. All voltage-based functions have a maximum voltage of 12V.
+
+- **Maximum voltage**: 12V
+- **Recommended range**: 2V to 10V for precise control
+- **Full speed**: 12V (use sparingly for fine movements)
+- **Half speed**: 6V (good for most movements)
+- **Low speed**: 2-4V (for precise positioning)
 ## Drive APIs ([drive.h](include/rgb-template/drive.h))
 
 The `Drive` class provides a set of APIs to control the robot's movement.
 
 ### `driveWithVoltage(float leftVoltage, float rightVoltage)`
 
-This is the most basic drive function. It sets the voltage for the left and right sides of the drivetrain directly.
+This is the most basic drive function. It sets the voltage for the left and right sides of the drivetrain directly. **Maximum voltage is 12V.**
 
 **Example:**
 
@@ -112,7 +121,7 @@ This API turns the robot to a specific heading using a PID controller.
 **Variations:**
 
 1.  `turnToHeading(float heading)`: Turns to the specified heading with default parameters.
-2.  `turnToHeading(float heading, float turnMaxVoltage)`: Limits the maximum voltage for a slower, more accurate turn.
+2.  `turnToHeading(float heading, float turnMaxVoltage)`: Limits the maximum voltage for a slower, more accurate turn. **Maximum voltage is 12V.**
 
 **Examples:**
 
@@ -131,8 +140,8 @@ This API drives the robot a specific distance using a PID controller, with optio
 **Variations:**
 
 1.  `driveDistance(float distance)`: Drives the specified distance with default parameters.
-2.  `driveDistance(float distance, float driveMaxVoltage)`: Limits the maximum voltage for driving.
-3.  `driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage)`: Drives while turning a specific heading (curved drive).
+2.  `driveDistance(float distance, float driveMaxVoltage)`: Limits the maximum voltage for driving. **Maximum voltage is 12V.**
+3.  `driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage)`: Drives while turning a specific heading (curved drive). **Maximum voltage is 12V.**
 
 **Examples:**
 

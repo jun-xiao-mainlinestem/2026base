@@ -44,30 +44,39 @@ A web-based command line interface for controlling VEX robots through WebSocket 
 3. **Deploy**:
    - Netlify will automatically build and deploy your site
 
+## Voltage Limits
+**Important:** The VEX V5 brain operates on a 12V system. All voltage parameters have a maximum value of 12V.
+
+- **Maximum voltage**: 12V
+- **Recommended range**: 2V to 10V for precise control
+- **Full speed**: 12V (use sparingly for fine movements)
+- **Half speed**: 6V (good for most movements)
+- **Low speed**: 2-4V (for precise positioning)
+
 ## Available Commands
 
 ### Drive Commands
 ```
 drive <distance>                    # Drive forward/backward (inches)
-drive <distance> <voltage>          # Drive with custom voltage
-drive <distance> <voltage> <heading> <heading-voltage>  # Drive while maintaining heading
+drive <distance> <voltage>          # Drive with custom voltage (max 12V)
+drive <distance> <voltage> <heading> <heading-voltage>  # Drive while maintaining heading (max 12V)
 ```
 
 **Examples:**
 - `drive 24` - Drive 24 inches forward
 - `drive -12` - Drive 12 inches backward
-- `drive 24 8` - Drive 24 inches with 8V
-- `drive 24 10 45 6` - Drive 24 inches while maintaining 45° heading
+- `drive 24 8` - Drive 24 inches with 8V (67% of max 12V)
+- `drive 24 10 45 6` - Drive 24 inches while maintaining 45° heading (83% and 50% of max 12V)
 
 ### Turn Commands
 ```
 turn <heading>                      # Turn to heading (degrees)
-turn <heading> <voltage>            # Turn with custom voltage
+turn <heading> <voltage>            # Turn with custom voltage (max 12V)
 ```
 
 **Examples:**
 - `turn 90` - Turn to 90 degrees
-- `turn 180 8` - Turn to 180 degrees with 8V
+- `turn 180 8` - Turn to 180 degrees with 8V (67% of max 12V)
 
 ## WebSocket Message Format
 

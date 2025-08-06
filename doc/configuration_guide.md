@@ -82,7 +82,21 @@ Drive chassis(
 
 ### (optional) Step 5: Configure Drive Constants
 Find the chassis constants in `resetChassis()` function:
-**Action:** Adjust these values based on your tuning of the chassis driving behavior.
+
+```cpp
+// Sets the arcade drive constants for the chassis.
+// These constants are used to control the arcade drive of the chassis.
+chassis.setArcadeConstants(0.16, 0.5, 0.85);
+```
+
+**Available Constants:**
+- **kBrake (0.16)**: Controls how quickly the robot stops when joysticks are released
+- **kTurnBias (0.5)**: Controls the balance between forward/backward and turning movement
+- **kTurnDamping (0.85)**: **Controls turn sensitivity** - lower values make turning less sensitive, higher values make turning more sensitive
+
+**Action:** Adjust these values based on your tuning of the chassis driving behavior. **To adjust turn sensitivity, modify the `kTurnDamping` value:**
+- **Decrease value (e.g., 0.5)**: Makes turning less sensitive
+- **Increase value (e.g., 1.0)**: Makes turning more sensitive
 
 ## Subsystem Configuration *(Optional)*
 
@@ -188,7 +202,7 @@ void auton1() {
 }
 
 void auton2() {
-    // Simple forward movement
+    // Simple forward movement (6V = 50% of max 12V)
     chassis.driveWithVoltage(6, 6);
     wait(1000, msec);
     chassis.stop(brake);
@@ -196,6 +210,14 @@ void auton2() {
 ```
 
 **Action:** Write your autonomous routines using the drive APIs.
+
+### Step 2.5: Voltage Limits
+**Important:** The VEX V5 brain operates on a 12V system. When using voltage-based functions:
+- **Maximum voltage**: 12V
+- **Recommended range**: 2V to 10V for precise control
+- **Full speed**: 12V (use sparingly for fine movements)
+- **Half speed**: 6V (good for most movements)
+- **Low speed**: 2-4V (for precise positioning)
 
 ### Step 3: Map Auton Functions
 Find the `runAutonItem()` function:
@@ -297,6 +319,7 @@ void auton_skill() {
 4. **Auton not running**: Check auton function names in runAutonItem()
 5. **Test mode not working**: Ensure you press Right button within 5 seconds of startup
 6. **Steps not advancing**: Check that `continueAutonStep()` is called in step-enabled autons
+7. **Turn sensitivity too high/low**: Adjust `kTurnDamping` value in `setArcadeConstants()` - higher values increase sensitivity, lower values decrease sensitivity
 
 ### Debug Tips:
 1. Use the controller screen to display debug information

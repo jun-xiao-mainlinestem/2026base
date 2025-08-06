@@ -15,7 +15,7 @@ Click on **“Git: Clone”**
 ---
 
 ### Paste the Repository URL
-- Paste the [GitHub repo URL](https://github.com/ericjiangxiao/2026-base.git)
+- Paste the [GitHub repo URL]()
 - Press **Enter**.
 
 ---

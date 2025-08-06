@@ -43,8 +43,8 @@ The `Drive` class provides several methods for controlling the robot during the 
 This function turns the robot to a specific heading in degrees.
 
 *   `turnToHeading(float heading)`: Turns the robot to a specific heading with default parameters.
-*   `turnToHeading(float heading, float turnMaxVoltage)`: Turns the robot to a specific heading with a specified maximum voltage.
-*   `turnToHeading(float heading, float turnMaxVoltage, bool chaining, ...)`: Turns the robot to a specific heading with more control over the movement.
+*   `turnToHeading(float heading, float turnMaxVoltage)`: Turns the robot to a specific heading with a specified maximum voltage. **Maximum voltage is 12V.**
+*   `turnToHeading(float heading, float turnMaxVoltage, bool chaining, ...)`: Turns the robot to a specific heading with more control over the movement. **Maximum voltage is 12V.**
 
 **Examples from `src/autons.cpp`:**
 
@@ -61,9 +61,9 @@ chassis.turnToHeading(180, 10, true);
 This function drives the robot a specific distance in inches.
 
 *   `driveDistance(float distance)`: Drives a specific distance with default parameters.
-*   `driveDistance(float distance, float driveMaxVoltage)`: Drives a specific distance with a specified maximum voltage.
-*   `driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage)`: Drives a specific distance while maintaining a specific heading.
-*   `driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage, bool chaining, ...)`: Drives a specific distance with more control over the movement.
+*   `driveDistance(float distance, float driveMaxVoltage)`: Drives a specific distance with a specified maximum voltage. **Maximum voltage is 12V.**
+*   `driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage)`: Drives a specific distance while maintaining a specific heading. **Maximum voltage is 12V.**
+*   `driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage, bool chaining, ...)`: Drives a specific distance with more control over the movement. **Maximum voltage is 12V.**
 
 **Examples from `src/autons.cpp`:**
 
