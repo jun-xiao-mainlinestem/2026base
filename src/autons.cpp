@@ -11,6 +11,9 @@ void auton1() {
 void auton2() {
   chassis.setHeading(0);  
   chassis.driveDistance(12, 3);
+  chassis.turnToHeading(90, 3);
+  chassis.driveDistance(12, 3);
+  chassis.turnToHeading(0, 3);
 }
 
 // The long autonomous skill routine.
@@ -223,7 +226,7 @@ bool runAutonTest()
     sprintf(timeMsg, "run time: %.0f", t2-t1);
     printControllerScreen(timeMsg);
     chassis.driverControlDisabled = false;
-    chassis.stop(brake);
+    chassis.stop(coast);
 
     return true;
   }

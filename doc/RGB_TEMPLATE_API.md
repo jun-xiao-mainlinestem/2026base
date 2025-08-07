@@ -44,17 +44,6 @@ This function turns the robot to a specific heading in degrees.
 
 *   `turnToHeading(float heading)`: Turns the robot to a specific heading with default parameters.
 *   `turnToHeading(float heading, float turnMaxVoltage)`: Turns the robot to a specific heading with a specified maximum voltage. **Maximum voltage is 12V.**
-*   `turnToHeading(float heading, float turnMaxVoltage, bool chaining, ...)`: Turns the robot to a specific heading with more control over the movement. **Maximum voltage is 12V.**
-
-**Examples from `src/autons.cpp`:**
-
-```cpp
-// Simple turn
-chassis.turnToHeading(90);
-
-// Turn with specified max voltage and chaining flag
-chassis.turnToHeading(180, 10, true);
-```
 
 #### `driveDistance`
 
@@ -62,40 +51,8 @@ This function drives the robot a specific distance in inches.
 
 *   `driveDistance(float distance)`: Drives a specific distance with default parameters.
 *   `driveDistance(float distance, float driveMaxVoltage)`: Drives a specific distance with a specified maximum voltage. **Maximum voltage is 12V.**
-*   `driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage)`: Drives a specific distance while maintaining a specific heading. **Maximum voltage is 12V.**
-*   `driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage, bool chaining, ...)`: Drives a specific distance with more control over the movement. **Maximum voltage is 12V.**
+*   `driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage)`: Drives a specific distance while turning to a specific heading. **Maximum voltage is 12V.**
 
-**Examples from `src/autons.cpp`:**
-
-```cpp
-// Drive a specific distance with a timeout
-chassis.driveDistance(24);
-
-// Drive a specific distance with a timeout and heading
-chassis.driveDistance(24, 10, 0, 6, true);
-```
-
-### Driver Control
-
-The `Drive` class also provides methods for controlling the robot during the driver control period.
-
-*   `controlArcade(int throttle, int turn, float turnBias)`: Controls the robot using arcade-style controls.
-*   `controlTank(int left, int right)`: Controls the robot using tank-style controls.
-
-**Example from `src/chassis.cpp`:**
-
-```cpp
-void usercontrol(void) {
-  // ...
-  while (1) {
-    if (DRIVE_TANK_MODE) chassis.controlTank(controller(primary).Axis3.position(), controller(primary).Axis2.position());
-    else {
-        chassis.controlArcade(controller(primary).Axis2.position(), controller(primary).Axis4.position());
-    }
-    wait(20, msec); 
-  }
-}
-```
 
 ### Configuration
 
@@ -166,7 +123,7 @@ The `checkMotors()` function automatically monitors motor health and provides dr
 
 **Usage:**
 ```cpp
-// Check motors with default temperature limit (45°C)
+// Check motors with default temperature limit (50°C)
 bool motorsOK = checkMotors(NUMBER_OF_MOTORS);
 
 // Check motors with custom temperature limit
@@ -176,4 +133,4 @@ bool motorsOK = checkMotors(NUMBER_OF_MOTORS, 50);
 **Automatic Monitoring:**
 The system automatically calls `checkMotors()` during:
 - Program startup (pre-autonomous)
-- End game timer (every 60 seconds)
+- Driving practice timer (every 60 seconds)

@@ -8,7 +8,7 @@ The robot supports three drive modes controlled by the `DRIVE_MODE` setting:
 
 ## L1
 *  Hold to intake balls that match team color (team red = intake red balls, team blue = intake blue balls)
-*  Score balls that don't match team color
+*  Eject balls that don't match team color
 *  Release to stop the roller immediately
 
 ## L2
@@ -28,6 +28,7 @@ The robot supports three drive modes controlled by the `DRIVE_MODE` setting:
 *  If in test mode, press to scroll forward through auton menu
 
 ## Left
+*  Toggle tank or arcade drive mode if the button is pressed immediately after running the program
 *  If in test mode, press to scroll backward through auton menu
 
 ## Up
@@ -41,9 +42,9 @@ The robot supports three drive modes controlled by the `DRIVE_MODE` setting:
 *  If not in test mode, run custom piece of code for testing
 
 ## B
-*  Hold to brake drivetrain and show distance driven and heading
-*  Toggle tank or arcade drive mode if the button is pressed immediately after running the program
-*  Emergency stop during auton testing
+*  Hold to brake drivetrain
+*  Show distance driven and heading
+*  Abort any auto driving
 
 
 

@@ -157,6 +157,12 @@ bool continueAutonStep() {
 - ✅ In normal mode, execution continues through all steps
 
 ---
+### 6. Emergency brake + show status
+**Button: B**
+- ✅ Brake drivetrain and abort any auto driving
+- ✅ Display current heading and distance drived on the controller screen
+- ✅ Reset motor encoders
+
 
 ## 📋 Button Summary
 

@@ -248,9 +248,11 @@ void Drive::controlMecanum(int x, int y, int acc, int steer, motor DriveLF, moto
 }
 
 void Drive::stop(vex::brakeType mode) {
+    drivetrainNeedsStopped = true;
     LDrive.stop(mode);
     RDrive.stop(mode);
     stopMode = mode;
     LDrive.resetPosition();
     RDrive.resetPosition();
+    drivetrainNeedsStopped = false;
 }

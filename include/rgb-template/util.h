@@ -18,7 +18,7 @@ float toVolt(float percent);
 float deadband(float input, float width);
 
 // Checks if all motors are connected and not overheating.
-bool checkMotors(int motorCount, int temperatureLimit = 45);
+bool checkMotors(int motorCount, int temperatureLimit = 50);
 
 // Prints a message to the controller screen with right-padding to 20 characters.
 void printControllerScreen(const char* message);

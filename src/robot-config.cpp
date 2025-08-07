@@ -90,3 +90,12 @@ void setupTeamColor(){
     wait(1, seconds);
   } 
 }
+
+void collisionDetected(axisType axis, double raw_x, double raw_y, double raw_z ) {
+  chassis.stop(hold);
+}
+
+void setCollisionCallback()
+{
+  inertial1.collision(collisionDetected);
+}

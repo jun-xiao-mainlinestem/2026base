@@ -49,8 +49,8 @@ bool checkMotors(int motorCount, int temperatureLimit) {
 }
 
 void printControllerScreen(const char* message) {
-  char padded[21];
-  snprintf(padded, sizeof(padded), "%-20s", message);
+  char padded[25];
+  snprintf(padded, sizeof(padded), "%-24s", message);
   controller(primary).Screen.print("%s", padded);
 }
 

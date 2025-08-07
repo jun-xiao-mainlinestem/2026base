@@ -72,45 +72,22 @@ void buttonRightAction()
 {
   if (enterTestMode()) return;
   if (nextAutonMenu()) return;
- 
-  // otherwise, run other macro code
-  chassis.driverControlDisabled = true;
-  // TODO: Insert test code here. This is a placeholder for future actions triggered by Button Right.
-
-  chassis.driverControlDisabled = false;
 }
 
 void buttonLeftAction()
 {
+  if (changeDriveMode()) return;
   if (prevAutonMenu()) return;
- 
-  // otherwise, run other macro code
-  chassis.driverControlDisabled = true;
-  // TODO: Insert test code here. This is a placeholder for future actions triggered by Button Right.
-
-  chassis.driverControlDisabled = false;
 }
 
 void buttonDownAction()
 {
   if (nextAutonStep()) return;
-
-    // otherwise run macro code 
-  chassis.driverControlDisabled = true;
-  // TODO: Insert test code here. This is a placeholder for future actions triggered by Button A. 
-
-  chassis.driverControlDisabled = false;
 }
 
 void buttonUpAction()
 {
   if (prevAutonStep()) return;
-
-    // otherwise run macro code 
-  chassis.driverControlDisabled = true;
-  // TODO: Insert test code here. This is a placeholder for future actions triggered by Button A. 
-
-  chassis.driverControlDisabled = false;
 }
 
 
@@ -122,26 +99,24 @@ void buttonAAction()
   chassis.driverControlDisabled = true;
   // TODO: Insert test code here. This is a placeholder for future actions triggered by Button A. 
 
+  chassis.stop(coast);
   chassis.driverControlDisabled = false;
 }
 
 void buttonBAction()
 {
-  if (changeDriveMode()) return;
-
-  // otherwise brakes the drivetrain until the button is released.
-  chassis.drivetrainNeedsStopped = true;
   double distanceTraveled = (chassis.getLeftPositionIn() + chassis.getRightPositionIn()) / 2.0;
+  // brakes the drivetrain until the button is released.
   chassis.stop(hold);
   controller(primary).rumble(".");
-  wait(0.5, sec);
-  // Display heading and the distance traveled previously on the controller screen.
+  chassis.drivetrainNeedsStopped = true;
+  waitUntil(!controller(primary).ButtonB.pressing());
+  wait(1, seconds);
+    // Display heading and the distance traveled previously on the controller screen.
   float h = chassis.getHeading();
   char statusMsg[50];
-  sprintf(statusMsg, "heading: %.1f, distance: %.1f", h, distanceTraveled);
+  sprintf(statusMsg, "heading:%.0f, dist:%.0f", h, distanceTraveled);
   printControllerScreen(statusMsg);
-
-  waitUntil(!controller(primary).ButtonB.pressing());
   chassis.stop(coast);
 }
 
@@ -168,7 +143,7 @@ int main() {
   controller(primary).ButtonA.pressed(buttonAAction);
   controller(primary).ButtonB.pressed(buttonBAction);
 
-    controller(primary).ButtonX.pressed(aiAction);
+  //controller(primary).ButtonX.pressed(aiAction);
 
   // Set up the button mapping for the controller.
   setupButtonMapping();
