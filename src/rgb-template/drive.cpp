@@ -113,6 +113,7 @@ void Drive::driveDistance(float distance, float driveMaxVoltage, float heading, 
 
 void Drive::driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage, bool chaining, float driveSettleError, float driveSettleTime) {
   desiredHeading = reduce_0_to_360(heading);
+  desiredDistance = distance;
 
   PID drivePID(distance, driveKp, driveKi, driveKd, driveStarti, driveSettleError, driveSettleTime, driveTimeout);
   PID headingPID(reduce_negative_180_to_180(desiredHeading - getHeading()), headingKp, headingKd);
@@ -120,7 +121,7 @@ void Drive::driveDistance(float distance, float driveMaxVoltage, float heading, 
   float averagePosition = startAveragePosition;
   while (drivePID.isDone() == false && !drivetrainNeedsStopped) {
     averagePosition = (getLeftPositionIn() + getRightPositionIn()) / 2.0;
-    float driveError = distance + startAveragePosition - averagePosition;
+    float driveError = desiredDistance + startAveragePosition - averagePosition;
     float headingError = reduce_negative_180_to_180(desiredHeading - getHeading());
     float driveOutput = drivePID.compute(driveError);
     float headingOutput = headingPID.compute(headingError);

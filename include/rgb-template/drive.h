@@ -69,6 +69,7 @@ private:
 public: 
   // The desired heading of the robot.
   float desiredHeading;
+  float desiredDistance;
 
   // The constructor for the Drive class.
   Drive(motor_group LDrive, motor_group RDrive, inertial gyro, float wheelDiameter, float gearRatio);

@@ -1,5 +1,6 @@
 #pragma once
 #include "rgb-template/drive.h"
+#include "test.h"
 
 // The currently selected autonomous routine.
 extern int currentAutonSelection;

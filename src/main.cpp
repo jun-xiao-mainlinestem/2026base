@@ -1,7 +1,6 @@
 // vex.h includes all of the headers for the VEX V5 library
 #include "vex.h"
 #include "SampleRemoteControl.h"
-#include "ai.h"
 
 // All vex classes and functions are in the vex namespace
 using namespace vex;
