@@ -42,7 +42,7 @@ private:
   float headingKd;
 
   // Constants for arcade drive.
-  float kBrake = 0.16;
+  float kBrake = 0.5;
   float kTurnBias = 0.5; 
   float kTurnDampingFactor = 0.85;
 

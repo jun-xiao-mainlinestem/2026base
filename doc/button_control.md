@@ -43,7 +43,7 @@ The robot supports three drive modes controlled by the `DRIVE_MODE` setting:
 
 ## B
 *  Hold to brake drivetrain
-*  Show distance driven and heading
+*  Show distance driven and heading after releasing
 *  Abort any auto driving
 
 

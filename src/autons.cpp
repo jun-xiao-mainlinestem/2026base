@@ -9,11 +9,18 @@ void auton1() {
 
 // The second autonomous routine.
 void auton2() {
-  chassis.setHeading(0);  
+  chassis.setHeading(0); 
+  chassis.driveDistance(25);
+  rollerBottom.spin(forward, 6, volt);
+  rollerTop.spin(forward, -6, volt);
+  wait(100, msec);
+  stopRollers();
+  chassis.turnToHeading(90);
+  inTake();
+  wait(200, msec);
   chassis.driveDistance(12, 3);
-  chassis.turnToHeading(90, 3);
-  chassis.driveDistance(12, 3);
-  chassis.turnToHeading(0, 3);
+  wait(200, msec);
+  stopRollers();
 }
 
 // The long autonomous skill routine.

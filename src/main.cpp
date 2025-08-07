@@ -105,21 +105,19 @@ void buttonAAction()
 
 void buttonBAction()
 {
-  double distanceTraveled = (chassis.getLeftPositionIn() + chassis.getRightPositionIn()) / 2.0;
   // brakes the drivetrain until the button is released.
   chassis.stop(hold);
   controller(primary).rumble(".");
   chassis.drivetrainNeedsStopped = true;
   waitUntil(!controller(primary).ButtonB.pressing());
-  wait(1, seconds);
+  int distanceTraveled = (chassis.getLeftPositionIn() + chassis.getRightPositionIn()) / 2.0;
     // Display heading and the distance traveled previously on the controller screen.
-  float h = chassis.getHeading();
+  int h = chassis.getHeading();
   char statusMsg[50];
-  sprintf(statusMsg, "heading:%.0f, dist:%.0f", h, distanceTraveled);
+  sprintf(statusMsg, "heading: %d, dist: %d", h, distanceTraveled);
   printControllerScreen(statusMsg);
   chassis.stop(coast);
 }
-
 
 // Global remote control object
 SampleRemoteControl remoteControl;

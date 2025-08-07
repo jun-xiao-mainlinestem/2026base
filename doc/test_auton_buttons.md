@@ -160,8 +160,7 @@ bool continueAutonStep() {
 ### 6. Emergency brake + show status
 **Button: B**
 - ✅ Brake drivetrain and abort any auto driving
-- ✅ Display current heading and distance drived on the controller screen
-- ✅ Reset motor encoders
+- ✅ If hold while driving, upon releasing display current heading and distance drived on the controller screen
 
 
 ## 📋 Button Summary

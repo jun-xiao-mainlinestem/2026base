@@ -173,8 +173,6 @@ void Drive::controlArcade(int y, int x) {
   if (fabs(throttle) > 0 || fabs(turn) > 0) {
     LDrive.spin(fwd, leftPower, volt);
     RDrive.spin(fwd, rightPower, volt);
-    LDrive.resetPosition();
-    RDrive.resetPosition();
     drivetrainNeedsStopped = true;
   }
   // When joystick are released, run active brake on drive
@@ -182,6 +180,9 @@ void Drive::controlArcade(int y, int x) {
   else {
     if (drivetrainNeedsStopped) {
       if (stopMode != hold) {
+        LDrive.resetPosition();
+        RDrive.resetPosition();
+        wait(20, msec);
         LDrive.spin(fwd, -LDrive.position(rev) * kBrake, volt);
         RDrive.spin(fwd, -RDrive.position(rev) * kBrake, volt);
       } else {

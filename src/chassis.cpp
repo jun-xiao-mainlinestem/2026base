@@ -61,7 +61,7 @@ void resetChassis() {
 
   // Sets the arcade drive constants for the chassis.
   // These constants are used to control the arcade drive of the chassis.
-  chassis.setArcadeConstants(0.16, 0.5, 0.85);
+  chassis.setArcadeConstants(0.5, 0.5, 0.85);
 }
 
 // end game reminder will start at 85 seconds into the match
