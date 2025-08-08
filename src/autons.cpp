@@ -1,8 +1,6 @@
 #include "vex.h"
 int currentAutonSelection = 1;        // Current auton selection
 int autonTestStep = 0;                // Current step in auton
-int autonNum;                         // Total number of autons, automatically calculated based on the size of the autonMenuText array
-bool autonTestMode = false;           // Indicates if in test mode
 
 // The first autonomous routine.
 void auton1() {
@@ -70,8 +68,10 @@ char const * autonMenuText[] = {
 // ----------------------------------------------------------------------------
 //                 Only change code below this line when necessary
 // ----------------------------------------------------------------------------
-// This variable is used to exit the autonomous menu.
-bool exitAutonMenu = false;
+int autonNum;                         // Total number of autons, automatically calculated based on the size of the autonMenuText array
+bool autonTestMode = false;           // Indicates if in test mode
+bool exitAutonMenu = false;          // Flag to exit the autonomous menu
+
 // This is the autonomous function.
 // It is called when the autonomous period starts.
 void autonomous(void) {
@@ -81,19 +81,10 @@ void autonomous(void) {
   runAutonItem();
 }
 
-// Displays the autonomous routine selection menu on the brain screen.
-void showAutonMenu() {
-  // Calculate the number of autons based on the size of the autonMenuText array.
-  autonNum = sizeof(autonMenuText) / sizeof(autonMenuText[0]);
-  printMenu(autonMenuText);
-  autonTestStep = 0;
-}
-
 // This function prints the selected autonomous routine to the brain and controller screens.
-void printMenuItem(char const * txt[]) {
-  // If the custom test is selected, print "custom test" to the controller screen.
+void printMenuItem() {
   if (currentAutonSelection < 0) {
-    printControllerScreen("custom test");
+    printControllerScreen("quick test");
     return;
   }    
   // Clears the brain screen.
@@ -101,17 +92,20 @@ void printMenuItem(char const * txt[]) {
   // Sets the cursor to the third row, first column.
   Brain.Screen.setCursor(3, 1);
   // Prints the selected autonomous routine to the brain screen.
-  Brain.Screen.print("%s", txt[currentAutonSelection]);
+  Brain.Screen.print("%s", autonMenuText[currentAutonSelection]);
   // Prints the selected autonomous routine to the controller screen.
-  printControllerScreen(txt[currentAutonSelection]);
+  printControllerScreen(autonMenuText[currentAutonSelection]);
 }
 
 // This function displays the autonomous menu on the brain screen.
-void printMenu(char const * txt[]) {
+void showAutonMenu() {
+  autonNum = sizeof(autonMenuText) / sizeof(autonMenuText[0]);
+  autonTestStep = 0;
+
   // Sets the font to mono30.
   Brain.Screen.setFont(mono30);
   // Prints the selected autonomous routine.
-  printMenuItem(txt);
+  printMenuItem();
 
   // This loop runs until the autonomous menu is exited.
   while (!exitAutonMenu) {
@@ -124,7 +118,7 @@ void printMenu(char const * txt[]) {
       // Cycles through the autonomous routines.
       currentAutonSelection = (currentAutonSelection + 1) % autonNum;
       // Prints the selected autonomous routine.
-      printMenuItem(txt);
+      printMenuItem();
       // Rumbles the controller.
       controller(primary).rumble(".");
     }
