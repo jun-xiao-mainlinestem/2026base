@@ -2,35 +2,28 @@
 
 This guide provides step-by-step instructions for configuring your VEX V5 robot code using RGB template.
 
-**⚠️ Important:** Only the **Drivetrain Configuration** section is mandatory for you to be able to test drive. The other sections are optional and depend on your specific needs.
-
-## Table of Contents
-1. [Drivetrain Configuration](#drivetrain-configuration) *(Required)*
-2. [Subsystem Configuration](#motor-and-sensor-configuration) *(Optional)*
-3. [Button Control Configuration](#driver-control-configuration) *(Optional)*
-4. [Autonomous Routines Configuration](#autonomous-routines-configuration) *(Optional)*
-
+**⚠️ Important:** The **Drivetrain Configuration** section is mandatory for you to be able to test drive. The other sections are optional and depend on your specific needs.
 ---
 
 ## Drivetrain Configuration *(Required)*
 
 This section is **mandatory** - you must configure your drivetrain for the robot to function properly.
 
-### Step 1: Open chassis.cpp
-Navigate to `src/chassis.cpp` and locate the motor definitions.
+### Step 1: Open robot-config.cpp
+Navigate to `src/robot-config.cpp` and locate the motor definitions.
 
 ### Step 2: Configure Motor Ports
 Find the motor definitions and update the port numbers:
 
 ```cpp
 // Left side motors
-motor leftMotor1 = motor(PORT1, ratio18_1, false);
-motor leftMotor2 = motor(PORT2, ratio18_1, false);
+motor leftMotor1 = motor(PORT1, ratio6_1, true);
+motor leftMotor2 = motor(PORT2, ratio6_1, true);
 motor leftMotor3 = motor(PORT3, ratio18_1, false);
 
 // Right side motors
-motor rightMotor1 = motor(PORT4, ratio18_1, true);
-motor rightMotor2 = motor(PORT5, ratio18_1, true);
+motor rightMotor1 = motor(PORT4, ratio6_1, false);
+motor rightMotor2 = motor(PORT5, ratio6_1, false);
 motor rightMotor3 = motor(PORT6, ratio18_1, true);
 
 // Inertial sensor
@@ -39,7 +32,7 @@ inertial inertial1 = inertial(PORT10);
 
 **Action:** Replace `PORT1`, `PORT2`, etc. with your actual motor port numbers.
 
-### Step 3: Set Drive Mode
+### Step 3 (optional): Set Drive Mode
 Locate the drive mode setting:
 
 ```cpp
@@ -51,8 +44,8 @@ int DRIVE_MODE = 0;  // 0 for arcade, 1 for tank, 2 for mecanum
 - `1` for tank drive (left joystick for left side, right joystick for right side)
 - `2` for mecanum drive (four-wheel independent control for strafing)
 
-### (optional) Step 4: Configure Wheel Size and Gear Ratio
-Find the Drive constructor and update the wheel diameter and gear ratio parameters:
+### Step 4 (optional): Configure Wheel Size and Gear Ratio
+Find the Drive constructor in `robot-config.cpp` and update the wheel diameter and gear ratio parameters:
 
 ```cpp
 Drive chassis(
@@ -81,16 +74,16 @@ Drive chassis(
 
 
 ### (optional) Step 5: Configure Drive Constants
-Find the chassis constants in `setChassisDefaults()` function:
+Find the chassis constants in the `setChassisDefaults()` function in `robot-config.cpp`:
 
 ```cpp
 // Sets the arcade drive constants for the chassis.
 // These constants are used to control the arcade drive of the chassis.
-chassis.setArcadeConstants(0.16, 0.5, 0.85);
+chassis.setArcadeConstants(0.5, 0.5, 0.85);
 ```
 
 **Available Constants:**
-- **kBrake (0.16)**: Controls how quickly the robot stops when joysticks are released
+- **kBrake (0.5)**: Controls how quickly the robot stops when joysticks are released
 - **kTurnBias (0.5)**: Controls the balance between forward/backward and turning movement
 - **kTurnDampingFactor (0.85)**: **Controls turn sensitivity** - lower values make turning less sensitive, higher values make turning more sensitive
 
@@ -98,9 +91,7 @@ chassis.setArcadeConstants(0.16, 0.5, 0.85);
 - **Decrease value (e.g., 0.5)**: Makes turning less sensitive
 - **Increase value (e.g., 1.0)**: Makes turning more sensitive
 
-## Subsystem Configuration *(Optional)*
-
-This section is **optional** - you only need to configure this if you have motors or sensors other than the drivetrain.
+## Other Subsystem Configuration
 
 ### Step 1: Open robot-config.cpp
 Navigate to `src/robot-config.cpp` and locate the motor definitions.
@@ -161,10 +152,7 @@ void stopRollers();
 
 ---
 
-## Button Control Configuration *(Optional)*
-
-This section is **optional** - you only need to configure this if you have button control logic.
-
+## Button Control Configuration 
 ### Step 1: Open main.cpp
 Navigate to `src/main.cpp` and locate the button functions.
 
@@ -195,9 +183,7 @@ controller(primary).ButtonL1.pressed(buttonL1Action);
 
 ---
 
-## Autonomous Routines Configuration *(Optional)*
-
-This section is **optional** - you only need to configure this if you have autonomous routines.
+## Autonomous Routines Configuration
 
 ### Step 1: Open autons.cpp
 Navigate to `src/autons.cpp` and locate the auton functions.
@@ -324,7 +310,7 @@ void auton_skill() {
 
 ### Common Issues:
 1. **Motors not responding or in conflict**: Check port numbers and motor directions
-2. **Robot drives in wrong direction**: Reverse motor directions in chassis.cpp
+2. **Robot drives in wrong direction**: Reverse motor directions in robot-config.cpp
 3. **Buttons not working**: Verify button mappings in main.cpp
 4. **Auton not running**: Check auton function names in runAutonItem()
 5. **Test mode not working**: Ensure you press Right button within 5 seconds of startup
@@ -334,7 +320,5 @@ void auton_skill() {
 
 ### Debug Tips:
 1. Use the controller screen to display debug information
-2. Add `controller(primary).Screen.print()` statements
+2. Add `printControllerScreen()` statements
 3. Check motor temperatures and connections
-
-For more detailed explanation of the APIs, refer to the main [README.md](/readme.md) file. 

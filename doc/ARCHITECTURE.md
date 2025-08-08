@@ -15,11 +15,9 @@ The code is modularized into the following components:
 
 *   **`main.cpp`**: This is the entry point of the program. It sets up the competition functions for autonomous and driver control modes, and it maps controller buttons to specific actions. It also integrates the SampleRemoteControl module for command processing.
 
-*   **`chassis.h` / `chassis.cpp`**: This module encapsulates the robot's drivetrain logic. It provides functions for user control (`usercontrol`) and autonomous control (`autonomous`). It also has a `Drive` class that represents the chassis.
-
 *   **`autons.h` / `autons.cpp`**: This module manages the autonomous routines. It provides a menu system (`showAutonMenu`) to select different autonomous programs, and it has functions to execute the selected autonomous routine (`runAutonItem`).
 
-*   **`robot-config.h` / `robot-config.cpp`**: This module is responsible for configuring the robot's hardware components, such as motors and sensors. It defines and initializes the `intake` motor etc. It also provides functions to control these components.
+*   **`robot-config.h` / `robot-config.cpp`**: This module is responsible for configuring the robot's hardware components, such as motors and sensors. It defines and initializes the `chassis` and `intake` motor etc. It also provides functions to control these components.
 
 *   **`rgb-template`**: This subdirectory contains a reusable library for controlling a drivetrain and remote communication. It includes the following components:
     *   **`drive.h` / `drive.cpp`**: This defines a `Drive` class that encapsulates the robot's drivetrain. It provides methods for controlling the robot's movement, including turning to a specific heading and driving a specific distance. It also includes logic for driver control with arcade, tank and mecanum modes.

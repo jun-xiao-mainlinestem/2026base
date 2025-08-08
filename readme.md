@@ -27,8 +27,7 @@ The project is organized into the following directories:
 
 *   `src/`: Main source code
     *   `main.cpp`: Entry point, competition control, and button mappings.
-    *   `chassis.cpp`: Drivetrain configuration and control.
-    *   `robot-config.cpp`: Configuration for other motors and sensors.
+    *   `robot-config.cpp`: Configuration for drivetrain motors, sensors, and other subsystems.
     *   `autons.cpp`: Autonomous routines.
     *   `rgb-template/`: Library code.
 *   `include/`: Header files
@@ -38,17 +37,14 @@ The project is organized into the following directories:
 
 For detailed step-by-step configuration instructions, see [Configuration Guide](doc/configuration_guide.md).
 
-### Drivetrain ([chassis.cpp](src/chassis.cpp))
+### Robot configuration ([robot-config.cpp](src/robot-config.cpp))
 
-*   **Motors and Sensors:** Define the 6-motor drivetrain motors and inertial sensor, including ports, gear ratios, and motor direction. By default, the port numbers are 1, 2, 3 for the left side, 4, 5, 6 for the right side and 10 for the inertial sensor. 
+*   **Drivetrain Motors and Sensors:** Define the 6-motor drivetrain motors and inertial sensor, including ports, gear ratios, and motor direction. By default, the port numbers are 1, 2, 3 for the left side, 4, 5, 6 for the right side and 10 for the inertial sensor. 
 *   **Drive Mode:** Set `DRIVE_MODE` to `0` for arcade control, `1` for tank control, or `2` for mecanum control.
 *   **(Optional) Wheel Size and Gear Ratio:**
-    *   Find the Drive constructor and update the wheel diameter and gear ratio parameters for precise auton driving.
+    *   Find the Drive constructor in `robot-config.cpp` and update the wheel diameter and gear ratio parameters for precise auton driving.
 *   **(Optional) Drive Constants:** If needed, adjust any of constants for the drivetrain in the `setChassisDefaults()` function. For example, adjust the `kTurnDampingFactor` value in `setArcadeConstants()` to control turn sensitivity - lower values make turning less sensitive, higher values make turning more sensitive. 
-
-### Other Subsystems ([robot-config.cpp](src/robot-config.cpp))
-
-*   **Motor Configuration:** Define your motors and sensors for other subsystems such as intake or lift.
+*   **Other Motors and Sensors:** Define your motors and sensors for other subsystems such as intake or lift.
 *   **Number of Motors:** Set `NUMBER_OF_MOTORS` to total number of motors to allow the program to automatically check for disconnected or overheated motors. The controller will vibrate with "---" pattern and display warning messages if any motor issues are detected.
 *   **Helper functions:** Write helper functions to control the subsystems and declare those functions in [robot-config.h](include/robot-config.h) so that your other cpp files can call them.
 
