@@ -1,12 +1,12 @@
 #include "vex.h"
 
-Drive::Drive(motor_group LDrive, motor_group RDrive, inertial gyro, float wheelDiameter, float gearRatio):
+Drive::Drive(motor_group leftDrive, motor_group rightDrive, inertial gyro, float wheelDiameter, float gearRatio):
   wheelDiameter(wheelDiameter),
   gearRatio(gearRatio),
   driveInToDegRatio(gearRatio / 360.0 * M_PI * wheelDiameter),
-  LDrive(LDrive),
-  RDrive(RDrive),
-  Gyro(gyro) {}
+  leftDrive(leftDrive),
+  rightDrive(rightDrive),
+  gyro(gyro) {}
 
 void Drive::setTurnPID(float turnMaxVoltage, float turnKp, float turnKi, float turnKd, float turnStarti) {
   this -> turnMaxVoltage = turnMaxVoltage;
@@ -43,26 +43,26 @@ void Drive::setDriveExitConditions(float driveSettleError, float driveSettleTime
 }
 
 void Drive::setHeading(float orientationDeg) {
-  Gyro.setHeading(orientationDeg, deg);
+  gyro.setHeading(orientationDeg, deg);
   desiredHeading = orientationDeg;
 }
 
 float Drive::getHeading() {
-  return (Gyro.heading());
+  return (gyro.heading());
 }
 
 float Drive::getLeftPositionIn() {
-  return (LDrive.position(deg) * driveInToDegRatio);
+  return (leftDrive.position(deg) * driveInToDegRatio);
 }
 
 float Drive::getRightPositionIn() {
-  return (RDrive.position(deg) * driveInToDegRatio);
+  return (rightDrive.position(deg) * driveInToDegRatio);
 }
 
 void Drive::driveWithVoltage(float leftVoltage, float rightVoltage) {
 
-  LDrive.spin(fwd, leftVoltage, volt);
-  RDrive.spin(fwd, rightVoltage, volt);
+  leftDrive.spin(fwd, leftVoltage, volt);
+  rightDrive.spin(fwd, rightVoltage, volt);
 }
 
 void Drive::turnToHeading(float heading) {
@@ -93,8 +93,8 @@ void Drive::turnToHeading(float heading, float turnMaxVoltage, bool chaining, fl
     wait(10, msec);
   }
   if (!chaining || drivetrainNeedsStopped) {
-    LDrive.stop(hold);
-    RDrive.stop(hold);
+    leftDrive.stop(hold);
+    rightDrive.stop(hold);
   }
 }
 
@@ -131,8 +131,8 @@ void Drive::driveDistance(float distance, float driveMaxVoltage, float heading, 
     wait(10, msec);
   }
   if (!chaining || drivetrainNeedsStopped) {
-    LDrive.stop(hold);
-    RDrive.stop(hold);
+    leftDrive.stop(hold);
+    rightDrive.stop(hold);
   }
 }
 
@@ -169,8 +169,8 @@ void Drive::controlArcade(int y, int x) {
   }
 
   if (fabs(throttle) > 0 || fabs(turn) > 0) {
-    LDrive.spin(fwd, leftPower, volt);
-    RDrive.spin(fwd, rightPower, volt);
+    leftDrive.spin(fwd, leftPower, volt);
+    rightDrive.spin(fwd, rightPower, volt);
     drivetrainNeedsStopped = true;
   }
   // When joystick are released, run active brake on drive
@@ -178,14 +178,14 @@ void Drive::controlArcade(int y, int x) {
   else {
     if (drivetrainNeedsStopped) {
       if (stopMode != hold) {
-        LDrive.resetPosition();
-        RDrive.resetPosition();
+        leftDrive.resetPosition();
+        rightDrive.resetPosition();
         wait(20, msec);
-        LDrive.spin(fwd, -LDrive.position(rev) * kBrake, volt);
-        RDrive.spin(fwd, -RDrive.position(rev) * kBrake, volt);
+        leftDrive.spin(fwd, -leftDrive.position(rev) * kBrake, volt);
+        rightDrive.spin(fwd, -rightDrive.position(rev) * kBrake, volt);
       } else {
-        LDrive.stop(hold);
-        RDrive.stop(hold);
+        leftDrive.stop(hold);
+        rightDrive.stop(hold);
       }
       drivetrainNeedsStopped = false;
     }
@@ -197,13 +197,13 @@ void Drive::controlTank(int left, int right) {
   float rightthrottle = curveFunction(right, kThrottle);
 
   if (fabs(leftthrottle) > 0 || fabs(rightthrottle) > 0) {
-    LDrive.spin(fwd, toVolt(leftthrottle), volt);
-    RDrive.spin(fwd, toVolt(rightthrottle), volt);
+    leftDrive.spin(fwd, toVolt(leftthrottle), volt);
+    rightDrive.spin(fwd, toVolt(rightthrottle), volt);
     drivetrainNeedsStopped = true;
   } else {
     if (drivetrainNeedsStopped) {
-      LDrive.stop(stopMode);
-      RDrive.stop(stopMode);
+      leftDrive.stop(stopMode);
+      rightDrive.stop(stopMode);
       drivetrainNeedsStopped = false;
     }
   }
@@ -219,8 +219,8 @@ void Drive::controlMecanum(int x, int y, int acc, int steer, motor DriveLF, moto
 
   if (turn == 0 && strafe == 0 && throttle == 0 && straight == 0) {
     if (drivetrainNeedsStopped) {
-      LDrive.stop(stopMode);
-      RDrive.stop(stopMode);
+      leftDrive.stop(stopMode);
+      rightDrive.stop(stopMode);
       drivetrainNeedsStopped = false;
       return;
     }
@@ -237,19 +237,19 @@ void Drive::controlMecanum(int x, int y, int acc, int steer, motor DriveLF, moto
   {
     float leftPower = toVolt(throttle + turn);
     float rightPower = toVolt(throttle - turn);
-    LDrive.spin(fwd, leftPower, volt);
-    RDrive.spin(fwd, rightPower, volt);
+    leftDrive.spin(fwd, leftPower, volt);
+    rightDrive.spin(fwd, rightPower, volt);
     drivetrainNeedsStopped = true;
   }
 }
 
 void Drive::stop(vex::brakeType mode) {
     drivetrainNeedsStopped = true;
-    LDrive.stop(mode);
-    RDrive.stop(mode);
+    leftDrive.stop(mode);
+    rightDrive.stop(mode);
     stopMode = mode;
-    LDrive.resetPosition();
-    RDrive.resetPosition();
+    leftDrive.resetPosition();
+    rightDrive.resetPosition();
     drivetrainNeedsStopped = false;
 }
 

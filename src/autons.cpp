@@ -253,15 +253,15 @@ void exitAuton()
   chassis.stop(coast);
 }
 
-bool setupGyro() {
+bool setupgyro() {
   // Waits until the inertial sensor is calibrated.
-  while (inertial1.isCalibrating()) {
+  while (chassis.gyro.isCalibrating()) {
     wait(25, msec);
   }
   // Rumbles the controller to indicate that the gyro is calibrated.
   controller(primary).rumble("-");
   // If the inertial sensor is not installed, print an error message to the controller screen.
-  if (!inertial1.installed()) {
+  if (!chassis.gyro.installed()) {
     printControllerScreen("inertial sensor failure");
     controller(primary).rumble("---");
     wait(2, seconds);
@@ -289,7 +289,7 @@ void setupTeamColor(){
 // This function is called before the autonomous period starts.
 void pre_auton() {
   // Sets up the gyro.
-  bool gyroSetupSuccess = setupGyro();
+  bool gyroSetupSuccess = setupgyro();
   // Sets up the team color.
   setupTeamColor();
 

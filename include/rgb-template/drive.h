@@ -54,11 +54,9 @@ private:
   vex::brakeType stopMode = coast;
   
   // The motor group for the left side of the drivetrain.
-  motor_group LDrive;
+  motor_group leftDrive;
   // The motor group for the right side of the drivetrain.
-  motor_group RDrive;
-  // The inertial sensor.
-  inertial Gyro;
+  motor_group rightDrive;
 
     // Gets the position of the left side of the drivetrain in inches.
   float getLeftPositionIn();
@@ -72,11 +70,14 @@ private:
   void driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage, bool chaining, float driveSettleError=2, float driveSettleTime=50) ;
 
 public: 
-  // The desired heading of the robot.
+  // The inertial sensor.
+  inertial gyro;
+
+// The desired heading of the robot.
   float desiredHeading;
 
   // The constructor for the Drive class.
-  Drive(motor_group LDrive, motor_group RDrive, inertial gyro, float wheelDiameter, float gearRatio);
+  Drive(motor_group leftDrive, motor_group rightDrive, inertial gyro, float wheelDiameter, float gearRatio);
 
   // Gets the current heading of the robot.
   float getHeading();

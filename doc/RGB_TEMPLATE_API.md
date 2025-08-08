@@ -10,8 +10,8 @@ The `Drive` class is the core of the `rgb-template` library. It provides a high-
 
 To use the `Drive` class, you must first create an instance of it. The constructor takes the following arguments:
 
-*   `LDrive`: A `motor_group` for the left side of the drivetrain.
-*   `RDrive`: A `motor_group` for the right side of the drivetrain.
+*   `leftDrive`: A `motor_group` for the left side of the drivetrain.
+*   `rightDrive`: A `motor_group` for the right side of the drivetrain.
 *   `gyro`: An `inertial` sensor for tracking the robot's orientation.
 *   `wheel_diameter`: The diameter of the wheels in inches.
 *   `gear_ratio`: The gear ratio of the drivetrain.
