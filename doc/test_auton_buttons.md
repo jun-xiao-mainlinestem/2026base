@@ -16,7 +16,6 @@ if ((Brain.Timer.time(sec) < 5) && !autonTestMode) {
     wait(1, sec);
     showAutonMenu();
     autonTestMode = true;
-    autonTestStep = 1;
     return true;
 }
 ```
@@ -27,7 +26,7 @@ if ((Brain.Timer.time(sec) < 5) && !autonTestMode) {
 - ✅ Controller rumbles with "-" pattern
 - ✅ Displays "Test Mode: ON" on controller screen
 - ✅ Shows auton menu
-- ✅ Sets `autonTestMode = true` and `autonTestStep = 1`
+- ✅ Sets `autonTestMode = true`
 
 ---
 
@@ -38,7 +37,6 @@ if ((Brain.Timer.time(sec) < 5) && !autonTestMode) {
 if (autonTestMode) {
     controller(primary).rumble(".");
     currentAutonSelection = (currentAutonSelection + 1) % autonNum;
-    autonTestStep = 1;
     showAutonMenu();
     return true;
 }
@@ -46,7 +44,6 @@ if (autonTestMode) {
 
 **What happens:**
 - ✅ Increments `currentAutonSelection` (cycles through available autons)
-- ✅ Resets `autonTestStep` to 1 for new auton
 - ✅ Calls `showAutonMenu()` which displays menu on brain and controller screens
 - ✅ Shows current selection (e.g., "auton1", "auton2", "auton_skill")
 
@@ -63,7 +60,7 @@ if (autonTestMode) {
 // Up Button - Previous Step
 if (autonTestMode) {
     controller(primary).rumble(".");
-    if (autonTestStep > 1) autonTestStep--;
+    if (autonTestStep > 0) autonTestStep--;
     controller(primary).Screen.print("Step: %d         ", autonTestStep);
     return true;
 }
@@ -78,7 +75,7 @@ if (autonTestMode) {
 ```
 
 **What happens:**
-- ✅ **Up Button**: Decreases step number (if > 1)
+- ✅ **Up Button**: Decreases step number (if > 0)
 - ✅ **Down Button**: Increases step number
 - ✅ Controller rumbles to confirm action
 - ✅ Displays current step on controller screen
@@ -91,28 +88,22 @@ if (autonTestMode) {
 ```cpp
 if (autonTestMode) {
     controller(primary).rumble(".");
-    
     double t1 = Brain.Timer.time(sec);
-    
     runAutonItem(); 
-    
     double t2 = Brain.Timer.time(sec);
     char timeMsg[30];
     sprintf(timeMsg, "run time: %.0f", t2-t1);
     printControllerScreen(timeMsg);
-    chassis.stop(brake);
-    
+    chassis.stop(coast);
     return true;
 }
 ```
 
 **What happens:**
-- ✅ Disables driver control (prevents interference)
 - ✅ Records start time
 - ✅ Calls `runAutonItem()` which executes the selected auton
 - ✅ Calculates and displays run time
-- ✅ Re-enables driver control
-- ✅ Stops chassis with brake
+- ✅ Stops chassis with coast
 
 ---
 
@@ -157,10 +148,10 @@ bool continueAutonStep() {
 ---
 ### 6. Show status
 **Button: B**
-- ✅ If hold while driving, upon releasing display current heading and distance drived on the controller screen
+- ✅ If hold this button while driving, upon releasing it, the controller displays current heading and distance drived.
 
 ### 7. Abort auto driving
-- ✅ Move joystick to abort the auto driving.
+- ✅ Move joystick anytime to abort the auto driving.
 
 
 ## 📋 Button Summary
@@ -183,10 +174,10 @@ bool continueAutonStep() {
 1. **Start program** → Robot boots up
 2. **Press Right** (within 5 seconds) → Enter test mode, see "auton1" on screen
 3. **Press Right** → See "auton2" on screen  
-4. **Press Down** → Step increases to 2
-5. **Press A** → Run step 2 of auton2, see "run time: 1" on screen
-6. **Press Up** → Step decreases to 1
-7. **Press A** → Run step 1 of auton2
+4. **Press Down** → Step increases to 1
+5. **Press A** → Run step 1 of auton2, see "run time: 1" on screen
+6. **Press Up** → Step decreases to 0
+7. **Press A** → Run step 0 of auton2
 8. **Press Right** → Back to "auton1" on screen
 
 ---
@@ -234,7 +225,7 @@ char const * autonMenuText[] = {
 2. **Step-by-Step**: Use Up/Down buttons to navigate through steps
 3. **Menu Navigation**: Use Right/Left to quickly switch between different autons
 4. **Timing**: Remember to press Right within 5 seconds of program startup
-5. **Safety**: Driver control is disabled during auton execution for safety
+5. **Safety**: Driver control can abort the auton execution at any time
 6. **Step Control**: Each auton can have different numbers of steps
 7. **Visual Feedback**: Controller screen shows current step and auton selection
 
