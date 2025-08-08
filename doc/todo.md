@@ -6,5 +6,6 @@
     - remove test.h test.cpp and reference of it
     - clean auton.cpp
     - in main.cpp remove button macros for left/right and others
+    - check if joystickTouched is still needed
 - build the project to see if there is any error.
 - add url link to the repository for readme.md

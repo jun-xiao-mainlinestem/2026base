@@ -123,9 +123,11 @@ void usercontrol(void) {
 
   // This loop runs forever, controlling the robot during the driver control period.
   while (1) {
-    if(controller(primary).Axis1.position() != 0 || controller(primary).Axis2.position() != 0 
-   || controller(primary).Axis3.position() != 0 || controller(primary).Axis4.position() != 0) {
-      chassis.joystickTouched = true;
+    if (!chassis.joystickTouched){
+      if(controller(primary).Axis1.position() != 0 || controller(primary).Axis2.position() != 0 
+        || controller(primary).Axis3.position() != 0 || controller(primary).Axis4.position() != 0) {
+        chassis.joystickTouched = true;
+      }
     }
     // This is the tank drive code.
     if (DRIVE_MODE == 1) chassis.controlTank(controller(primary).Axis3.position(), controller(primary).Axis2.position());
