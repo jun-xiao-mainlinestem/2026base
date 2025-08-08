@@ -74,28 +74,3 @@ void colorSort()
   }
   inTake();
 } 
-
-// (Optional) optical sensor for team color detection
-optical teamOptical = optical(PORT8);
-bool teamIsRed = true;
-void setupTeamColor(){
-  if (teamOptical.installed()) {
-    // Sets the team color based on the optical sensor.
-    if (teamOptical.color() == color::blue) {
-      teamIsRed = false;
-      printControllerScreen("team blue");
-    } else {
-      printControllerScreen("team red");
-    }
-    wait(1, seconds);
-  } 
-}
-
-void collisionDetected(axisType axis, double raw_x, double raw_y, double raw_z ) {
-  chassis.stop(hold);
-}
-
-void setCollisionCallback()
-{
-  inertial1.collision(collisionDetected);
-}

@@ -1,7 +1,6 @@
 using namespace vex;
 
 extern const int NUMBER_OF_MOTORS;
-extern bool teamIsRed;
 
 extern motor rollerBottom;
 extern motor rollerMiddle;
@@ -14,5 +13,3 @@ void scoreMiddle();
 void scoreLong();
 
 void colorSort();
-
-void setupTeamColor();

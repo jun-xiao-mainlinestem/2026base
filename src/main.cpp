@@ -153,9 +153,6 @@ int main() {
   // Run the pre-autonomous function.
   pre_auton();
 
-  // optional: set up the team color
-  setupTeamColor();
-
   // Prevent main from exiting with an infinite loop.
   while (true) {
     if (REMOTE_CONTROL_MODE) {

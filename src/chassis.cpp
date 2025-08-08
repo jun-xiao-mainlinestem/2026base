@@ -61,7 +61,7 @@ void setChassisDefaults() {
   // These constants are used to control the arcade drive of the chassis.
   chassis.setArcadeConstants(0.5, 0.5, 0.85);
 
-    // Sets the exit conditions for the drive functions.
+  // Sets the exit conditions for the drive functions.
   // These conditions are used to determine when the drive function should exit.
   chassis.setDriveExitConditions(1, 200, 2000);
   // Sets the exit conditions for the turn functions.
@@ -112,40 +112,6 @@ void usercontrol(void) {
     // This wait prevents the loop from using too much CPU time.
     wait(20, msec);
    } 
-}
-
-// This function sets up the gyro.
-bool setupGyro() {
-  // Waits until the inertial sensor is calibrated.
-  while (inertial1.isCalibrating()) {
-    wait(25, msec);
-  }
-  // Rumbles the controller to indicate that the gyro is calibrated.
-  controller(primary).rumble("-");
-  // If the inertial sensor is not installed, print an error message to the controller screen.
-  if (!inertial1.installed()) {
-    printControllerScreen("inertial sensor failure");
-    controller(primary).rumble("---");
-    wait(2, seconds);
-    return false;  
-  }
-  return true;
-}
-
-// This function is called before the autonomous period starts.
-void pre_auton() {
-  // Sets up the gyro.
-  bool gyroSetupSuccess = setupGyro();
-  // Sets up the team color.
-  setupTeamColor();
-
-  bool motorsSetupSuccess = true;
-  // Checks the motors.
-  motorsSetupSuccess = checkMotors(NUMBER_OF_MOTORS);
-  //set the parameters for the chassis
-  setChassisDefaults();
-  // Shows the autonomous menu.
-  if(gyroSetupSuccess && motorsSetupSuccess) showAutonMenu();
 }
 
 

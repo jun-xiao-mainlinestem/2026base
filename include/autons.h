@@ -9,6 +9,8 @@ void runAutonItem();
 // Prints the autonomous selection menu to the brain screen.
 void printMenu(char const * txt[]);
 
+// The pre-autonomous task.
+void pre_auton();
 // The autonomous task.
 void autonomous();
 
@@ -20,3 +22,5 @@ bool runAutonTest();
 bool prevAutonStep();
 bool nextAutonStep();
 bool continueAutonStep();
+
+extern bool teamIsRed;

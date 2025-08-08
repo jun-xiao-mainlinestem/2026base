@@ -155,7 +155,7 @@ bool nextAutonMenu()
 
   // if in test mode, scroll through the auton menu
   controller(primary).rumble(".");
-  // Reset the auton test step to 1 and change the current auton selection.
+  // Reset the auton test step to 0 and change the current auton selection.
   currentAutonSelection = (currentAutonSelection + 1) % autonNum;
   showAutonMenu();
   return true;
@@ -167,7 +167,7 @@ bool prevAutonMenu()
 
   // if in test mode, scroll through the auton menu
   controller(primary).rumble(".");
-  // Reset the auton test step to 1 and change the current auton selection.
+  // Reset the auton test step to 0 and change the current auton selection.
   currentAutonSelection = (currentAutonSelection - 1 + autonNum) % autonNum;
   autonTestStep = 0;
   showAutonMenu();
@@ -251,5 +251,53 @@ void exitAuton()
     //TODO: some macto actions
   }
   chassis.stop(coast);
+}
 
+bool setupGyro() {
+  // Waits until the inertial sensor is calibrated.
+  while (inertial1.isCalibrating()) {
+    wait(25, msec);
+  }
+  // Rumbles the controller to indicate that the gyro is calibrated.
+  controller(primary).rumble("-");
+  // If the inertial sensor is not installed, print an error message to the controller screen.
+  if (!inertial1.installed()) {
+    printControllerScreen("inertial sensor failure");
+    controller(primary).rumble("---");
+    wait(2, seconds);
+    return false;  
+  }
+  return true;
+}
+
+// optical sensor for team color detection
+optical teamOptical = optical(PORT8);
+bool teamIsRed = true;
+void setupTeamColor(){
+  if (teamOptical.installed()) {
+    // Sets the team color based on the optical sensor.
+    if (teamOptical.color() == color::blue) {
+      teamIsRed = false;
+      printControllerScreen("team blue");
+    } else {
+      printControllerScreen("team red");
+    }
+    wait(1, seconds);
+  } 
+}
+
+// This function is called before the autonomous period starts.
+void pre_auton() {
+  // Sets up the gyro.
+  bool gyroSetupSuccess = setupGyro();
+  // Sets up the team color.
+  setupTeamColor();
+
+  bool motorsSetupSuccess = true;
+  // Checks the motors.
+  motorsSetupSuccess = checkMotors(NUMBER_OF_MOTORS);
+  //set the parameters for the chassis
+  setChassisDefaults();
+  // Shows the autonomous menu.
+  if(gyroSetupSuccess && motorsSetupSuccess) showAutonMenu();
 }

@@ -11,12 +11,9 @@ extern inertial inertial1;
 // A flag to switch between tank and arcade drive modes.
 extern int DRIVE_MODE;
 
-// External declaration of the team color optical sensor
-extern optical teamOptical;
+void setChassisDefaults();
 
 // The user control task.
 void usercontrol();
-// The pre-autonomous task.
-void pre_auton();
 
 bool changeDriveMode();
