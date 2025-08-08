@@ -1,0 +1,10 @@
+# steps to create a clean repository
+- new v5 project
+- add .gitignore file
+- commit and pubblish in github
+- copy src, doc, and include folder
+    - remove test.h test.cpp and reference of it
+    - clean auton.cpp
+    - in main.cpp remove button macros for left/right and others
+- build the project to see if there is any error.
+- add url link to the repository for readme.md

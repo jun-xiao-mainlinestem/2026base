@@ -82,11 +82,25 @@ void buttonLeftAction()
 void buttonDownAction()
 {
   if (nextAutonStep()) return;
+
+  chassis.driverControlDisabled = true;
+  chassis.turnToHeading(180);
+  wait(100, msec);
+  if (!controller(primary).ButtonDown.pressing()) return;
+  // This is a placeholder for future actions triggered by Button Down.
+  // safty check to prevent running the code if the distance reading is not valid.
+  // Matchload balls when the Button Down is pressed and hold.
+  chassis.stop(coast);
+  chassis.driverControlDisabled = false;
 }
 
 void buttonUpAction()
 {
   if (prevAutonStep()) return;
+
+  // This is a placeholder for future actions triggered by Button Up.
+  // bring up the matchload bar and turn north
+  // Score long goal when the Button Up is pressed and hold.
 }
 
 

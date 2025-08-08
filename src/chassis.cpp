@@ -78,6 +78,7 @@ int endgameTimer() {
   printControllerScreen("end game");
   // Rumbles the controller.
   controller(primary).rumble("-");
+
   // Checks the motors every 60 seconds.
   while(true)
   {
@@ -111,14 +112,15 @@ void usercontrol(void) {
   resetChassis();
   // Starts the end game timer thread.
   thread endgameTimer_thread = thread(endgameTimer);
+  chassis.joystickTouched = false;
 
   // This loop runs forever, controlling the robot during the driver control period.
   while (1) {
-    // This is the tank drive code.
     if(controller(primary).Axis1.position() != 0 || controller(primary).Axis2.position() != 0 
    || controller(primary).Axis3.position() != 0 || controller(primary).Axis4.position() != 0) {
       chassis.joystickTouched = true;
     }
+    // This is the tank drive code.
     if (DRIVE_MODE == 1) chassis.controlTank(controller(primary).Axis3.position(), controller(primary).Axis2.position());
     // This is the arcade drive code.
     else if (DRIVE_MODE == 0)
