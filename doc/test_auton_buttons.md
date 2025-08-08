@@ -93,7 +93,6 @@ if (autonTestMode) {
     controller(primary).rumble(".");
     
     double t1 = Brain.Timer.time(sec);
-    chassis.driverControlDisabled = true;
     
     runAutonItem(); 
     
@@ -101,7 +100,6 @@ if (autonTestMode) {
     char timeMsg[30];
     sprintf(timeMsg, "run time: %.0f", t2-t1);
     printControllerScreen(timeMsg);
-    chassis.driverControlDisabled = false;
     chassis.stop(brake);
     
     return true;
@@ -157,10 +155,12 @@ bool continueAutonStep() {
 - ✅ In normal mode, execution continues through all steps
 
 ---
-### 6. Emergency brake + show status
+### 6. Show status
 **Button: B**
-- ✅ Brake drivetrain and abort any auto driving
 - ✅ If hold while driving, upon releasing display current heading and distance drived on the controller screen
+
+### 7. Abort auto driving
+- ✅ Move joystick to abort the auto driving.
 
 
 ## 📋 Button Summary
@@ -173,7 +173,8 @@ bool continueAutonStep() {
 | **Up** | Previous step | When in test mode |
 | **Down** | Next step | When in test mode |
 | **A** | Run selected auton/step | When in test mode |
-| **B** | Emergency brake + show status | Always |
+| **B** | Show status | Always |
+| **Movement of Joystick** | Abort auto driving | Always |
 
 ---
 

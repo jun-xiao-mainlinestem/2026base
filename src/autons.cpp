@@ -9,9 +9,12 @@ void auton1() {
 
 // The second autonomous routine.
 void auton2() {
-  awp(); return;
+//  awp(); return;
   chassis.setHeading(0);
   chassis.driveDistance(12, 6);
+  chassis.turnToHeading(90, 6);
+  chassis.turnToHeading(0, 6);
+  chassis.driveDistance(-12, 6);
 }
 
 // The long autonomous skill routine.
@@ -213,19 +216,13 @@ bool runAutonTest()
   if (autonTestMode)
   {
     controller(primary).rumble(".");
-
     double t1 = Brain.Timer.time(sec);
-    chassis.driverControlDisabled = true;
-
     runAutonItem(); 
-
     double t2 = Brain.Timer.time(sec);
     char timeMsg[30];
     sprintf(timeMsg, "run time: %.0f", t2-t1);
     printControllerScreen(timeMsg);
-    chassis.driverControlDisabled = false;
     chassis.stop(coast);
-
     return true;
   }
   return false;

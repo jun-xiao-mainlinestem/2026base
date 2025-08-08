@@ -113,7 +113,6 @@ void Drive::driveDistance(float distance, float driveMaxVoltage, float heading, 
 
 void Drive::driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage, bool chaining, float driveSettleError, float driveSettleTime) {
   desiredHeading = reduce_0_to_360(heading);
-
   PID drivePID(distance, driveKp, driveKi, driveKd, driveStarti, driveSettleError, driveSettleTime, driveTimeout);
   PID headingPID(reduce_negative_180_to_180(desiredHeading - getHeading()), headingKp, headingKd);
   float startAveragePosition = (getLeftPositionIn() + getRightPositionIn()) / 2.0;
@@ -149,7 +148,6 @@ void Drive::setArcadeConstants(float kBrake, float kTurnBias, float kTurnDamping
 }
 
 void Drive::controlArcade(int y, int x) {
-  if (driverControlDisabled) return;
   float throttle = deadband(y, 5);
   float turn = deadband(x, 5) * kTurnDampingFactor;
 
@@ -195,7 +193,6 @@ void Drive::controlArcade(int y, int x) {
 }
 
 void Drive::controlTank(int left, int right) {
-  if (driverControlDisabled) return;
   float leftthrottle = curveFunction(left, kThrottle);
   float rightthrottle = curveFunction(right, kThrottle);
 
@@ -213,8 +210,6 @@ void Drive::controlTank(int left, int right) {
 }
 
 void Drive::controlMecanum(int x, int y, int acc, int steer, motor DriveLF, motor DriveRF, motor DriveLB, motor DriveRB) {
-  if (driverControlDisabled) return;
-
   float throttle = deadband(y, 5);
   float strafe = deadband(x, 5);
   float straight = deadband(acc, 5);

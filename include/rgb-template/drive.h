@@ -96,7 +96,6 @@ public:
   // A flag to indicate if the drivetrain needs to be stopped.
   bool drivetrainNeedsStopped = false;
   // A flag to disable driver control.
-  bool driverControlDisabled = false;
   bool joystickTouched = false;
 
   // Controls the robot in arcade mode.

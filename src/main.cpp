@@ -83,7 +83,6 @@ void buttonDownAction()
 {
   if (nextAutonStep()) return;
 
-  chassis.driverControlDisabled = true;
   chassis.turnToHeading(180);
   wait(100, msec);
   if (!controller(primary).ButtonDown.pressing()) return;
@@ -91,7 +90,6 @@ void buttonDownAction()
   // safty check to prevent running the code if the distance reading is not valid.
   // Matchload balls when the Button Down is pressed and hold.
   chassis.stop(coast);
-  chassis.driverControlDisabled = false;
 }
 
 void buttonUpAction()
@@ -109,11 +107,9 @@ void buttonAAction()
   if (runAutonTest()) return;
 
     // otherwise run macro code 
-  chassis.driverControlDisabled = true;
   // TODO: Insert test code here. This is a placeholder for future actions triggered by Button A. 
 
   chassis.stop(coast);
-  chassis.driverControlDisabled = false;
 }
 
 void buttonBAction()
@@ -121,7 +117,6 @@ void buttonBAction()
   // brakes the drivetrain until the button is released.
   chassis.stop(hold);
   controller(primary).rumble(".");
-  chassis.drivetrainNeedsStopped = true;
   waitUntil(!controller(primary).ButtonB.pressing());
   int distanceTraveled = (chassis.getLeftPositionIn() + chassis.getRightPositionIn()) / 2.0;
     // Display heading and the distance traveled previously on the controller screen.
