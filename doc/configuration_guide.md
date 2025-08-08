@@ -81,7 +81,7 @@ Drive chassis(
 
 
 ### (optional) Step 5: Configure Drive Constants
-Find the chassis constants in `resetChassis()` function:
+Find the chassis constants in `setChassisDefaults()` function:
 
 ```cpp
 // Sets the arcade drive constants for the chassis.

@@ -67,7 +67,7 @@ The `Drive` class provides several methods for configuring the drivetrain's PID 
 **Example from `src/chassis.cpp`:**
 
 ```cpp
-void resetChassis() {
+void setChassisDefaults() {
   chassis.setHeading(inertial1.heading());
   chassis.stop(coast);
 

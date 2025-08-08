@@ -60,6 +60,11 @@ private:
   // The inertial sensor.
   inertial Gyro;
 
+    // Gets the position of the left side of the drivetrain in inches.
+  float getLeftPositionIn();
+  // Gets the position of the right side of the drivetrain in inches.
+  float getRightPositionIn();
+  
   // Turns the robot to a specific heading with advanced options.
   void turnToHeading(float heading, float turnMaxVoltage, bool chaining, float settleError = 5, float settleTime = 50);
 
@@ -90,12 +95,11 @@ public:
   void driveDistance(float distance);
   // Drives the robot a specific distance with a maximum voltage.
   void driveDistance(float distance, float driveMaxVoltage);
-  // Drives the robot a specific distance while maintaining a heading.
+  // Drives the robot a specific distance while turning to a heading.
   void driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage);
 
   // A flag to indicate if the drivetrain needs to be stopped.
   bool drivetrainNeedsStopped = false;
-  // A flag to disable driver control.
   bool joystickTouched = false;
 
   // Controls the robot in arcade mode.
@@ -120,8 +124,5 @@ public:
   // Stops the drivetrain.
   void stop(vex::brakeType mode);
 
-  // Gets the position of the left side of the drivetrain in inches.
-  float getLeftPositionIn();
-  // Gets the position of the right side of the drivetrain in inches.
-  float getRightPositionIn();
+  void checkStatus();
 };

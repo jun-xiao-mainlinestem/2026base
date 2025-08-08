@@ -43,11 +43,9 @@ Drive chassis(
 );
 
 // Resets the chassis constants.
-void resetChassis() {
+void setChassisDefaults() {
   // Sets the heading of the chassis to the current heading of the inertial sensor.
   chassis.setHeading(inertial1.heading());
-  // Stops the chassis.
-  chassis.stop(coast);
 
   // Sets the drive constants for the chassis.
   // These constants are used to control the acceleration and deceleration of the chassis.
@@ -71,30 +69,6 @@ void resetChassis() {
   chassis.setTurnExitConditions(1.5, 200, 1500);
 }
 
-// end game reminder will start at 85 seconds into the match
-const int END_GAME_SECONDS = 85;
-// This function is a thread that runs in the background to remind the driver of the end game.
-int endgameTimer() {
-  // Clears the brain timer.
-  Brain.Timer.clear();
-  // Waits until the end game starts.
-  while (Brain.Timer.time(sec) < END_GAME_SECONDS) {
-    wait(200, msec);
-  }
-  // Prints a message to the controller screen.
-  printControllerScreen("end game");
-  // Rumbles the controller.
-  controller(primary).rumble("-");
-
-  // Checks the motors every 60 seconds.
-  while(true)
-  {
-    wait(60, seconds);
-    checkMotors(NUMBER_OF_MOTORS);
-  }
-  return 1;
-}
-
 bool changeDriveMode(){
   // toggle tank or arcade drive mode if the button is pressed immediately after running the program
   if ((Brain.Timer.time(sec) < 5)) {
@@ -114,12 +88,7 @@ bool changeDriveMode(){
 // It is called when the driver control period starts.
 void usercontrol(void) {
   // Exits the autonomous menu.
-  exitAutonMenu = true;
-  // Resets the chassis.
-  resetChassis();
-  // Starts the end game timer thread.
-  thread endgameTimer_thread = thread(endgameTimer);
-  chassis.joystickTouched = false;
+  exitAuton();
 
   // This loop runs forever, controlling the robot during the driver control period.
   while (1) {
@@ -156,7 +125,7 @@ bool setupGyro() {
   // If the inertial sensor is not installed, print an error message to the controller screen.
   if (!inertial1.installed()) {
     printControllerScreen("inertial sensor failure");
-    controller(primary).rumble("----");
+    controller(primary).rumble("---");
     wait(2, seconds);
     return false;  
   }
@@ -173,8 +142,8 @@ void pre_auton() {
   bool motorsSetupSuccess = true;
   // Checks the motors.
   motorsSetupSuccess = checkMotors(NUMBER_OF_MOTORS);
-  // Resets the chassis.
-  resetChassis();
+  //set the parameters for the chassis
+  setChassisDefaults();
   // Shows the autonomous menu.
   if(gyroSetupSuccess && motorsSetupSuccess) showAutonMenu();
 }

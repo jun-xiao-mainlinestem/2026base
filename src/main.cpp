@@ -9,6 +9,8 @@ using namespace vex;
 // This object is used to register callbacks for the autonomous and driver control periods.
 competition Competition;
 
+bool macroMode = false;
+
 // This function is called when the L1 button is pressed.
 // It performs color sorting.
 void buttonL1Action() {
@@ -61,7 +63,7 @@ void setupButtonMapping() {
 }
 
 
-
+// 
 // ------------------------------------------------------------------------
 //               Only change code below this line when necessary
 // ------------------------------------------------------------------------
@@ -82,34 +84,33 @@ void buttonLeftAction()
 void buttonDownAction()
 {
   if (nextAutonStep()) return;
+  if (macroMode) return; // prevent re-entry
 
-  chassis.turnToHeading(180);
-  wait(100, msec);
+  if (fabs(chassis.getHeading()) - 180 > 3) {
+    chassis.driveWithVoltage(-6, -6);
+    wait(100, msec);
+    chassis.turnToHeading(180);
+  }
   if (!controller(primary).ButtonDown.pressing()) return;
+  
+  macroMode = true;
   // This is a placeholder for future actions triggered by Button Down.
   // safty check to prevent running the code if the distance reading is not valid.
   // Matchload balls when the Button Down is pressed and hold.
+  // end matchloading and turn around to score when the Button Down is released.
+  macroMode = false;
   chassis.stop(coast);
 }
 
 void buttonUpAction()
 {
   if (prevAutonStep()) return;
-
-  // This is a placeholder for future actions triggered by Button Up.
-  // bring up the matchload bar and turn north
-  // Score long goal when the Button Up is pressed and hold.
 }
 
 
 void buttonAAction()
 {
   if (runAutonTest()) return;
-
-    // otherwise run macro code 
-  // TODO: Insert test code here. This is a placeholder for future actions triggered by Button A. 
-
-  chassis.stop(coast);
 }
 
 void buttonBAction()
@@ -118,12 +119,7 @@ void buttonBAction()
   chassis.stop(hold);
   controller(primary).rumble(".");
   waitUntil(!controller(primary).ButtonB.pressing());
-  int distanceTraveled = (chassis.getLeftPositionIn() + chassis.getRightPositionIn()) / 2.0;
-    // Display heading and the distance traveled previously on the controller screen.
-  int h = chassis.getHeading();
-  char statusMsg[50];
-  sprintf(statusMsg, "heading: %d, dist: %d", h, distanceTraveled);
-  printControllerScreen(statusMsg);
+  chassis.checkStatus();
   chassis.stop(coast);
 }
 
@@ -151,7 +147,7 @@ int main() {
 
   //controller(primary).ButtonX.pressed(aiAction);
 
-  // Set up the button mapping for the controller.
+  // Set up other button mapping for the controller.
   setupButtonMapping();
 
   // Run the pre-autonomous function.

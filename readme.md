@@ -44,7 +44,7 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
 *   **Drive Mode:** Set `DRIVE_MODE` to `0` for arcade control, `1` for tank control, or `2` for mecanum control.
 *   **(Optional) Wheel Size and Gear Ratio:**
     *   Find the Drive constructor and update the wheel diameter and gear ratio parameters for precise auton driving.
-*   **(Optional) Drive Constants:** If needed, adjust any of constants for the drivetrain in the `resetChassis()` function. For example, adjust the `kTurnDampingFactor` value in `setArcadeConstants()` to control turn sensitivity - lower values make turning less sensitive, higher values make turning more sensitive. 
+*   **(Optional) Drive Constants:** If needed, adjust any of constants for the drivetrain in the `setChassisDefaults()` function. For example, adjust the `kTurnDampingFactor` value in `setArcadeConstants()` to control turn sensitivity - lower values make turning less sensitive, higher values make turning more sensitive. 
 
 ### Other Subsystems ([robot-config.cpp](src/robot-config.cpp))
 

@@ -1,4 +1,8 @@
 #include "vex.h"
+int currentAutonSelection = 1;        // Current auton selection
+int autonTestStep = 0;                // Current step in auton
+int autonNum;                         // Total number of autons, automatically calculated based on the size of the autonMenuText array
+bool autonTestMode = false;           // Indicates if in test mode
 
 // The first autonomous routine.
 void auton1() {
@@ -17,23 +21,22 @@ void auton2() {
   chassis.driveDistance(-12, 6);
 }
 
-// The long autonomous skill routine.
-// This routine is broken into steps to allow for testing.
-// Each step can be run independently based on gloabl variable autonTestStep.
-// This allows for easier debugging and testing of individual parts of the autonomous routine.
+// A long autonomous routine, e.g. skill.
+// This routine is broken into steps to allow for testing of individual steps.
+// This allows for easier debugging of individual parts of the long autonomous routine.
 void auton_skill() {
-  if (autonTestStep == 1) 
+  if (autonTestStep == 0) 
   {
     chassis.turnToHeading(180);
     if (!continueAutonStep()) return; // If in test mode, stop here for testing.
   }
-  if (autonTestStep == 2)  
+  if (autonTestStep == 1)  
   {
     chassis.driveDistance(5);
     chassis.turnToHeading(chassis.getHeading() + 90); // Turn right
     if (!continueAutonStep()) return; // If in test mode, stop here for testing.
   } 
-  if(autonTestStep == 3) 
+  if(autonTestStep == 2) 
   {
     chassis.turnToHeading(chassis.getHeading() - 90); // Turn left
     chassis.driveDistance(-5);
@@ -62,26 +65,28 @@ char const * autonMenuText[] = {
   "auton_skill"
 };
 
-// The default autonomous routine selection.
-int currentAutonSelection = 1;
-// The current step in the autonomous test mode.
-int autonTestStep = 1;
-// When true, the autonomous routine will stop at each step for testing.
-bool autonTestMode = false;
 
 
 // ----------------------------------------------------------------------------
-//                     No need to change code below this line
+//                 Only change code below this line when necessary
 // ----------------------------------------------------------------------------
-
-// The total number of autonomous routines. This is calculated in showAutonMenu().
-int autonNum;
+// This variable is used to exit the autonomous menu.
+bool exitAutonMenu = false;
+// This is the autonomous function.
+// It is called when the autonomous period starts.
+void autonomous(void) {
+  // Exits the autonomous menu.
+  exitAutonMenu = true;
+  // Runs the selected autonomous routine.
+  runAutonItem();
+}
 
 // Displays the autonomous routine selection menu on the brain screen.
 void showAutonMenu() {
   // Calculate the number of autons based on the size of the autonMenuText array.
   autonNum = sizeof(autonMenuText) / sizeof(autonMenuText[0]);
   printMenu(autonMenuText);
+  autonTestStep = 0;
 }
 
 // This function prints the selected autonomous routine to the brain and controller screens.
@@ -100,9 +105,6 @@ void printMenuItem(char const * txt[]) {
   // Prints the selected autonomous routine to the controller screen.
   printControllerScreen(txt[currentAutonSelection]);
 }
-
-// This variable is used to exit the autonomous menu.
-bool exitAutonMenu = false;
 
 // This function displays the autonomous menu on the brain screen.
 void printMenu(char const * txt[]) {
@@ -142,7 +144,6 @@ bool enterTestMode()
     wait(1, sec);
     showAutonMenu();
     autonTestMode = true;
-    autonTestStep = 1;
     return true;
   }
   return false;
@@ -150,91 +151,105 @@ bool enterTestMode()
 
 bool nextAutonMenu()
 {
+  if (!autonTestMode) return false;
+
   // if in test mode, scroll through the auton menu
-  if (autonTestMode)
-  {
-    controller(primary).rumble(".");
-    // Reset the auton test step to 1 and change the current auton selection.
-    currentAutonSelection = (currentAutonSelection + 1) % autonNum;
-    autonTestStep = 1;
-    showAutonMenu();
-    return true;
-  }
-  return false;
+  controller(primary).rumble(".");
+  // Reset the auton test step to 1 and change the current auton selection.
+  currentAutonSelection = (currentAutonSelection + 1) % autonNum;
+  showAutonMenu();
+  return true;
 }
 
 bool prevAutonMenu()
 {
+  if (!autonTestMode) return false;
+
   // if in test mode, scroll through the auton menu
-  if (autonTestMode)
-  {
-    controller(primary).rumble(".");
-    // Reset the auton test step to 1 and change the current auton selection.
-    currentAutonSelection = (currentAutonSelection - 1 + autonNum) % autonNum;
-    autonTestStep = 1;
-    showAutonMenu();
-    return true;
-  }
-  return false;
+  controller(primary).rumble(".");
+  // Reset the auton test step to 1 and change the current auton selection.
+  currentAutonSelection = (currentAutonSelection - 1 + autonNum) % autonNum;
+  autonTestStep = 0;
+  showAutonMenu();
+  return true;
 }
 
 bool prevAutonStep(){
+  if (!autonTestMode) return false;
+
   // If in test mode, go to the previous step.
-  if (autonTestMode) {
-    controller(primary).rumble(".");
-    if (autonTestStep > 1) autonTestStep--;
-    controller(primary).Screen.print("Step: %d         ", autonTestStep);
-    return true;
-  }
-  return false;
+  controller(primary).rumble(".");
+  if (autonTestStep > 0) autonTestStep--;
+  controller(primary).Screen.print("Step: %d         ", autonTestStep);
+  return true;
 }
 
 bool nextAutonStep()
 {
+  if (!autonTestMode) return false;
+
   // If in test mode, go to the next step.
-  if (autonTestMode) {
-    controller(primary).rumble(".");
-    autonTestStep++;
-    controller(primary).Screen.print("Step: %d           ", autonTestStep);
-    return true;
-  }
-  return false; 
+  controller(primary).rumble(".");
+  autonTestStep++;
+  controller(primary).Screen.print("Step: %d           ", autonTestStep);
+  return true;
 }
 
 bool continueAutonStep()
 {
   autonTestStep++;
-  if (autonTestMode) {
-    return false;
-  }
+  if (autonTestMode) return false; // If in test mode, stop here for testing.
   return true; 
 }
 
 bool runAutonTest()
 {
+  if (!autonTestMode) return false;
+
   // If in test mode, run the selected autonomous routine for testing and displays the run time.
-  if (autonTestMode)
-  {
-    controller(primary).rumble(".");
-    double t1 = Brain.Timer.time(sec);
-    runAutonItem(); 
-    double t2 = Brain.Timer.time(sec);
-    char timeMsg[30];
-    sprintf(timeMsg, "run time: %.0f", t2-t1);
-    printControllerScreen(timeMsg);
-    chassis.stop(coast);
-    return true;
+  controller(primary).rumble(".");
+  double t1 = Brain.Timer.time(sec);
+  runAutonItem(); 
+  double t2 = Brain.Timer.time(sec);
+  char timeMsg[30];
+  sprintf(timeMsg, "run time: %.0f", t2-t1);
+  printControllerScreen(timeMsg);
+  chassis.stop(coast);
+  return true;
+}
+
+// end game reminder will start at 85 seconds into the match
+const int END_GAME_SECONDS = 85;
+// This function is a thread that runs in the background to remind the driver of the end game.
+void endgameTimer() {
+  // Waits until the end game starts.
+  while (Brain.Timer.time(sec) < END_GAME_SECONDS) {
+    wait(500, msec);
   }
-  return false;
+  // Prints a message to the controller screen.
+  printControllerScreen("end game");
+  // Rumbles the controller.
+  controller(primary).rumble("-");
+
+  // Checks the motors every 60 seconds if it's in practice mode.
+  while(true)
+  {
+    wait(60, seconds);
+    checkMotors(NUMBER_OF_MOTORS);
+  }
 }
 
-
-// This is the autonomous function.
-// It is called when the autonomous period starts.
-void autonomous(void) {
-  // Exits the autonomous menu.
+void exitAuton()
+{
   exitAutonMenu = true;
-  // Runs the selected autonomous routine.
-  runAutonItem();
-}
+  chassis.joystickTouched = false;
+    // Clears the brain timer.
+  Brain.Timer.clear();
+    // Starts the end game timer thread.
+  thread endgameTimer_thread = thread(endgameTimer);
+  if (!chassis.joystickTouched) {
+    //TODO: some macto actions
+  }
+  chassis.stop(coast);
 
+}

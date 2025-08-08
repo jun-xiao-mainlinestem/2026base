@@ -252,3 +252,12 @@ void Drive::stop(vex::brakeType mode) {
     RDrive.resetPosition();
     drivetrainNeedsStopped = false;
 }
+
+void Drive::checkStatus(){
+  int distanceTraveled = (getLeftPositionIn() + getRightPositionIn()) / 2.0;
+    // Display heading and the distance traveled previously on the controller screen.
+  int h = chassis.getHeading();
+  char statusMsg[50];
+  sprintf(statusMsg, "heading: %d, dist: %d", h, distanceTraveled);
+  printControllerScreen(statusMsg);
+}
