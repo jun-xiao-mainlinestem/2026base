@@ -53,22 +53,10 @@ void buttonR1Action() {
   stopRollers();
 }
 
-// This function is called when the R2 button is pressed.
-void buttonR2Action() {
-  chassis.stop(hold);
-  scoreMiddle();
-  while(controller(primary).ButtonR2.pressing()) {
-    wait (20, msec);
-  }  
-  chassis.stop(coast);
-  stopRollers();
-}
-
 void setupButtonMapping() {
   controller(primary).ButtonL1.pressed(buttonL1Action);
   controller(primary).ButtonL2.pressed(buttonL2Action);
   controller(primary).ButtonR1.pressed(buttonR1Action);
-  controller(primary).ButtonR2.pressed(buttonR2Action);
 }
 
 
