@@ -11,7 +11,8 @@ void pre_auton();
 void autonomous();
 void exitAuton();
 
-bool enterTestMode();
+void enterTestMode();
+
 bool prevAutonMenu();
 bool nextAutonMenu();
 bool runAutonTest();

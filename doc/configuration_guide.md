@@ -36,13 +36,14 @@ inertial inertial1 = inertial(PORT10);
 Locate the drive mode setting:
 
 ```cpp
-int DRIVE_MODE = 0;  // 0 for arcade, 1 for tank, 2 for mecanum
+int DRIVE_MODE = 0;  // 0 for double arcade, 1 for single arcade, 2 for tank, 3 for mecanum
 ```
 
 **Action:** Set the drive mode value:
-- `0` for arcade drive (different joystick for movement and turning)
-- `1` for tank drive (left joystick for left side, right joystick for right side)
-- `2` for mecanum drive (four-wheel independent control for strafing)
+- `0` for **Double Arcade** (right stick for forward/backward, left stick for turning)
+- `1` for **Single Arcade** (left stick for both forward/backward and turning)
+- `2` for **Tank Drive** (left stick for left side, right stick for right side)
+- `3` for **Mecanum Drive** (four-wheel independent control for strafing)
 
 ### Step 4 (optional): Configure Wheel Size and Gear Ratio
 Find the Drive constructor in `robot-config.cpp` and update the wheel diameter and gear ratio parameters:
@@ -290,10 +291,11 @@ void auton_skill() {
 
 ### Step 3: Test Driver Control
 1. Run the program on the brain
-2. Test the selected drive mode:
-   - **Arcade Drive (Mode 0)**: Use left stick to turn and right stick to drive forward/backward
-   - **Tank Drive (Mode 1)**: Use left stick for left side motors, right stick for right side motors
-   - **Mecanum Drive (Mode 2)**: Use left stick for forward/backward and turning, right stick for strafing
+2. Test the set drive mode:
+   - **Double Arcade (Mode 0)**: Use right stick for forward/backward, left stick for turning
+   - **Single Arcade (Mode 1)**: Use left stick for both forward/backward and turning
+   - **Tank Drive (Mode 2)**: Use left stick for left side motors, right stick for right side motors
+   - **Mecanum Drive (Mode 3)**: Use left stick for forward/backward and turning, right stick for strafing
 3. Verify motors respond correctly
 
 ### Step 4: Test Autonomous Routines

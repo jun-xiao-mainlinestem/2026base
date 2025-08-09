@@ -138,18 +138,15 @@ void showAutonMenu() {
   Brain.Screen.setFont(mono20);
 }
 
-bool enterTestMode()
+void enterTestMode()
 {
-  // Activate test mode if the button is pressed immediately after running the program
-  if ((Brain.Timer.time(sec) < 5) && !autonTestMode) {
+  if (!autonTestMode) {
     controller(primary).rumble("-");
     printControllerScreen("Test Mode: ON");
     wait(1, sec);
     showAutonMenu();
     autonTestMode = true;
-    return true;
   }
-  return false;
 }
 
 bool nextAutonMenu()

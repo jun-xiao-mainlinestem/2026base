@@ -40,7 +40,7 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
 ### Robot configuration ([robot-config.cpp](src/robot-config.cpp))
 
 *   **Drivetrain Motors and Sensors:** Define the 6-motor drivetrain motors and inertial sensor, including ports, gear ratios, and motor direction. By default, the port numbers are 1, 2, 3 for the left side, 4, 5, 6 for the right side and 10 for the inertial sensor. 
-*   **Drive Mode:** Set `DRIVE_MODE` to `0` for arcade control, `1` for tank control, or `2` for mecanum control.
+*   **Drive Mode:** Set `DRIVE_MODE` to `0` for double arcade control, `1` for single arcade control, `2` for tank control, or `3` for mecanum control.
 *   **(Optional) Wheel Size and Gear Ratio:**
     *  For precise auton driving, find the Drive constructor in `robot-config.cpp` and update the wheel diameter and gear ratio parameters
 *   **(Optional) Drive Constants:** If needed, adjust any of constants for the drivetrain in the `setChassisDefaults()` function. For example, adjust the `kTurnDampingFactor` value in `setArcadeConstants()` to control turn sensitivity - lower values make turning less sensitive, higher values make turning more sensitive. 
@@ -57,10 +57,11 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
 - **Build Project and Run Program:**
   - Download the program to the brain and use game controller to select the program slot and run the program.
 - **Drive Mode:**
-  - Arcade Drive (default): Use left stick to turn and right stick to drive forward/backward
+  - Double Arcade Drive (default): Use left stick to turn and right stick to drive forward/backward
+  - Single Arcade Drive: Use left stick to turn and drive forward/backward
   - Tank Drive: Use left stick for left side motors, right stick for right side motors  
   - Mecanum Drive: Use left stick for forward/backward and turning, right stick for strafing
-  - Change drive mode during driver control: Press the controller's `B button` within 5 seconds of program startup to switch from tank to arcade drive mode and vice versa.
+  - Change drive mode during driver control: Press the controller's `B button` within 5 seconds of program startup to switch modes.
 - **Automatic Motor Health Monitoring**: 
   - The controller will vibrate with "---" pattern and display warning messages if any motors are disconnected or overheated (temperature limit: 50°C). Check motor connections and temperatures immediately when alerts occur.
 - **(Optional) Remotely Control the Robot:**

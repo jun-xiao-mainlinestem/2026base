@@ -67,21 +67,29 @@ void setupButtonMapping() {
 // This function is called when the Right button is pressed.
 void buttonRightAction()
 {
-  if (enterTestMode()) return;
+  if ((Brain.Timer.time(sec) < 5)) {  
+    // If the button is pressed within 5 seconds of starting the program, enter test mode.
+    enterTestMode();
+    return;
+  }
   if (nextAutonMenu()) return;
 }
 
 void buttonLeftAction()
 {
-  if (changeDriveMode()) return;
+    if ((Brain.Timer.time(sec) < 5)) {
+      // If the button is pressed within 5 seconds of starting the program, change the drive mode.
+      changeDriveMode();
+      return;
+    }
   if (prevAutonMenu()) return;
 }
 
 void buttonDownAction()
 {
   if (nextAutonStep()) return;
-  if (macroMode) return; // prevent re-entry
 
+  if (macroMode) return; // prevent re-entry
   if (fabs(chassis.getHeading()) - 180 > 3) {
     chassis.driveWithVoltage(-6, -6);
     wait(100, msec);

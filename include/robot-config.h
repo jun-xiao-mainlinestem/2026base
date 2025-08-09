@@ -24,6 +24,6 @@ class Drive;
 // A global instance of the Drive class.
 extern Drive chassis;
 
-bool changeDriveMode();
+void changeDriveMode();
 void setChassisDefaults();
 void usercontrol();

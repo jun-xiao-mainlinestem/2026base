@@ -18,7 +18,7 @@ motor rightMotor3 = motor(PORT6, ratio18_1, true);
 // If you do not have an inertial sensor, assign it to an unused port. Ignore the warning at the start of the program.
 inertial inertial1 = inertial(PORT10);
 
-// 0: arcade drive, 1: tank drive, 2: mecanum drive
+// 0: double arcade drive, 1: single aracde, 2: tank drive, 3: mecanum drive
 int DRIVE_MODE = 0;
 
 // Other motor and sensor definitions
@@ -138,19 +138,23 @@ void setChassisDefaults() {
   chassis.setTurnExitConditions(1.5, 200, 1500);
 }
 
-bool changeDriveMode(){
-  // toggle tank or arcade drive mode if the button is pressed immediately after running the program
-  if ((Brain.Timer.time(sec) < 5)) {
-    controller(primary).rumble("-");
-    DRIVE_MODE = (DRIVE_MODE == 0) ? 1 : 0;
-    if (DRIVE_MODE == 1) {
-      printControllerScreen("Drive Mode: Tank");
-    } else {
-      printControllerScreen("Drive Mode: Arcade");
+void changeDriveMode(){
+  controller(primary).rumble("-");
+  DRIVE_MODE = (DRIVE_MODE +1)%4;
+    switch (DRIVE_MODE) {
+    case 0:
+      printControllerScreen("Double Arcade");
+      break;
+    case 1:
+      printControllerScreen("Single Arcade");
+      break;
+    case 2:
+      printControllerScreen("Tank Drive");
+      break;
+    case 3:
+      printControllerScreen("Mecanum Drive");
+      break;
     }
-    return true;
-  }
-  return false;
 }
 
 // This is the user control function.
@@ -167,16 +171,20 @@ void usercontrol(void) {
         chassis.joystickTouched = true;
       }
     }
-    // This is the tank drive code.
-    if (DRIVE_MODE == 1) chassis.controlTank(controller(primary).Axis3.position(), controller(primary).Axis2.position());
-    // This is the arcade drive code.
-    else if (DRIVE_MODE == 0)
+    switch (DRIVE_MODE) {
+    case 0: // double arcade
       chassis.controlArcade(controller(primary).Axis2.position(), controller(primary).Axis4.position());
-    else if (DRIVE_MODE == 2)
-    {   
-      // This is the mecanum drive code.
+      break;
+    case 1: // single arcade
+      chassis.controlArcade(controller(primary).Axis3.position(), controller(primary).Axis4.position());
+      break;
+    case 2: // tank drive
+      chassis.controlTank(controller(primary).Axis3.position(), controller(primary).Axis2.position());      break;
+    case 3: // mecanum drive
       chassis.controlMecanum(controller(primary).Axis4.position(), controller(primary).Axis3.position(), controller(primary).Axis2.position(), controller(primary).Axis1.position(), leftMotor1, leftMotor2, rightMotor1, rightMotor2);
+      break;
     }
+
     
     // This wait prevents the loop from using too much CPU time.
     wait(20, msec);
