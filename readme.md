@@ -69,6 +69,7 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
     - Find the device ID of the brain and the ip address of the computer.
     - Open the companion website on your mobile device (on the same wifi network).
     - For detailed step-by-step setup instructions, see [remote control setup Guide](doc/remote_setup_guide.md).
+    - To disable this feature, in main.cpp set `REMOTE_CONTROL_MODE` to `false`.
 
 
 ## Autonomous Routines ([autons.cpp](src/autons.cpp))

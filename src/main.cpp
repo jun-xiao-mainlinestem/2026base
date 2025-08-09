@@ -1,6 +1,5 @@
 // vex.h includes all of the headers for the VEX V5 library
 #include "vex.h"
-#include "SampleRemoteControl.h"
 
 // All vex classes and functions are in the vex namespace
 using namespace vex;
@@ -120,9 +119,9 @@ void buttonR2Action()
   chassis.stop(coast);
 }
 
-// Global remote control object
-SampleRemoteControl remoteControl;
+// remote control flag
 bool REMOTE_CONTROL_MODE = true;
+
 // ----------------------------------------------------------------------------
 //                                Main
 // ----------------------------------------------------------------------------
@@ -140,7 +139,7 @@ int main() {
   controller(primary).ButtonDown.pressed(buttonDownAction);
   controller(primary).ButtonUp.pressed(buttonUpAction);
   controller(primary).ButtonA.pressed(buttonAAction);
-  controller(primary).ButtonB.pressed(buttonR2Action);
+  controller(primary).ButtonR2.pressed(buttonR2Action);
 
   //controller(primary).ButtonX.pressed(aiAction);
 
@@ -153,7 +152,7 @@ int main() {
   // Prevent main from exiting with an infinite loop.
   while (true) {
     if (REMOTE_CONTROL_MODE) {
-      remoteControl.poll();
+     chassis.pollRemoteCommand();
     }
     wait(100, msec);
   }

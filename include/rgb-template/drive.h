@@ -1,5 +1,6 @@
 #pragma once
 #include "vex.h"
+#include <string>
 
 // A class to control the robot's drivetrain.
 class Drive
@@ -53,6 +54,8 @@ private:
   // The default brake type for the drivetrain.
   vex::brakeType stopMode = coast;
   
+  FILE* serialPort = nullptr;
+
   // The motor group for the left side of the drivetrain.
   motor_group leftDrive;
   // The motor group for the right side of the drivetrain.
@@ -126,4 +129,7 @@ public:
   void stop(vex::brakeType mode);
 
   void checkStatus();
+
+  void pollRemoteCommand();
+  void processCommand(const std::string& command);
 };

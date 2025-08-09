@@ -288,6 +288,7 @@ void pre_auton() {
   setupTeamColor();
 
   bool motorsSetupSuccess = true;
+
   // Checks the motors.
   motorsSetupSuccess = checkMotors(NUMBER_OF_MOTORS);
   //set the parameters for the chassis

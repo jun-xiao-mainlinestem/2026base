@@ -261,3 +261,28 @@ void Drive::checkStatus(){
   sprintf(statusMsg, "heading: %d, dist: %d", h, distanceTraveled);
   printControllerScreen(statusMsg);
 }
+
+void Drive::pollRemoteCommand(){
+  if (serialPort == nullptr) {
+    serialPort = fopen("/dev/serial1", "r+");
+    if (serialPort == nullptr) {
+      printControllerScreen("can't open serial port");
+      return;
+    }
+  }
+
+  char buffer[256];
+  if (fgets(buffer, sizeof(buffer), serialPort) != nullptr) {
+    std::string line(buffer);
+    // Skip empty lines or lines with only whitespace
+    if (line.find_first_not_of(" \t\r\n") != std::string::npos) {
+      processCommand(line);
+    }
+  }
+}
+
+void Drive::processCommand(const std::string& command) {
+    std::string cmd = "remote: " + command;
+    controller(primary).rumble(".");
+    printControllerScreen(cmd.c_str());
+}

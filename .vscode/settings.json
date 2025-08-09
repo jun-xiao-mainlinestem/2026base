@@ -18,6 +18,7 @@
 		"type_traits": "cpp",
 		"typeinfo": "cpp",
 		"iostream": "cpp",
-		"regex": "cpp"
+		"regex": "cpp",
+		"string": "cpp"
 	}
 }
