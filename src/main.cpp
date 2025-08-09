@@ -154,6 +154,6 @@ int main() {
     if (REMOTE_CONTROL_MODE) {
      chassis.pollRemoteCommand();
     }
-    wait(100, msec);
+    wait(200, msec);
   }
 }

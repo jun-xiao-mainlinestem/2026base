@@ -267,6 +267,7 @@ void Drive::pollRemoteCommand(){
     serialPort = fopen("/dev/serial1", "r+");
     if (serialPort == nullptr) {
       printControllerScreen("can't open serial port");
+      wait(2, seconds);
       return;
     }
   }
