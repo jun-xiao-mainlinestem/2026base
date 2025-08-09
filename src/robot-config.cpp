@@ -140,7 +140,7 @@ void setChassisDefaults() {
 
 void changeDriveMode(){
   controller(primary).rumble("-");
-  DRIVE_MODE = (DRIVE_MODE +1)%4;
+  DRIVE_MODE = (DRIVE_MODE +1)%3;
     switch (DRIVE_MODE) {
     case 0:
       printControllerScreen("Double Arcade");
