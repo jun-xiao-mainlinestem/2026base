@@ -1,6 +1,12 @@
 #include "vex.h"
-int currentAutonSelection = 1;        // Current auton selection
+#include "test.h"
+int currentAutonSelection = -1;        // Current auton selection
 int autonTestStep = 0;                // Current step in auton
+
+void quick_test() {
+  //aiAction();
+  //awp();
+}
 
 // The first autonomous routine.
 void auton1() {
@@ -52,6 +58,9 @@ void runAutonItem() {
     break;
   case 2:
     auton_skill();
+    break;
+  case -1:
+    quick_test();
     break;
   }
 }

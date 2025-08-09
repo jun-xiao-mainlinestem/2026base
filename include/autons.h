@@ -1,6 +1,5 @@
 #pragma once
 #include "rgb-template/drive.h"
-#include "test.h"
 extern bool teamIsRed;
 
 // Displays the autonomous routine selection menu on the brain screen.
