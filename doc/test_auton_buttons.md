@@ -146,13 +146,15 @@ bool continueAutonStep() {
 - ✅ In normal mode, execution continues through all steps
 
 ---
-### 6. Show status
-**Button: B**
-- ✅ If hold this button while driving, upon releasing it, the controller displays current heading and distance drived.
 
-### 7. Abort auto driving
+### 6. Abort auto driving
 - ✅ Move joystick anytime to abort the auto driving.
 
+---
+
+### 7. Show status
+**Button: R2**
+- ✅ If hold this button while driving, upon releasing it, the controller displays current heading and distance drived.
 
 ## 📋 Button Summary
 
@@ -164,8 +166,8 @@ bool continueAutonStep() {
 | **Up** | Previous step | When in test mode |
 | **Down** | Next step | When in test mode |
 | **A** | Run selected auton/step | When in test mode |
-| **B** | Show status | Always |
 | **Movement of Joystick** | Abort auto driving | Always |
+| **R2** | Show status | Always |
 
 ---
 

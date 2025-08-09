@@ -10,6 +10,7 @@
     - check if joystickTouched is still needed
     - remove unused motors and sensors from robot-config.cpp and h
     - remove setupTeamColor and color sorting
+    - remove R2 button
 - build the project to see if there is any error.
 - add url link to the repository for readme.md
 

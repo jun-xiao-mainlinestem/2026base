@@ -24,7 +24,14 @@ void buttonL1Action() {
   stopRollers();
 }
 
+bool matchLoaderDown = false;
 void buttonL2Action() {
+  if(controller(primary).ButtonL1.pressing()) 
+  {
+    matchLoaderDown = !matchLoaderDown;
+    // toggle the matchloader position
+    return;
+  }
   outTake();
   // Wait until the button is released to stop the rollers.
   while(controller(primary).ButtonL2.pressing()) {
@@ -35,7 +42,9 @@ void buttonL2Action() {
 
 void buttonR1Action() {
   chassis.stop(hold);
-  scoreLong();
+  if(controller(primary).ButtonR2.pressing()) scoreMiddle();
+  else scoreLong();
+
   // Wait until the button is released to stop the rollers.
   while(controller(primary).ButtonR1.pressing()) {
     wait (20, msec);
@@ -113,12 +122,12 @@ void buttonAAction()
   if (runAutonTest()) return;
 }
 
-void buttonBAction()
+void buttonR2Action()
 {
   // brakes the drivetrain until the button is released.
   chassis.stop(hold);
   controller(primary).rumble(".");
-  waitUntil(!controller(primary).ButtonB.pressing());
+  waitUntil(!controller(primary).ButtonR2.pressing());
   chassis.checkStatus();
   chassis.stop(coast);
 }
@@ -143,7 +152,7 @@ int main() {
   controller(primary).ButtonDown.pressed(buttonDownAction);
   controller(primary).ButtonUp.pressed(buttonUpAction);
   controller(primary).ButtonA.pressed(buttonAAction);
-  controller(primary).ButtonB.pressed(buttonBAction);
+  controller(primary).ButtonB.pressed(buttonR2Action);
 
   //controller(primary).ButtonX.pressed(aiAction);
 
