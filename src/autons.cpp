@@ -9,14 +9,14 @@ void quick_test() {
 }
 
 // The first autonomous routine.
-void auton1() {
+void sampleAuton1() {
   chassis.driveWithVoltage(3, 3);
   wait(1000, msec);
   chassis.stop(brake);
 }
 
 // The second autonomous routine.
-void auton2() {
+void sampleAuton2() {
 //  awp(); return;
   chassis.setHeading(0);
   chassis.driveDistance(12, 6);
@@ -28,7 +28,7 @@ void auton2() {
 // A long autonomous routine, e.g. skill.
 // This routine is broken into steps to allow for testing of individual steps.
 // This allows for easier debugging of individual parts of the long autonomous routine.
-void auton_skill() {
+void sampleSkill() {
   if (autonTestStep == 0) 
   {
     chassis.turnToHeading(180);
@@ -51,13 +51,13 @@ void auton_skill() {
 void runAutonItem() {
   switch (currentAutonSelection) {
   case 0:
-    auton1();
+    sampleAuton1();
     break;
   case 1:
-    auton2();
+    sampleAuton2();
     break;
   case 2:
-    auton_skill();
+    sampleSkill();
     break;
   case -1:
     quick_test();
@@ -79,13 +79,15 @@ char const * autonMenuText[] = {
 // ----------------------------------------------------------------------------
 int autonNum;                         // Total number of autons, automatically calculated based on the size of the autonMenuText array
 bool autonTestMode = false;           // Indicates if in test mode
-bool exitAutonMenu = false;          // Flag to exit the autonomous menu
+bool exitAutonMenu = false;           // Flag to exit the autonomous menu
+bool enableEndGameTimer = false;      // Flag to indicate if endgame timer is enabled 
+const int END_GAME_SECONDS = 85;      // Endgame reminder starts at 85 seconds
 
-// This is the autonomous function.
-// It is called when the autonomous period starts.
+// The function is called when the autonomous period starts.
 void autonomous(void) {
   // Exits the autonomous menu.
   exitAutonMenu = true;
+  enableEndGameTimer = true;
   // Runs the selected autonomous routine.
   runAutonItem();
 }
@@ -100,9 +102,8 @@ void printMenuItem() {
   Brain.Screen.clearScreen();
   // Sets the cursor to the third row, first column.
   Brain.Screen.setCursor(3, 1);
-  // Prints the selected autonomous routine to the brain screen.
+  // Prints the selected autonomous routine name.
   Brain.Screen.print("%s", autonMenuText[currentAutonSelection]);
-  // Prints the selected autonomous routine to the controller screen.
   printControllerScreen(autonMenuText[currentAutonSelection]);
 }
 
@@ -111,9 +112,7 @@ void showAutonMenu() {
   autonNum = sizeof(autonMenuText) / sizeof(autonMenuText[0]);
   autonTestStep = 0;
 
-  // Sets the font to mono30.
   Brain.Screen.setFont(mono30);
-  // Prints the selected autonomous routine.
   printMenuItem();
 
   // This loop runs until the autonomous menu is exited.
@@ -126,32 +125,25 @@ void showAutonMenu() {
       }
       // Cycles through the autonomous routines.
       currentAutonSelection = (currentAutonSelection + 1) % autonNum;
-      // Prints the selected autonomous routine.
       printMenuItem();
-      // Rumbles the controller.
       controller(primary).rumble(".");
     }
     // This wait prevents the loop from using too much CPU time.
     wait(50, msec);
   }
-  // Sets the font to mono20.
   Brain.Screen.setFont(mono20);
 }
 
-// end game reminder will start at 85 seconds into the match
-const int END_GAME_SECONDS = 85;
 // This function is a thread that runs in the background to remind the driver of the end game.
 void endgameTimer() {
   // Waits until the end game starts.
   while (Brain.Timer.time(sec) < END_GAME_SECONDS) {
     wait(500, msec);
   }
-  // Prints a message to the controller screen.
   printControllerScreen("end game");
-  // Rumbles the controller.
   controller(primary).rumble("-");
 
-  // Checks the motors every 60 seconds if it's in practice mode.
+  // Checks the motors health every 60 seconds in drive practice
   while(true)
   {
     wait(60, seconds);
@@ -166,7 +158,7 @@ void exitAuton()
     // Clears the brain timer.
   Brain.Timer.clear();
     // Starts the end game timer thread.
-  thread endgameTimer_thread = thread(endgameTimer);
+  if (enableEndGameTimer) thread endgameTimer_thread = thread(endgameTimer);
   if (!chassis.joystickTouched) {
     //TODO: some macto actions
   }
@@ -311,9 +303,9 @@ void buttonUpAction()
   }
 }
 
+// Register the controller button callbacks for autonomous testing.
 void registerAutonTestButtons()
 {
-  // Register the controller button callbacks for autonomous testing.
   controller(primary).ButtonRight.pressed(buttonRightAction);
   controller(primary).ButtonLeft.pressed(buttonLeftAction);
   controller(primary).ButtonDown.pressed(buttonDownAction);

@@ -61,16 +61,17 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
   - Single Arcade Drive: Use left stick to turn and drive forward/backward
   - Tank Drive: Use left stick for left side motors, right stick for right side motors  
   - Mecanum Drive: Use left stick for forward/backward and turning, right stick for strafing
-  - Change drive mode during driver control: Press the controller's `B button` within 5 seconds of program startup to switch modes.
-- **Automatic Motor Health Monitoring**: 
-  - The controller will vibrate with "---" pattern and display warning messages if any motors are disconnected or overheated (temperature limit: 50°C). Check motor connections and temperatures immediately when alerts occur.
+  - Change drive mode during driver control: Press the controller's `Left button` within 5 seconds of program startup to switch modes for different drivers.
+- **Automatic Motor Health Game Time Monitoring**: 
+  - The controller will vibrate and display warning messages if any motors are disconnected or overheated (temperature limit: 50°C). Check motor connections and temperatures immediately when alerts occur.
+  - The controller will vibrate and display the "end game" message when it's end game.
 - **(Optional) Remotely Control the Robot:**
     - Enable Websocket Server in VS Code VEX Extension 
     - Connect the controller to the computer via USB and download the program to the brain.
     - Find the device ID of the brain and the ip address of the computer.
     - Open the companion website on your mobile device (on the same wifi network).
     - For detailed step-by-step setup instructions, see [remote control setup Guide](doc/remote_setup_guide.md).
-    - To disable this feature, in main.cpp set `REMOTE_CONTROL_MODE` to `false`.
+    - To disable this feature, simply comment out the line in the main loop.
 
 
 ## Autonomous Routines ([autons.cpp](src/autons.cpp))
