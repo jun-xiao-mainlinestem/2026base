@@ -81,7 +81,7 @@ int main() {
   //comment out the following line to disable auton testing
   registerAutonTestButtons();
 
-  // Set up other button mapping for the controller.
+  // Set up other button mapping for the controller
   setupButtonMapping();
 
   // Run the pre-autonomous function.

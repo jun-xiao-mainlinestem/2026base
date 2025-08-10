@@ -121,28 +121,27 @@ Drive chassis(
 // Resets the chassis constants.
 void setChassisDefaults() {
   // Sets the heading of the chassis to the current heading of the inertial sensor.
-  chassis.setHeading(inertial1.heading());
+  chassis.setHeading(chassis.gyro.heading());
 
-  // Sets the drive constants for the chassis.
+  // Sets the drive PID constants for the chassis.
   // These constants are used to control the acceleration and deceleration of the chassis.
   chassis.setDrivePID(10, 1.5, 0, 10, 0);
-  // Sets the turn constants for the chassis.
+  // Sets the turn PID constants for the chassis.
   // These constants are used to control the turning of the chassis.
   chassis.setTurnPID(10, 0.2, .015, 1.5, 7.5);
-  // Sets the heading constants for the chassis.
+  // Sets the heading PID constants for the chassis.
   // These constants are used to control the heading adjustment of the chassis.
   chassis.setHeadingPID(6, .4, 1);
-
-  // Sets the arcade drive constants for the chassis.
-  // These constants are used to control the arcade drive of the chassis.
-  chassis.setArcadeConstants(0.5, 0.5, 0.85);
-
   // Sets the exit conditions for the drive functions.
   // These conditions are used to determine when the drive function should exit.
   chassis.setDriveExitConditions(1, 200, 2000);
   // Sets the exit conditions for the turn functions.
   // These conditions are used to determine when the turn function should exit.
   chassis.setTurnExitConditions(1.5, 200, 1500);
+
+  // Sets the arcade drive constants for the chassis.
+  // These constants are used to control the arcade drive of the chassis.
+  chassis.setArcadeConstants(0.5, 0.5, 0.85);
 }
 
 void changeDriveMode(){
