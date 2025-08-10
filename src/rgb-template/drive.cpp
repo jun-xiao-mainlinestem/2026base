@@ -283,7 +283,6 @@ void Drive::pollRemoteCommand(){
 }
 
 void Drive::processCommand(const std::string& command) {
-    std::string cmd = "remote: " + command;
     controller(primary).rumble(".");
-    printControllerScreen(cmd.c_str());
+    printControllerScreen(command.c_str());
 }

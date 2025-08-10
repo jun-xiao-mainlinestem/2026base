@@ -29,6 +29,10 @@ motor rollerTop = motor(PORT13, ratio6_1, true);
 // total number of motors, including drivetrain
 const int NUMBER_OF_MOTORS = 9;
 
+// (optional) intall an optical sensor right next to the license plate
+// teamIsRed variable will be automatically set to false if blue license plate is detected
+optical teamOptical = optical(PORT8);
+bool teamIsRed = true;
 
 // optical sensor for color sorting
 optical ballOptical = optical(PORT14);
@@ -87,9 +91,9 @@ void colorSort()
     if ((teamIsRed && detectedColor == color::blue) || (!teamIsRed && detectedColor == color::red)) {
       ejectBalls();
       wait(0.5, sec); // Wait for the rollers to finish ejecting the ball
+      inTake();
     } 
   }
-  inTake();
 } 
 
 // ------------------------------------------------------------------------
@@ -185,7 +189,6 @@ void usercontrol(void) {
       break;
     }
 
-    
     // This wait prevents the loop from using too much CPU time.
     wait(20, msec);
    } 

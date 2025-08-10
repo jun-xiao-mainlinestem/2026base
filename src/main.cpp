@@ -8,11 +8,8 @@ using namespace vex;
 // This object is used to register callbacks for the autonomous and driver control periods.
 competition Competition;
 
-bool macroMode = false;
-
 // This function is called when the L1 button is pressed.
-// It performs color sorting.
-void buttonL1Action() {
+void sampleButtonL1Action() {
   inTake();
   
   // Wait until the button is released to stop the rollers.
@@ -52,74 +49,9 @@ void buttonR1Action() {
   stopRollers();
 }
 
-void setupButtonMapping() {
-  controller(primary).ButtonL1.pressed(buttonL1Action);
-  controller(primary).ButtonL2.pressed(buttonL2Action);
-  controller(primary).ButtonR1.pressed(buttonR1Action);
-}
-
-
-// 
-// ------------------------------------------------------------------------
-//               Only change code below this line when necessary
-// ------------------------------------------------------------------------
-
-// This function is called when the Right button is pressed.
-void buttonRightAction()
-{
-  if ((Brain.Timer.time(sec) < 5)) {  
-    // If the button is pressed within 5 seconds of starting the program, enter test mode.
-    enterTestMode();
-    return;
-  }
-  if (nextAutonMenu()) return;
-}
-
-void buttonLeftAction()
-{
-    if ((Brain.Timer.time(sec) < 5)) {
-      // If the button is pressed within 5 seconds of starting the program, change the drive mode.
-      changeDriveMode();
-      return;
-    }
-  if (prevAutonMenu()) return;
-}
-
-void buttonDownAction()
-{
-  if (nextAutonStep()) return;
-
-  if (macroMode) return; // prevent re-entry
-  if (fabs(chassis.getHeading()) - 180 > 3) {
-    chassis.driveWithVoltage(-6, -6);
-    wait(100, msec);
-    chassis.turnToHeading(180);
-  }
-  if (!controller(primary).ButtonDown.pressing()) return;
-  
-  macroMode = true;
-  // This is a placeholder for future actions triggered by Button Down.
-  // safty check to prevent running the code if the distance reading is not valid.
-  // Matchload balls when the Button Down is pressed and hold.
-  // end matchloading and turn around to score when the Button Down is released.
-  macroMode = false;
-  chassis.stop(coast);
-}
-
-void buttonUpAction()
-{
-  if (prevAutonStep()) return;
-}
-
-
-void buttonAAction()
-{
-  if (runAutonTest()) return;
-}
-
 void buttonR2Action()
 {
-  // brakes the drivetrain until the button is released.
+  // brake the drivetrain until the button is released.
   chassis.stop(hold);
   controller(primary).rumble(".");
   waitUntil(!controller(primary).ButtonR2.pressing());
@@ -127,8 +59,13 @@ void buttonR2Action()
   chassis.stop(coast);
 }
 
-// remote control flag
-bool REMOTE_CONTROL_MODE = true;
+void setupButtonMapping() {
+  controller(primary).ButtonL1.pressed(sampleButtonL1Action);
+  controller(primary).ButtonL2.pressed(buttonL2Action);
+  controller(primary).ButtonR1.pressed(buttonR1Action);
+  controller(primary).ButtonR2.pressed(buttonR2Action);
+}
+
 
 // ----------------------------------------------------------------------------
 //                                Main
@@ -141,15 +78,8 @@ int main() {
   Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
 
-  // Register the default controller button callbacks.
-  controller(primary).ButtonRight.pressed(buttonRightAction);
-  controller(primary).ButtonLeft.pressed(buttonLeftAction);
-  controller(primary).ButtonDown.pressed(buttonDownAction);
-  controller(primary).ButtonUp.pressed(buttonUpAction);
-  controller(primary).ButtonA.pressed(buttonAAction);
-  controller(primary).ButtonR2.pressed(buttonR2Action);
-
-  //controller(primary).ButtonX.pressed(aiAction);
+  //comment out the following line to disable auton testing
+  registerAutonTestButtons();
 
   // Set up other button mapping for the controller.
   setupButtonMapping();
@@ -159,9 +89,8 @@ int main() {
 
   // Prevent main from exiting with an infinite loop.
   while (true) {
-    if (REMOTE_CONTROL_MODE) {
-     chassis.pollRemoteCommand();
-    }
+    // comment out the following line to disable remote command processing
+    chassis.pollRemoteCommand();
     wait(200, msec);
   }
 }

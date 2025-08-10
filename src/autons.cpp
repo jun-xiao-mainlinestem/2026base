@@ -138,86 +138,6 @@ void showAutonMenu() {
   Brain.Screen.setFont(mono20);
 }
 
-void enterTestMode()
-{
-  if (!autonTestMode) {
-    controller(primary).rumble("-");
-    printControllerScreen("Test Mode: ON");
-    wait(1, sec);
-    showAutonMenu();
-    autonTestMode = true;
-  }
-}
-
-bool nextAutonMenu()
-{
-  if (!autonTestMode) return false;
-
-  // if in test mode, scroll through the auton menu
-  controller(primary).rumble(".");
-  // Reset the auton test step to 0 and change the current auton selection.
-  currentAutonSelection = (currentAutonSelection + 1) % autonNum;
-  showAutonMenu();
-  return true;
-}
-
-bool prevAutonMenu()
-{
-  if (!autonTestMode) return false;
-
-  // if in test mode, scroll through the auton menu
-  controller(primary).rumble(".");
-  // Reset the auton test step to 0 and change the current auton selection.
-  currentAutonSelection = (currentAutonSelection - 1 + autonNum) % autonNum;
-  autonTestStep = 0;
-  showAutonMenu();
-  return true;
-}
-
-bool prevAutonStep(){
-  if (!autonTestMode) return false;
-
-  // If in test mode, go to the previous step.
-  controller(primary).rumble(".");
-  if (autonTestStep > 0) autonTestStep--;
-  controller(primary).Screen.print("Step: %d         ", autonTestStep);
-  return true;
-}
-
-bool nextAutonStep()
-{
-  if (!autonTestMode) return false;
-
-  // If in test mode, go to the next step.
-  controller(primary).rumble(".");
-  autonTestStep++;
-  controller(primary).Screen.print("Step: %d           ", autonTestStep);
-  return true;
-}
-
-bool continueAutonStep()
-{
-  autonTestStep++;
-  if (autonTestMode) return false; // If in test mode, stop here for testing.
-  return true; 
-}
-
-bool runAutonTest()
-{
-  if (!autonTestMode) return false;
-
-  // If in test mode, run the selected autonomous routine for testing and displays the run time.
-  controller(primary).rumble(".");
-  double t1 = Brain.Timer.time(sec);
-  runAutonItem(); 
-  double t2 = Brain.Timer.time(sec);
-  char timeMsg[30];
-  sprintf(timeMsg, "run time: %.0f", t2-t1);
-  printControllerScreen(timeMsg);
-  chassis.stop(coast);
-  return true;
-}
-
 // end game reminder will start at 85 seconds into the match
 const int END_GAME_SECONDS = 85;
 // This function is a thread that runs in the background to remind the driver of the end game.
@@ -270,9 +190,6 @@ bool setupgyro() {
   return true;
 }
 
-// optical sensor for team color detection
-optical teamOptical = optical(PORT8);
-bool teamIsRed = true;
 void setupTeamColor(){
   if (teamOptical.installed()) {
     // Sets the team color based on the optical sensor.
@@ -301,4 +218,104 @@ void pre_auton() {
   setChassisDefaults();
   // Shows the autonomous menu.
   if(gyroSetupSuccess && motorsSetupSuccess) showAutonMenu();
+}
+
+
+
+// ----------------------------------------------------------------------------
+//                 For testing autonomous steps
+// ----------------------------------------------------------------------------
+
+bool continueAutonStep()
+{
+  autonTestStep++;
+  if (autonTestMode) return false; // If in test mode, stop here for testing.
+  return true; 
+}
+
+// This function is called when the Right button is pressed.
+void buttonRightAction()
+{
+  if ((Brain.Timer.time(sec) < 5) && !autonTestMode) {  
+    // If the button is pressed within 5 seconds of starting the program, enter test mode.
+    controller(primary).rumble("-");
+    printControllerScreen("Test Mode: ON");
+    wait(1, sec);
+    showAutonMenu();
+    autonTestMode = true;
+    return;
+  } 
+  if (autonTestMode)
+  {
+    controller(primary).rumble(".");
+    // if in test mode, scroll through the auton menu
+    currentAutonSelection = (currentAutonSelection + 1) % autonNum;
+    showAutonMenu();
+  }
+}
+
+void buttonLeftAction()
+{
+  if ((Brain.Timer.time(sec) < 5)) {
+    // If the button is pressed within 5 seconds of starting the program, change the drive mode.
+    changeDriveMode();
+    return;
+  }
+  if (autonTestMode) 
+  {
+    // if in test mode, scroll through the auton menu
+    controller(primary).rumble(".");
+    currentAutonSelection = (currentAutonSelection - 1 + autonNum) % autonNum;
+    showAutonMenu();
+    return;
+  }
+}
+
+bool macroMode = false;
+
+void buttonDownAction()
+{
+  if (autonTestMode) 
+  {
+    // If in test mode, go to the next step.
+    controller(primary).rumble(".");
+    autonTestStep++;
+    controller(primary).Screen.print("Step: %d           ", autonTestStep);
+  }
+
+  if (macroMode) return; // prevent re-entry
+  if (fabs(chassis.getHeading()) - 180 > 3) {
+    chassis.driveWithVoltage(-6, -6);
+    wait(100, msec);
+    chassis.turnToHeading(180);
+  }
+  if (!controller(primary).ButtonDown.pressing()) return;
+  
+  macroMode = true;
+  // This is a placeholder for future actions triggered by Button Down.
+  // safty check to prevent running the code if the distance reading is not valid.
+  // Matchload balls when the Button Down is pressed and hold.
+  // end matchloading and turn around to score when the Button Down is released.
+  macroMode = false;
+  chassis.stop(coast);
+}
+
+void buttonUpAction()
+{
+  if (autonTestMode) 
+  {
+    // If in test mode, go to the previous step.
+    controller(primary).rumble(".");
+    if (autonTestStep > 0) autonTestStep--;
+    controller(primary).Screen.print("Step: %d         ", autonTestStep);
+  }
+}
+
+void registerAutonTestButtons()
+{
+  // Register the controller button callbacks for autonomous testing.
+  controller(primary).ButtonRight.pressed(buttonRightAction);
+  controller(primary).ButtonLeft.pressed(buttonLeftAction);
+  controller(primary).ButtonDown.pressed(buttonDownAction);
+  controller(primary).ButtonUp.pressed(buttonUpAction);
 }

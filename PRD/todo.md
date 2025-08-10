@@ -4,13 +4,11 @@
 - commit and pubblish in github
 - copy src, doc, and include folder
     - remove test.h test.cpp and reference of it
-    - clean auton.cpp
-    - remove macroMode in main.cpp
-    - in main.cpp remove button macros for left/right and others
-    - check if joystickTouched is still needed
+    - clean auton.cpp, remove macro_mode, remove quick test
     - remove unused motors and sensors from robot-config.cpp and h
     - remove setupTeamColor and color sorting
     - remove R2 button
+    
 - build the project to see if there is any error.
 - add url link to the repository for readme.md
 
