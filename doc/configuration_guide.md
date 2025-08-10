@@ -13,7 +13,7 @@ This section is **mandatory** - you must configure your drivetrain for the robot
 Navigate to `src/robot-config.cpp` and locate the motor definitions.
 
 ### Step 2: Configure Motor Ports
-Find the motor definitions and update the port numbers:
+Find the motor definitions and update the port numbers and motor directions:
 
 ```cpp
 // Left side motors
@@ -30,7 +30,7 @@ motor rightMotor3 = motor(PORT6, ratio18_1, true);
 inertial inertial1 = inertial(PORT10);
 ```
 
-**Action:** Replace `PORT1`, `PORT2`, etc. with your actual motor port numbers.
+**Action:** Replace `PORT1`, `PORT2`, etc. with your actual motor port numbers. Make sure the motor directions are correct.
 
 ### Step 3 (optional): Set Drive Mode
 Locate the drive mode setting:
@@ -92,13 +92,13 @@ chassis.setArcadeConstants(0.5, 0.5, 0.85);
 - **Decrease value (e.g., 0.5)**: Makes turning less sensitive
 - **Increase value (e.g., 1.0)**: Makes turning more sensitive
 
-## Other Subsystem Configuration
+## Other Subsystems Configuration
 
 ### Step 1: Open robot-config.cpp
-Navigate to `src/robot-config.cpp` and locate the motor definitions.
+Navigate to `src/robot-config.cpp` and locate the `other subsystems` section.
 
 ### Step 2: Configure Subsystem Motors
-Find the motor definitions for your subsystems:
+Add the motor definitions for your other subsystems:
 
 ```cpp
 // Intake motors
@@ -143,7 +143,7 @@ void stopRollers() {
 **Action:** Create functions for each subsystem you want to control.
 
 ### Step 5: Declare Functions in Header
-Open `include/robot-config.h` and add function declarations:
+Open `include/robot-config.h` and add function declarations so that `main.cpp` or `autons.cpp` can call the functions:
 
 ```cpp
 void inTake();
@@ -298,7 +298,7 @@ void auton_skill() {
    - **Mecanum Drive (Mode 3)**: Use left stick for forward/backward and turning, right stick for strafing
 3. Verify motors respond correctly
 
-### Step 4: Test Autonomous Routines
+### Step 4: Test Autonomous Routines During Driver Control
 1. **Enter Test Mode**: Press the `Right button` within 5 seconds of program startup
 2. **Navigate Autons**: Use `Right/Left buttons` to cycle through available autons
 3. **Navigate Steps**: Use `Up/Down buttons` to navigate through individual steps (for step-enabled autons)

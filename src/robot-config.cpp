@@ -1,10 +1,9 @@
-// vex.h includes all of the headers for the VEX V5 library
 #include "vex.h"
-
-// All vex classes and functions are in the vex namespace
 using namespace vex;
 
-//drivetrain motor definitions. 
+// ------------------------------------------------------------------------
+//              Drivetrain definition
+// ------------------------------------------------------------------------
 //If you only have 4  motors (or mecanum drive), assign leftMotor3, rightMotor3 to unused ports.
 motor leftMotor1 = motor(PORT1, ratio6_1, true);
 motor leftMotor2 = motor(PORT2, ratio6_1, true);
@@ -21,7 +20,10 @@ inertial inertial1 = inertial(PORT10);
 // 0: double arcade drive, 1: single aracde, 2: tank drive, 3: mecanum drive
 int DRIVE_MODE = 0;
 
-// Other motor and sensor definitions
+
+// ------------------------------------------------------------------------
+//        Other subsystems: motors, sensors and helper functions definition
+// ------------------------------------------------------------------------
 motor rollerBottom = motor(PORT11, ratio18_1, true);
 motor rollerMiddle = motor(PORT12, ratio18_1, true);
 motor rollerTop = motor(PORT13, ratio6_1, true);
@@ -99,6 +101,7 @@ void colorSort()
 // ------------------------------------------------------------------------
 //               Only change code below this line when necessary
 // ------------------------------------------------------------------------
+
 // A global instance of brain used for printing to the V5 Brain screen
 brain Brain;
 
