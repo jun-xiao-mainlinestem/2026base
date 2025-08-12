@@ -83,10 +83,10 @@ void Drive::turnToHeading(float heading, float turnMaxVoltage) {
  */
 
 void Drive::turnToHeading(float heading, float turnMaxVoltage, bool chaining, float settleError, float settleTime) {
-  desiredHeading = reduce_0_to_360(heading);
-  PID turnPID(reduce_negative_180_to_180(heading - getHeading()), turnKp, turnKi, turnKd, turnStarti, settleError, settleTime, turnTimeout);
+  desiredHeading = normalize360(heading);
+  PID turnPID(normalize180(heading - getHeading()), turnKp, turnKi, turnKd, turnStarti, settleError, settleTime, turnTimeout);
   while (!turnPID.isDone() && !drivetrainNeedsStopped) {
-    float error = reduce_negative_180_to_180(heading - getHeading());
+    float error = normalize180(heading - getHeading());
     float output = turnPID.compute(error);
     output = threshold(output, -turnMaxVoltage, turnMaxVoltage);
     driveWithVoltage(output, -output);
@@ -112,15 +112,15 @@ void Drive::driveDistance(float distance, float driveMaxVoltage, float heading, 
 }
 
 void Drive::driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage, bool chaining, float driveSettleError, float driveSettleTime) {
-  desiredHeading = reduce_0_to_360(heading);
+  desiredHeading = normalize360(heading);
   PID drivePID(distance, driveKp, driveKi, driveKd, driveStarti, driveSettleError, driveSettleTime, driveTimeout);
-  PID headingPID(reduce_negative_180_to_180(desiredHeading - getHeading()), headingKp, headingKd);
+  PID headingPID(normalize180(desiredHeading - getHeading()), headingKp, headingKd);
   float startAveragePosition = (getLeftPositionIn() + getRightPositionIn()) / 2.0;
   float averagePosition = startAveragePosition;
   while (drivePID.isDone() == false && !drivetrainNeedsStopped) {
     averagePosition = (getLeftPositionIn() + getRightPositionIn()) / 2.0;
     float driveError = distance + startAveragePosition - averagePosition;
-    float headingError = reduce_negative_180_to_180(desiredHeading - getHeading());
+    float headingError = normalize180(desiredHeading - getHeading());
     float driveOutput = drivePID.compute(driveError);
     float headingOutput = headingPID.compute(headingError);
 

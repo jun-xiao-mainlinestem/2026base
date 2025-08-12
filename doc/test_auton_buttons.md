@@ -11,7 +11,7 @@ The test auton system allows you to test autonomous routines during driver contr
 
 ```cpp
 if ((Brain.Timer.time(sec) < 5) && !autonTestMode) {
-    controller(primary).rumble("-");
+    controller1.rumble("-");
     printControllerScreen("Test Mode: ON");
     wait(1, sec);
     showAutonMenu();
@@ -35,7 +35,7 @@ if ((Brain.Timer.time(sec) < 5) && !autonTestMode) {
 
 ```cpp
 if (autonTestMode) {
-    controller(primary).rumble(".");
+    controller1.rumble(".");
     currentAutonSelection = (currentAutonSelection + 1) % autonNum;
     showAutonMenu();
     return true;
@@ -59,17 +59,17 @@ if (autonTestMode) {
 ```cpp
 // Up Button - Previous Step
 if (autonTestMode) {
-    controller(primary).rumble(".");
+    controller1.rumble(".");
     if (autonTestStep > 0) autonTestStep--;
-    controller(primary).Screen.print("Step: %d         ", autonTestStep);
+    controller1.Screen.print("Step: %d         ", autonTestStep);
     return true;
 }
 
 // Down Button - Next Step  
 if (autonTestMode) {
-    controller(primary).rumble(".");
+    controller1.rumble(".");
     autonTestStep++;
-    controller(primary).Screen.print("Step: %d           ", autonTestStep);
+    controller1.Screen.print("Step: %d           ", autonTestStep);
     return true;
 }
 ```
@@ -87,7 +87,7 @@ if (autonTestMode) {
 
 ```cpp
 if (autonTestMode) {
-    controller(primary).rumble(".");
+    controller1.rumble(".");
     double t1 = Brain.Timer.time(sec);
     runAutonItem(); 
     double t2 = Brain.Timer.time(sec);
@@ -148,7 +148,7 @@ bool continueAutonStep() {
 ---
 
 ### 6. Abort auto driving
-- ✅ Move joystick anytime to abort the auto driving.
+- ✅ At any time, move joystick to abort the auto driving.
 
 ---
 

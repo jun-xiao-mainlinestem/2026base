@@ -126,7 +126,7 @@ void showAutonMenu() {
       // Cycles through the autonomous routines.
       currentAutonSelection = (currentAutonSelection + 1) % autonNum;
       printMenuItem();
-      controller(primary).rumble(".");
+      controller1.rumble(".");
     }
     // This wait prevents the loop from using too much CPU time.
     wait(50, msec);
@@ -141,7 +141,7 @@ void endgameTimer() {
     wait(500, msec);
   }
   printControllerScreen("end game");
-  controller(primary).rumble("-");
+  controller1.rumble("-");
 
   // Checks the motors health every 60 seconds in drive practice
   while(true)
@@ -166,19 +166,21 @@ void exitAuton()
 }
 
 bool setupgyro() {
-  // Waits until the inertial sensor is calibrated.
-  while (chassis.gyro.isCalibrating()) {
-    wait(25, msec);
-  }
-  // Rumbles the controller to indicate that the gyro is calibrated.
-  controller(primary).rumble("-");
-  // If the inertial sensor is not installed, print an error message to the controller screen.
+  wait(100, msec);
   if (!chassis.gyro.installed()) {
     printControllerScreen("inertial sensor failure");
-    controller(primary).rumble("---");
+    controller1.rumble("---");
     wait(2, seconds);
     return false;  
   }
+  
+  chassis.gyro.calibrate(3);
+  // Waits until the inertial sensor is calibrated.
+  while (chassis.gyro.isCalibrating()) {
+    wait(100, msec);
+  }
+  // Rumbles the controller to indicate that the gyro is calibrated.
+  controller1.rumble(".");
   return true;
 }
 
@@ -230,7 +232,7 @@ void buttonRightAction()
 {
   if ((Brain.Timer.time(sec) < 5) && !autonTestMode) {  
     // If the button is pressed within 5 seconds of starting the program, enter test mode.
-    controller(primary).rumble("-");
+    controller1.rumble("-");
     printControllerScreen("Test Mode: ON");
     wait(1, sec);
     showAutonMenu();
@@ -239,7 +241,7 @@ void buttonRightAction()
   } 
   if (autonTestMode)
   {
-    controller(primary).rumble(".");
+    controller1.rumble(".");
     // if in test mode, scroll through the auton menu
     currentAutonSelection = (currentAutonSelection + 1) % autonNum;
     showAutonMenu();
@@ -256,7 +258,7 @@ void buttonLeftAction()
   if (autonTestMode) 
   {
     // if in test mode, scroll through the auton menu
-    controller(primary).rumble(".");
+    controller1.rumble(".");
     currentAutonSelection = (currentAutonSelection - 1 + autonNum) % autonNum;
     showAutonMenu();
     return;
@@ -270,9 +272,9 @@ void buttonDownAction()
   if (autonTestMode) 
   {
     // If in test mode, go to the next step.
-    controller(primary).rumble(".");
+    controller1.rumble(".");
     autonTestStep++;
-    controller(primary).Screen.print("Step: %d           ", autonTestStep);
+    controller1.Screen.print("Step: %d           ", autonTestStep);
   }
 
   if (macroMode) return; // prevent re-entry
@@ -281,7 +283,7 @@ void buttonDownAction()
     wait(100, msec);
     chassis.turnToHeading(180);
   }
-  if (!controller(primary).ButtonDown.pressing()) return;
+  if (!controller1.ButtonDown.pressing()) return;
   
   macroMode = true;
   // This is a placeholder for future actions triggered by Button Down.
@@ -297,17 +299,17 @@ void buttonUpAction()
   if (autonTestMode) 
   {
     // If in test mode, go to the previous step.
-    controller(primary).rumble(".");
+    controller1.rumble(".");
     if (autonTestStep > 0) autonTestStep--;
-    controller(primary).Screen.print("Step: %d         ", autonTestStep);
+    controller1.Screen.print("Step: %d         ", autonTestStep);
   }
 }
 
 // Register the controller button callbacks for autonomous testing.
 void registerAutonTestButtons()
 {
-  controller(primary).ButtonRight.pressed(buttonRightAction);
-  controller(primary).ButtonLeft.pressed(buttonLeftAction);
-  controller(primary).ButtonDown.pressed(buttonDownAction);
-  controller(primary).ButtonUp.pressed(buttonUpAction);
+  controller1.ButtonRight.pressed(buttonRightAction);
+  controller1.ButtonLeft.pressed(buttonLeftAction);
+  controller1.ButtonDown.pressed(buttonDownAction);
+  controller1.ButtonUp.pressed(buttonUpAction);
 }

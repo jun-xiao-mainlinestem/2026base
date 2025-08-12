@@ -3,10 +3,10 @@
 #include <string>
 
 // Reduces an angle to the range [0, 360).
-float reduce_0_to_360(float angle);
+float normalize360(float angle);
 
 // Reduces an angle to the range [-180, 180).
-float reduce_negative_180_to_180(float angle);
+float normalize180(float angle);
 
 // Clamps a value between a minimum and maximum value.
 float threshold(float input, float min, float max);

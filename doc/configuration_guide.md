@@ -30,7 +30,7 @@ motor rightMotor3 = motor(PORT6, ratio18_1, true);
 inertial inertial1 = inertial(PORT10);
 ```
 
-**Action:** Replace `PORT1`, `PORT2`, etc. with your actual motor port numbers. Make sure the motor directions are correct.
+**Action:** Replace `PORT1`, `PORT2`, etc. with your actual motor port numbers. Make sure the *motor directions* are correct. If you have a 4-motor setup, simply assign the `leftMotor3`, `rightMotor3` to unused ports.
 
 ### Step 3 (optional): Set Drive Mode
 Locate the drive mode setting:
@@ -86,11 +86,9 @@ chassis.setArcadeConstants(0.5, 0.5, 0.85);
 **Available Constants:**
 - **kBrake (0.5)**: Controls how quickly the robot stops when joysticks are released
 - **kTurnBias (0.5)**: Controls the balance between forward/backward and turning movement
-- **kTurnDampingFactor (0.85)**: **Controls turn sensitivity** - lower values make turning less sensitive, higher values make turning more sensitive
+- **kTurnDampingFactor (0.85)**: **Controls turn sensitivity** - lower values make turning slower but more accurate, higher values make turning faster.
 
-**Action:** Adjust these values based on your tuning of the chassis driving behavior. **To adjust turn sensitivity, modify the `kTurnDampingFactor` value:**
-- **Decrease value (e.g., 0.5)**: Makes turning less sensitive
-- **Increase value (e.g., 1.0)**: Makes turning more sensitive
+**Action:** Adjust these values based on your tuning of the chassis driving behavior. 
 
 ## Other Subsystems Configuration
 
@@ -120,7 +118,7 @@ int NUMBER_OF_MOTORS = 8;  // Total number of motors
 **⚠️ Motor Monitoring System:**
 The program automatically monitors motor health and will alert the driver if:
 - **Disconnected motors**: Controller vibrates with "---" pattern and displays "X motor is disconnected"
-- **Overheated motors**: Controller vibrates with "---" pattern and displays "motor X is Y°C" (default temperature limit: 45°C)
+- **Overheated motors**: Controller vibrates with "---" pattern and displays "motor X is Y°C" (default temperature limit: 50°C)
 
 **When alerts occur:**
 - Controller will vibrate to get driver's attention
@@ -163,7 +161,7 @@ Add button functions for your subsystems:
 ```cpp
 void buttonL1Action() {
     inTake();
-    while(controller(primary).ButtonL1.pressing()) {
+    while(controller1.ButtonL1.pressing()) {
         wait(20, msec);
     }
     stopRollers();
@@ -177,7 +175,7 @@ void buttonL1Action() {
 Find the button mapping section in the `setupButtonMapping()` function:
 
 ```cpp
-controller(primary).ButtonL1.pressed(buttonL1Action);
+controller1.ButtonL1.pressed(buttonL1Action);
 ```
 
 **Action:** Map your button functions to controller buttons.
@@ -212,9 +210,6 @@ void auton2() {
 **Important:** The VEX V5 brain operates on a 12V system. When using voltage-based functions:
 - **Maximum voltage**: 12V
 - **Recommended range**: 2V to 10V for precise control
-- **Full speed**: 12V (use sparingly for fine movements)
-- **Half speed**: 6V (good for most movements)
-- **Low speed**: 2-4V (for precise positioning)
 
 ### Step 3: Map Auton Functions
 Find the `runAutonItem()` function:
@@ -250,7 +245,7 @@ char const * autonMenuText[] = {
 
 **Action:** Add names for your autonomous routines.
 
-### Step 5: Step-by-Step Testing (Optional)
+### (Optional) Step 5: Step-by-Step Testing 
 For complex autons, you can add step-by-step testing capability:
 
 ```cpp
@@ -298,7 +293,7 @@ void auton_skill() {
    - **Mecanum Drive (Mode 3)**: Use left stick for forward/backward and turning, right stick for strafing
 3. Verify motors respond correctly
 
-### Step 4: Test Autonomous Routines During Driver Control
+### (Optional) Step 4: Test Autonomous Routines During Driver Control
 1. **Enter Test Mode**: Press the `Right button` within 5 seconds of program startup
 2. **Navigate Autons**: Use `Right/Left buttons` to cycle through available autons
 3. **Navigate Steps**: Use `Up/Down buttons` to navigate through individual steps (for step-enabled autons)
@@ -321,6 +316,6 @@ void auton_skill() {
 8. **Controller vibrating with "---" pattern**: Check for disconnected or overheated motors - the system automatically monitors motor health
 
 ### Debug Tips:
-1. Use the controller screen to display debug information
-2. Add `printControllerScreen()` statements
-3. Check motor temperatures and connections
+1. Add `printControllerScreen()` statements
+2. Use the controller screen to display debug information
+3. Check motor temperatures and connections and directions

@@ -22,6 +22,7 @@ void colorSort();
 
 // A global instance of the brain used for printing to the V5 Brain screen.
 extern brain Brain;
+extern controller controller1;
 // Forward declaration of the Drive class.
 class Drive;
 // A global instance of the Drive class.

@@ -5,9 +5,9 @@ This project provides a lightweight C++ template for VEX V5 robotics competition
 
 ## Target Audience
 
-This library is designed specifically for **middle school robotics teams** who are getting started with VEX V5 c++ programming and do not have odometry (tracking wheel) setups. Advanced high school teams often use comprehensive libraries like [JAR-Template](https://github.com/JacksonAreaRobotics/JAR-Template) and [LemLib](https://github.com/LemLib/LemLib) that provide features such as path following and pure pursuit. In contrast, this template focuses on simplicity and ease of use, allows teams to quickly get their robot operational without the complexity of advanced positioning systems.
+This library is designed specifically for teams who are getting started with VEX V5 c++ programming and **do not have odometry (tracking wheel) setups**. Advanced high school teams often use comprehensive libraries like [JAR-Template](https://github.com/JacksonAreaRobotics/JAR-Template) and [LemLib](https://github.com/LemLib/LemLib) that provide features such as path following and pure pursuit. In contrast, this template focuses on simplicity and ease of use, allowing teams to quickly get their robot operational without the complexity of advanced positioning systems.
 
-It provides essential PID driving controls, a simple autonomous code structure, and a straightforward robot configuration that allows teams to quickly extend and adapt the core functionality to their specific needs. The built-in test mode allows teams to step through and test all of their autonomous routines during driver control, providing an alternative way to debug and iterate on their logic without having to re-download the program or use the field switch. Finally, the companion **web application** for robot remote driving via form or speech input on mobile devices add a fun and interactive dimension to controlling a VEX robot beyond V5RC competitions.
+It provides essential PID driving controls, a simple autonomous code structure, and a straightforward robot configuration that allows teams to quickly extend and adapt the core functionality to their specific needs. The built-in test mode allows teams to step through and test all of their autonomous routines during driver control, providing an alternative way to debug and iterate on their logic without having to re-build mulitple programs or use the field switch. Finally, the companion **web application** for robot remote driving via form or speech input on mobile devices add a fun and interactive dimension to controlling a VEX robot beyond V5RC competitions.
 
 ## Installation
 *   **Prerequisites:** Before you begin, make sure:
@@ -15,7 +15,7 @@ It provides essential PID driving controls, a simple autonomous code structure, 
     - (Optional) You have the [GitHub](https://github.com/) account and extension in VS Code installed.
     - (Optional) If you are using Mac with Apple silicon: [install Rosetta](https://support.apple.com/en-us/102527) to simulate Intel chip if errors show up with VEX extension.
 *   **Download and Open the Project:** 
-    *   Download [the source code]() as a ZIP file. Unzip and extract the downloaded file to a local folder.
+    *   Download [the source code as a ZIP file](https://docs.github.com/en/get-started/start-your-journey/downloading-files-from-github) from xxx. Unzip and extract the downloaded files to a local folder.
     *   In VSCode, go to `File > Open Folder` and select the extracted folder.
     *  (Optional) Or follow the instructions to [pull the repository](doc/how_to_clone_and_pull_with_vscode.md) from github using VSCode.
 *   **(Optional) If the project cannot build correctly**: 
@@ -41,12 +41,12 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
 
 *   **Drivetrain Motors and Sensors:** Define the 6-motor drivetrain motors and inertial sensor, including ports, gear ratios, and motor direction. By default, the port numbers are 1, 2, 3 for the left side, 4, 5, 6 for the right side and 10 for the inertial sensor. 
 *   **Drive Mode:** Set `DRIVE_MODE` to `0` for double arcade control, `1` for single arcade control, `2` for tank control, or `3` for mecanum control.
-*   **(Optional) Wheel Size and Gear Ratio:**
-    *  For precise auton driving, find the Drive constructor in `robot-config.cpp` and update the wheel diameter and gear ratio parameters
-*   **(Optional) Drive Constants:** If needed, adjust any of constants for the drivetrain in the `setChassisDefaults()` function. For example, adjust the `kTurnDampingFactor` value in `setArcadeConstants()` to control turn sensitivity - lower values make turning less sensitive, higher values make turning more sensitive. 
 *   **Other Motors and Sensors:** Define your motors and sensors for other subsystems such as intake or lift.
-*   **Number of Motors:** Set `NUMBER_OF_MOTORS` to total number of motors to allow the program to automatically check for disconnected or overheated motors. 
-*   **Helper functions:** Write helper functions to control the subsystems and declare those functions in [robot-config.h](include/robot-config.h) so that your other cpp files can call them.
+*   **Number of Total Motors:** Set `NUMBER_OF_MOTORS` to total number of motors to allow the program to automatically check for disconnected or overheated motors. 
+*   **Helper Functions:** Write helper functions to control the subsystems and declare those functions in [robot-config.h](include/robot-config.h).
+*   **(Optional) Wheel Size and Gear Ratio:**
+    *  For correct auton driving distance measurement, find the Drive constructor in `robot-config.cpp` and update the wheel diameter and gear ratio parameters
+*   **(Optional) Drive Constants:** If needed, adjust any of constants for the drivetrain in the `setChassisDefaults()` function. For example, adjust the `kTurnDampingFactor` value in `setArcadeConstants()` to control turn sensitivity - lower values make turning less sensitive, higher values make turning more sensitive. 
 
 ### Driver Control ([main.cpp](src/main.cpp))
 
@@ -61,17 +61,17 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
   - Single Arcade Drive: Use left stick to turn and drive forward/backward
   - Tank Drive: Use left stick for left side motors, right stick for right side motors  
   - Mecanum Drive: Use left stick for forward/backward and turning, right stick for strafing
-  - Change drive mode during driver control: Press the controller's `Left button` within 5 seconds of program startup to switch modes for different drivers.
-- **Automatic Motor Health Game Time Monitoring**: 
+  - Change drive mode for different drivers: Press the controller's `Left button` within 5 seconds of program startup to switch modes.
+- **Automatic Motor Health and Game Time Monitoring**: 
   - The controller will vibrate and display warning messages if any motors are disconnected or overheated (temperature limit: 50°C). Check motor connections and temperatures immediately when alerts occur.
-  - The controller will vibrate and display the "end game" message when it's end game.
+  - The controller will vibrate and display the "end game" message near end game.
 - **(Optional) Remotely Control the Robot:**
     - Enable Websocket Server in VS Code VEX Extension 
     - Connect the controller to the computer via USB and download the program to the brain.
-    - Find the device ID of the brain and the ip address of the computer.
+    - Find the device ID of the brain and the IP address of the computer.
     - Open the companion website on your mobile device (on the same wifi network).
     - For detailed step-by-step setup instructions, see [remote control setup Guide](doc/remote_setup_guide.md).
-    - To disable this feature, simply comment out the line in the main loop.
+    - To disable this feature, simply comment out the line in the main loop in `main.cpp`.
 
 
 ## Autonomous Routines ([autons.cpp](src/autons.cpp))
@@ -82,12 +82,12 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
 
 * **Run individual auton:**
   - Set default auton: Set the `currentAutonSelection` value in `auton.cpp` and choose "timed run" using the controller.
-  - Auton Selection:  Before field switch enabling the autonomous period, press the brain screen to scroll through the list of autons.
+  - Auton Selection:  Before the autonomous period is enabled by the field switch, press the brain screen to scroll through the list of autons.
 - **(Optional) Test all autons during driver control**:
     - Press the controller's `Right button` within 5 seconds of program startup to enter test mode.
     - When in test mode, press the `A button` to run the selected auton or current step.
-    - When in test mode, press the `Right/Left buttons` to cycle through the list of autonomous routines.
-    - When in test mode, press the `Up/Down buttons` to navigate through individual steps of the current auton.
+    - When in test mode, press the `Right/Left buttons` to cycle through the list of autonomous routines and press the `Up/Down buttons` to navigate through individual steps of the current auton.
+    - At any time, to abort the auton driving, simply move the joystick.
     - See the complete action flow in [Test Auton Button Flow Explanation](doc/test_auton_buttons.md)
 
 

@@ -26,6 +26,8 @@ int DRIVE_MODE = 0;
 // ------------------------------------------------------------------------
 motor rollerBottom = motor(PORT11, ratio18_1, true);
 motor rollerMiddle = motor(PORT12, ratio18_1, true);
+motor rollerMiddle2 = motor(PORT14, ratio18_1, true);
+
 motor rollerTop = motor(PORT13, ratio6_1, true);
 
 // total number of motors, including drivetrain
@@ -37,11 +39,12 @@ optical teamOptical = optical(PORT8);
 bool teamIsRed = true;
 
 // optical sensor for color sorting
-optical ballOptical = optical(PORT14);
+optical ballOptical = optical(PORT15);
 
 void inTake() {
   rollerBottom.spin(forward, 12, volt);
-  rollerMiddle.spin(forward, 12, volt);
+  rollerMiddle.stop(hold);
+  rollerMiddle2.spin(forward,-12, volt);
   rollerTop.stop(coast);
 }
 
@@ -55,6 +58,7 @@ void stopRollers() {
   // Stops the roller motors.
   rollerBottom.stop(brake);
   rollerMiddle.stop(brake);
+  rollerMiddle2.stop(brake);
   rollerTop.stop(brake);
   if (ballOptical.installed()) ballOptical.setLightPower(0, percent);
 }
@@ -62,12 +66,14 @@ void stopRollers() {
 void scoreMiddle() {
   rollerBottom.spin(forward, 6, volt);
   rollerMiddle.spin(forward, -12, volt);
+  rollerMiddle2.spin(forward, 12, volt);
   rollerTop.spin(forward, -6, volt);
 }
 
 void scoreLong() {
   rollerBottom.spin(forward, 12, volt);
   rollerMiddle.spin(forward, -12, volt);
+  rollerMiddle2.spin(forward, 12, volt);
   rollerTop.spin(forward, 12, volt);
 }
 
@@ -104,6 +110,7 @@ void colorSort()
 
 // A global instance of brain used for printing to the V5 Brain screen
 brain Brain;
+controller controller1 = controller(primary);
 
 Drive chassis(
   //Left Motors:
@@ -145,7 +152,7 @@ void setChassisDefaults() {
 }
 
 void changeDriveMode(){
-  controller(primary).rumble("-");
+  controller1.rumble("-");
   DRIVE_MODE = (DRIVE_MODE +1)%3;
     switch (DRIVE_MODE) {
     case 0:
@@ -172,22 +179,22 @@ void usercontrol(void) {
   // This loop runs forever, controlling the robot during the driver control period.
   while (1) {
     if (!chassis.joystickTouched){
-      if(controller(primary).Axis1.position() != 0 || controller(primary).Axis2.position() != 0 
-        || controller(primary).Axis3.position() != 0 || controller(primary).Axis4.position() != 0) {
+      if(controller1.Axis1.position() != 0 || controller1.Axis2.position() != 0 
+        || controller1.Axis3.position() != 0 || controller1.Axis4.position() != 0) {
         chassis.joystickTouched = true;
       }
     }
     switch (DRIVE_MODE) {
     case 0: // double arcade
-      chassis.controlArcade(controller(primary).Axis2.position(), controller(primary).Axis4.position());
+      chassis.controlArcade(controller1.Axis2.position(), controller1.Axis4.position());
       break;
     case 1: // single arcade
-      chassis.controlArcade(controller(primary).Axis3.position(), controller(primary).Axis4.position());
+      chassis.controlArcade(controller1.Axis3.position(), controller1.Axis4.position());
       break;
     case 2: // tank drive
-      chassis.controlTank(controller(primary).Axis3.position(), controller(primary).Axis2.position());      break;
+      chassis.controlTank(controller1.Axis3.position(), controller1.Axis2.position());      break;
     case 3: // mecanum drive
-      chassis.controlMecanum(controller(primary).Axis4.position(), controller(primary).Axis3.position(), controller(primary).Axis2.position(), controller(primary).Axis1.position(), leftMotor1, leftMotor2, rightMotor1, rightMotor2);
+      chassis.controlMecanum(controller1.Axis4.position(), controller1.Axis3.position(), controller1.Axis2.position(), controller1.Axis1.position(), leftMotor1, leftMotor2, rightMotor1, rightMotor2);
       break;
     }
 

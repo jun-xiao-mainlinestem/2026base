@@ -1,10 +1,10 @@
 #include "vex.h"
 
-float reduce_0_to_360(float angle) {
+float normalize360(float angle) {
   return fmod(angle + 360, 360);
 }
 
-float reduce_negative_180_to_180(float angle) {
+float normalize180(float angle) {
   return fmod(angle + 540, 360) - 180;
 }
 

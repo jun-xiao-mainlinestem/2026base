@@ -13,8 +13,8 @@ void sampleButtonL1Action() {
   inTake();
   
   // Wait until the button is released to stop the rollers.
-  while(controller(primary).ButtonL1.pressing()) {
-    colorSort();
+  while(controller1.ButtonL1.pressing()) {
+    if(controller1.ButtonL2.pressing()) colorSort();
     wait (20, msec);
   }
   stopRollers();
@@ -22,7 +22,7 @@ void sampleButtonL1Action() {
 
 bool matchLoaderDown = false;
 void buttonL2Action() {
-  if(controller(primary).ButtonL1.pressing()) 
+  if(controller1.ButtonL1.pressing()) 
   {
     matchLoaderDown = !matchLoaderDown;
     // toggle the matchloader position
@@ -30,7 +30,7 @@ void buttonL2Action() {
   }
   outTake();
   // Wait until the button is released to stop the rollers.
-  while(controller(primary).ButtonL2.pressing()) {
+  while(controller1.ButtonL2.pressing()) {
     wait (20, msec);
   }
   stopRollers();
@@ -38,11 +38,11 @@ void buttonL2Action() {
 
 void buttonR1Action() {
   chassis.stop(hold);
-  if(controller(primary).ButtonR2.pressing()) scoreMiddle();
+  if(controller1.ButtonR2.pressing()) scoreMiddle();
   else scoreLong();
 
   // Wait until the button is released to stop the rollers.
-  while(controller(primary).ButtonR1.pressing()) {
+  while(controller1.ButtonR1.pressing()) {
     wait (20, msec);
   }
   chassis.stop(coast);
@@ -53,17 +53,17 @@ void buttonR2Action()
 {
   // brake the drivetrain until the button is released.
   chassis.stop(hold);
-  controller(primary).rumble(".");
-  waitUntil(!controller(primary).ButtonR2.pressing());
+  controller1.rumble(".");
+  waitUntil(!controller1.ButtonR2.pressing());
   chassis.checkStatus();
   chassis.stop(coast);
 }
 
 void setupButtonMapping() {
-  controller(primary).ButtonL1.pressed(sampleButtonL1Action);
-  controller(primary).ButtonL2.pressed(buttonL2Action);
-  controller(primary).ButtonR1.pressed(buttonR1Action);
-  controller(primary).ButtonR2.pressed(buttonR2Action);
+  controller1.ButtonL1.pressed(sampleButtonL1Action);
+  controller1.ButtonL2.pressed(buttonL2Action);
+  controller1.ButtonR1.pressed(buttonR1Action);
+  controller1.ButtonR2.pressed(buttonR2Action);
 }
 
 
