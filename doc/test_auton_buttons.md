@@ -85,13 +85,11 @@ if (autonTestMode) {
 **Button: A** (when in test mode)
 
 ```cpp
-void buttonAAction() {
-  if (runAutonTest()) return;
-}
-```
-
-```cpp
-if (autonTestMode) {
+void buttonAAction()
+{
+  if (autonTestMode) 
+  {
+    // If in test mode, run the selected autonomous routine for testing and displays the run time.
     controller(primary).rumble(".");
     double t1 = Brain.Timer.time(sec);
     runAutonItem(); 
@@ -100,7 +98,7 @@ if (autonTestMode) {
     sprintf(timeMsg, "run time: %.0f", t2-t1);
     printControllerScreen(timeMsg);
     chassis.stop(coast);
-    return true;
+  }
 }
 ```
 

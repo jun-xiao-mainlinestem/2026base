@@ -1,6 +1,6 @@
 #include "vex.h"
 #include "test.h"
-int currentAutonSelection = -1;        // Current auton selection
+int currentAutonSelection = 0;        // Current auton selection
 int autonTestStep = 0;                // Current step in auton
 
 void quick_test() {
@@ -322,7 +322,18 @@ void buttonUpAction()
 
 void buttonAAction()
 {
-  if (runAutonTest()) return;
+  if (autonTestMode) 
+  {
+    // If in test mode, run the selected autonomous routine for testing and displays the run time.
+    controller(primary).rumble(".");
+    double t1 = Brain.Timer.time(sec);
+    runAutonItem(); 
+    double t2 = Brain.Timer.time(sec);
+    char timeMsg[30];
+    sprintf(timeMsg, "run time: %.0f", t2-t1);
+    printControllerScreen(timeMsg);
+    chassis.stop(coast);
+  }
 }
 
 // Register the controller button callbacks for autonomous testing.
