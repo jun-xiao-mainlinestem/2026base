@@ -27,11 +27,10 @@ int DRIVE_MODE = 0;
 motor rollerBottom = motor(PORT11, ratio18_1, true);
 motor rollerMiddle = motor(PORT12, ratio18_1, true);
 motor rollerMiddle2 = motor(PORT14, ratio18_1, true);
-
 motor rollerTop = motor(PORT13, ratio6_1, true);
 
 // total number of motors, including drivetrain
-const int NUMBER_OF_MOTORS = 9;
+const int NUMBER_OF_MOTORS = 10;
 
 // (optional) intall an optical sensor right next to the license plate
 // teamIsRed variable will be automatically set to false if blue license plate is detected

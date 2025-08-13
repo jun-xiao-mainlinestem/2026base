@@ -77,7 +77,7 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
 ## Autonomous Routines ([autons.cpp](src/autons.cpp))
 
 *   **Auton Functions:** Write your autonomous routines as separate functions.
-*   **Auton Mappings:** Map auton functions to menu items in the `runAutonItem()` function 
+*   **Auton Mappings:** Map auton functions to auton menu items in the `runAutonItem()` function 
 *   **Auton Menu Text:** Add the names of your autonomous functions to the `autonMenuText` array to make them shown on the brain's and controller's screen.
 
 * **Run individual auton:**

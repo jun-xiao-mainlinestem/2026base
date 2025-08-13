@@ -1,12 +1,12 @@
 # Test Auton Button System
 
-## 🎮 Overview
+## Overview
 
 The test auton system allows you to test autonomous routines during driver control with step-by-step execution capability. It uses multiple buttons for navigation and execution control.
 
-## 🔄 Complete Flow of Actions
+## Complete Flow of Actions
 
-### 1. 🚀 Entering Test Mode
+### 1. Entering Test Mode
 **Button: Right** (within first 5 seconds of program startup)
 
 ```cpp
@@ -30,7 +30,7 @@ if ((Brain.Timer.time(sec) < 5) && !autonTestMode) {
 
 ---
 
-### 2. 📋 Navigating the Auton Menu
+### 2. Navigating the Auton Menu
 **Button: Right** (when already in test mode)
 
 ```cpp
@@ -53,7 +53,7 @@ if (autonTestMode) {
 
 ---
 
-### 3. 🎯 Step-by-Step Navigation
+### 3. Step-by-Step Navigation
 **Button: Up/Down** (when in test mode)
 
 ```cpp
@@ -82,7 +82,7 @@ if (autonTestMode) {
 
 ---
 
-### 4. 🏃‍♂️ Running the Selected Auton/Step
+### 4. Running the Selected Auton/Step
 **Button: A** (when in test mode)
 
 ```cpp
@@ -107,7 +107,7 @@ if (autonTestMode) {
 
 ---
 
-### 5. 🎯 Step-by-Step Execution System
+### 5. Step-by-Step Execution System
 
 **Auton Functions with Step Control:**
 ```cpp
@@ -171,7 +171,7 @@ bool continueAutonStep() {
 
 ---
 
-## 🎯 Example Flow
+## Example Flow
 
 1. **Start program** → Robot boots up
 2. **Press Right** (within 5 seconds) → Enter test mode, see "auton1" on screen
@@ -180,7 +180,7 @@ bool continueAutonStep() {
 5. **Press A** → Run step 1 of auton2, see "run time: 1" on screen
 6. **Press Up** → Step decreases to 0
 7. **Press A** → Run step 0 of auton2
-8. **Press Right** → Back to "auton1" on screen
+8. **Press Left** → Back to "auton1" on screen
 
 ---
 
@@ -221,7 +221,7 @@ char const * autonMenuText[] = {
 
 ---
 
-## 💡 Tips for Using
+## Tips for Using
 
 1. **Quick Testing**: Use this system to rapidly test auton changes
 2. **Step-by-Step**: Use Up/Down buttons to navigate through steps
@@ -233,7 +233,7 @@ char const * autonMenuText[] = {
 
 ---
 
-## 🚀 Benefits
+## Benefits
 
 - **Rapid Iteration**: Quickly test different auton routines
 - **Step Debugging**: Navigate through individual steps for precise testing

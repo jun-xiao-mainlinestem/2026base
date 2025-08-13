@@ -147,7 +147,7 @@ void endgameTimer() {
   while(true)
   {
     wait(60, seconds);
-    checkMotors(NUMBER_OF_MOTORS);
+    if (!autonTestMode) checkMotors(NUMBER_OF_MOTORS);
   }
 }
 
@@ -173,7 +173,7 @@ bool setupgyro() {
     wait(2, seconds);
     return false;  
   }
-  
+
   chassis.gyro.calibrate(3);
   // Waits until the inertial sensor is calibrated.
   while (chassis.gyro.isCalibrating()) {
