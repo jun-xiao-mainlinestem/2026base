@@ -10,13 +10,14 @@ The test auton system allows you to test autonomous routines during driver contr
 **Button: Right** (within first 5 seconds of program startup)
 
 ```cpp
-if ((Brain.Timer.time(sec) < 5) && !autonTestMode) {
-    controller1.rumble("-");
-    printControllerScreen("Test Mode: ON");
-    wait(1, sec);
-    showAutonMenu();
-    autonTestMode = true;
-    return true;
+if ((Brain.Timer.time(sec) < 5) && !autonTestMode) {  
+  // If the button is pressed within 5 seconds of starting the program, enter test mode.
+  controller1.rumble("-");
+  printControllerScreen("Test Mode: ON");
+  wait(1, sec);
+  showAutonMenu();
+  autonTestMode = true;
+  return;
 }
 ```
 
@@ -35,10 +36,10 @@ if ((Brain.Timer.time(sec) < 5) && !autonTestMode) {
 
 ```cpp
 if (autonTestMode) {
-    controller1.rumble(".");
-    currentAutonSelection = (currentAutonSelection + 1) % autonNum;
-    showAutonMenu();
-    return true;
+  controller1.rumble(".");
+  // if in test mode, scroll through the auton menu
+  currentAutonSelection = (currentAutonSelection + 1) % autonNum;
+  showAutonMenu();
 }
 ```
 
@@ -59,18 +60,16 @@ if (autonTestMode) {
 ```cpp
 // Up Button - Previous Step
 if (autonTestMode) {
-    controller1.rumble(".");
-    if (autonTestStep > 0) autonTestStep--;
-    controller1.Screen.print("Step: %d         ", autonTestStep);
-    return true;
+  controller1.rumble(".");
+  if (autonTestStep > 0) autonTestStep--;
+  controller1.Screen.print("Step: %d         ", autonTestStep);
 }
 
 // Down Button - Next Step  
 if (autonTestMode) {
-    controller1.rumble(".");
-    autonTestStep++;
-    controller1.Screen.print("Step: %d           ", autonTestStep);
-    return true;
+  controller1.rumble(".");
+  autonTestStep++;
+  controller1.Screen.print("Step: %d           ", autonTestStep);
 }
 ```
 
@@ -86,8 +85,14 @@ if (autonTestMode) {
 **Button: A** (when in test mode)
 
 ```cpp
+void buttonAAction() {
+  if (runAutonTest()) return;
+}
+```
+
+```cpp
 if (autonTestMode) {
-    controller1.rumble(".");
+    controller(primary).rumble(".");
     double t1 = Brain.Timer.time(sec);
     runAutonItem(); 
     double t2 = Brain.Timer.time(sec);
@@ -100,10 +105,12 @@ if (autonTestMode) {
 ```
 
 **What happens:**
+- ✅ Checks if in test mode
 - ✅ Records start time
 - ✅ Calls `runAutonItem()` which executes the selected auton
 - ✅ Calculates and displays run time
 - ✅ Stops chassis with coast
+- ✅ Controller rumbles to confirm execution
 
 ---
 
@@ -111,31 +118,31 @@ if (autonTestMode) {
 
 **Auton Functions with Step Control:**
 ```cpp
-void auton_skill() {
-    if (autonTestStep == 1) {
-        chassis.turnToHeading(180);
-        if (!continueAutonStep()) return; // Stop here if in test mode
-    }
-    if (autonTestStep == 2) {
-        chassis.driveDistance(5);
-        chassis.turnToHeading(chassis.getHeading() + 90);
-        if (!continueAutonStep()) return; // Stop here if in test mode
-    } 
-    if(autonTestStep == 3) {
-        chassis.turnToHeading(chassis.getHeading() - 90);
-        chassis.driveDistance(-5);
-    }
+void sampleSkill() {
+  if (autonTestStep == 1) {
+    chassis.turnToHeading(180);
+    if (!continueAutonStep()) return; // Stop here if in test mode
+  }
+  if (autonTestStep == 2) {
+    chassis.driveDistance(5);
+    chassis.turnToHeading(chassis.getHeading() + 90);
+    if (!continueAutonStep()) return; // Stop here if in test mode
+  } 
+  if(autonTestStep == 3) {
+    chassis.turnToHeading(chassis.getHeading() - 90);
+    chassis.driveDistance(-5);
+  }
 }
 ```
 
 **Step Control Function:**
 ```cpp
 bool continueAutonStep() {
-    autonTestStep++;
-    if (autonTestMode) {
-        return false; // Stop execution in test mode
-    }
-    return true; // Continue execution in normal mode
+  autonTestStep++;
+  if (autonTestMode) {
+    return false; // Stop execution in test mode
+  }
+  return true; // Continue execution in normal mode
 }
 ```
 
@@ -144,6 +151,7 @@ bool continueAutonStep() {
 - ✅ `continueAutonStep()` increments step and returns false in test mode
 - ✅ This causes the function to return early, stopping execution
 - ✅ In normal mode, execution continues through all steps
+
 
 ---
 
@@ -154,9 +162,9 @@ bool continueAutonStep() {
 
 ### 7. Show status
 **Button: R2**
-- ✅ If hold this button while driving, upon releasing it, the controller displays current heading and distance drived.
+- ✅ If hold this button while driving, upon releasing it, the controller displays current heading and distance driven.
 
-## 📋 Button Summary
+## Button Summary
 
 | Button | Action | When |
 |--------|--------|------|
@@ -177,10 +185,10 @@ bool continueAutonStep() {
 2. **Press Right** (within 5 seconds) → Enter test mode, see "auton1" on screen
 3. **Press Right** → See "auton2" on screen  
 4. **Press Down** → Step increases to 1
-5. **Press A** → Run step 1 of auton2, see "run time: 1" on screen
+5. **Press A** → Run step 1 of auton2, see "run time: X" on screen
 6. **Press Up** → Step decreases to 0
 7. **Press A** → Run step 0 of auton2
-8. **Press Left** → Back to "auton1" on screen
+8. **Press Left** → Back to "auton1" in auton menu
 
 ---
 
@@ -188,20 +196,36 @@ bool continueAutonStep() {
 
 ### Global Variables
 ```cpp
-bool autonTestMode = false;           // Indicates if in test mode
-int currentAutonSelection = 1;        // Current auton selection
-int autonTestStep = 1;                // Current step in auton
-int autonNum;                         // Total number of autons
+bool autonTestMode = false;         // Indicates if in test mode
+int currentAutonSelection = 0;      // Current auton selection
+int autonTestStep = 0;              // Current step in auton
+int autonNum;                       // Total number of autons (automatically calculated)
 ```
 
 ### Key Functions
-- `enterTestMode()`: Enters test mode and shows menu
-- `nextAutonMenu()`: Moves to next auton in menu
-- `prevAutonMenu()`: Moves to previous auton in menu
-- `nextAutonStep()`: Increases step number
-- `prevAutonStep()`: Decreases step number
-- `runAutonTest()`: Executes current auton/step
+- `registerAutonTestButtons()`: Registers all button callbacks for auton testing
+- `buttonRightAction()`: Handles Right button (enter test mode, next auton)
+- `buttonLeftAction()`: Handles Left button (change drive mode, previous auton)
+- `buttonUpAction()`: Handles Up button (previous step)
+- `buttonDownAction()`: Handles Down button (next step)
+- `buttonAAction()`: Handles A button (run auton test)
+- `runAutonTest()`: Executes the selected auton and displays timing
 - `continueAutonStep()`: Controls step progression
+
+### Button Registration
+The auton testing buttons are automatically registered in the main function:
+
+```cpp
+int main() {
+  // Register the autonomous and driver control functions.
+  Competition.autonomous(autonomous);
+  Competition.drivercontrol(usercontrol);
+
+  // Register auton testing button callbacks
+  registerAutonTestButtons();
+
+
+```
 
 ### Menu System
 The menu system automatically calculates the number of available autons based on the `autonMenuText` array in `autons.cpp`:
@@ -226,10 +250,10 @@ char const * autonMenuText[] = {
 1. **Quick Testing**: Use this system to rapidly test auton changes
 2. **Step-by-Step**: Use Up/Down buttons to navigate through steps
 3. **Menu Navigation**: Use Right/Left to quickly switch between different autons
-4. **Timing**: Remember to press Right within 5 seconds of program startup
-5. **Safety**: Driver control can abort the auton execution at any time
-6. **Step Control**: Each auton can have different numbers of steps
-7. **Visual Feedback**: Controller screen shows current step and auton selection
+4. **Auton Execution**: Use A button to run the selected auton and see execution time
+5. **Timing**: Remember to press Right within 5 seconds of program startup
+6. **Safety**: Driver control can abort the auton execution at any time
+7. **Step Control**: Each auton can have different numbers of steps
 
 ---
 
@@ -238,8 +262,9 @@ char const * autonMenuText[] = {
 - **Rapid Iteration**: Quickly test different auton routines
 - **Step Debugging**: Navigate through individual steps for precise testing
 - **Menu System**: Easy navigation between multiple autons
-- **Timing Feedback**: See execution time for performance optimization
 - **Flexible Testing**: Test individual steps or full autons
 - **Visual Feedback**: Clear indication of current step and auton
+- **Timing Feedback**: See execution time for performance optimization
+- **Integrated System**: All auton testing functionality is automatically registered
 
-This system allows you to quickly test and iterate on autonomous routines with precise step-by-step control!
+This system allows you to quickly test and iterate on autonomous routines with precise step-by-step control.

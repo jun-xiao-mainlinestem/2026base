@@ -219,6 +219,21 @@ void pre_auton() {
 // ----------------------------------------------------------------------------
 //                 For testing autonomous steps
 // ----------------------------------------------------------------------------
+bool runAutonTest()
+{
+  if (!autonTestMode) return false;
+
+  // If in test mode, run the selected autonomous routine for testing and displays the run time.
+  controller(primary).rumble(".");
+  double t1 = Brain.Timer.time(sec);
+  runAutonItem(); 
+  double t2 = Brain.Timer.time(sec);
+  char timeMsg[30];
+  sprintf(timeMsg, "run time: %.0f", t2-t1);
+  printControllerScreen(timeMsg);
+  chassis.stop(coast);
+  return true;
+}
 
 bool continueAutonStep()
 {
@@ -305,6 +320,11 @@ void buttonUpAction()
   }
 }
 
+void buttonAAction()
+{
+  if (runAutonTest()) return;
+}
+
 // Register the controller button callbacks for autonomous testing.
 void registerAutonTestButtons()
 {
@@ -312,4 +332,5 @@ void registerAutonTestButtons()
   controller1.ButtonLeft.pressed(buttonLeftAction);
   controller1.ButtonDown.pressed(buttonDownAction);
   controller1.ButtonUp.pressed(buttonUpAction);
+  controller1.ButtonA.pressed(buttonAAction);
 }
