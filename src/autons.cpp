@@ -1,9 +1,10 @@
 #include "vex.h"
 #include "test.h"
-int currentAutonSelection = 0;        // Current auton selection
+int currentAutonSelection = -1;        // Current auton selection
 int autonTestStep = 0;                // Current step in auton
 
 void quick_test() {
+    chassis.driveDistance(6, 6);
   //aiAction();
   //awp();
 }
@@ -289,7 +290,9 @@ void buttonDownAction()
     // If in test mode, go to the next step.
     controller1.rumble(".");
     autonTestStep++;
-    controller1.Screen.print("Step: %d           ", autonTestStep);
+    char msg[30];
+    sprintf(msg, "Step: %d", autonTestStep);
+    printControllerScreen(msg);
   }
 
   if (macroMode) return; // prevent re-entry
@@ -316,7 +319,9 @@ void buttonUpAction()
     // If in test mode, go to the previous step.
     controller1.rumble(".");
     if (autonTestStep > 0) autonTestStep--;
-    controller1.Screen.print("Step: %d         ", autonTestStep);
+    char msg[30];
+    sprintf(msg, "Step: %d", autonTestStep);
+    printControllerScreen(msg);
   }
 }
 

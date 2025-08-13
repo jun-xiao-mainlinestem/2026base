@@ -283,6 +283,40 @@ void Drive::pollRemoteCommand(){
 }
 
 void Drive::processCommand(const std::string& command) {
+    // Remove leading/trailing whitespace and newlines
+    std::string trimmedCommand = command;
+    trimmedCommand.erase(0, trimmedCommand.find_first_not_of(" \t\r\n"));
+    trimmedCommand.erase(trimmedCommand.find_last_not_of(" \t\r\n") + 1);
+    
+    if (trimmedCommand.empty()) {
+        return;
+    }
+
     controller(primary).rumble(".");
-    printControllerScreen(command.c_str());
+    printControllerScreen(trimmedCommand.c_str());
+      
+    // Find the first space to separate command from parameters
+    size_t spacePos = trimmedCommand.find(' ');
+    // Extract command (first word)
+    std::string cmd = trimmedCommand.substr(0, spacePos);
+    // Extract parameters (everything after the first space)
+    std::string params = trimmedCommand.substr(spacePos + 1);
+    
+    if (cmd == "drive") {
+        // Format: drive <distance>
+        float distance = atof(params.c_str());
+        driveDistance(distance);
+    }
+    else if (cmd == "turn") {
+        // Format: turn <heading>
+        float heading = atof(params.c_str());
+        turnToHeading(heading);
+    }
+    else if (cmd == "set_heading") {
+        // Format: set_heading <heading>
+        float heading = atof(params.c_str());
+        setHeading(heading);
+    }
+
+    stop(coast);
 }

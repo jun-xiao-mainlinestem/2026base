@@ -39,8 +39,8 @@ remote_control/
 - Error handling and reconnection logic
 
 ### 2. Command Interface
-- **Drive Command**: distance (inches)(negative or positive), voltage (-12V - +12V), heading (0-360°)
-- **Turn Command**: heading (0-360°), voltage (-12V - +12V)
+- **Drive Command**: distance (inches)(negative or positive)
+- **Turn Command**: heading (0-360°)
 - **Set Heading Command**: heading (0-360°)
 
 ### 3. Command Validation
@@ -50,9 +50,7 @@ remote_control/
 
 ### 4. User Experience
 - Mobile-responsive design
-- Real-time connection status
 - Command history
-- Visual feedback for sent commands
 
 ## Implementation Details
 
@@ -71,7 +69,7 @@ remote_control/
 ### Phase 3: User Interface
 1. **Design mobile-responsive** layout
 2. **Create command input** forms
-3. **Implement connection** status indicators
+3. **show appropriate keyboard for the input field**
 4. **Add command history** display
 
 ### Phase 4: Polish and Testing

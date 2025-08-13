@@ -19,6 +19,7 @@
 		"typeinfo": "cpp",
 		"iostream": "cpp",
 		"regex": "cpp",
-		"string": "cpp"
+		"string": "cpp",
+		"sstream": "cpp"
 	}
 }

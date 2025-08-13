@@ -16,3 +16,28 @@ Do not write any code yet, simply create an implementation plan in markdown that
 
 
 I have updated the plan, implement the plan in the folder 'RGB_remote'. Do not change any files outside that folder.
+
+Make a couple of changes.
+1. all the parameter input should bring up the number input keyboard.
+2. once in the command view, remove header "RGB remote control" and connected status text. it should assume it is connected. 
+3. remove the "send comment" text and the "disconnect" button.
+4. for the drive command, instead of using -1 as "current heading", by default, leave it input empty so that it means keep the current heading. 
+5. make all the text bigger.
+
+make a couple of changes.
+1. the input for ip address should be number keyboard that has the '.'
+2. the input  keyboard for id should be number
+3. the input keyboard for parameters shoould has the '-' since negative numbers are allowed.
+4. remove the 'connection succesful', 'command send' flyover message. 
+5. once the user enter the ip address and id, show the the contructed ulr as text above the connect button (remind the user to verify the url text).
+
+Change the voltage to "Max voltage". it will be from  1 to 12. 
+
+please design the UI as I want to simplify the interaction.
+
+The Command Interface is simplifed as 
+- **Drive Command**: distance (inches)(negative or positive)
+- **Turn Command**: heading (0-360°)
+- **Set Heading Command**: heading (0-360°)
+
+in drive.cpp, update the processCommand function to interpret the text sent from the remote control web app and preform the coresponding drive actions
