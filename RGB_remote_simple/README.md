@@ -1,4 +1,4 @@
-# RGB Remote Control - Simple Version
+# Simple RGB Remote Control
 
 A simple, single-file HTML web application for controlling VEX robots remotely.
 
@@ -33,10 +33,9 @@ ipconfig
    - Type 'vex' in the search box
    - Look for VEX Extension settings
 3. **Enable WebSocket Server**:
-   - Check the box to enable the WebSocket server
+   - Check the box to enable the WebSocket server (see [screen](vex-vscode-settings.png))
    - Set the IP address (use your computer's IP address)
    - Leave the port as '7071' (default)
-   - Save the settings
 
 #### 2. Get Your Robot's Device ID
 1. **Connect Your Robot**:
@@ -47,7 +46,7 @@ ipconfig
    - Make sure the program is running on the robot
 3. **Find Device ID**:
    - Click the VEX icon in the left sidebar of VS Code
-   - Look for your robot's Brain Device ID as shown in the [image](device-id.png)
+   - Look for your robot's Brain Device ID as shown in the [screen](device-id.png)
    - **Important**: This ID changes every time you restart VS Code
 
 #### 3. Verify Setup
@@ -86,20 +85,21 @@ Once connected, the command section becomes active:
 - **Set Heading**: Set current heading (0-360°)
 
 
-## Command Format
-
-The app sends these commands to your robot:
-
-- `drive <distance>\n`
-- `turn <heading>\n`
-- `set_heading <heading>\n`
-
-
 ## Troubleshooting
-**Can't connect from mobile?**
+
+### Connection Issues
+
+#### **Can't connect from mobile?**
 - Ensure the computer and mobile device are on the same WiFi network
 - Check the computer's firewall settings
 - Verify the computer IP address is correct
-- Verify robot brain device ID is correct
-- Verify VEX VSCode extension WebSocket server is running on port 7071 with the IP address (not 'localhost')
-- Run RGB-template based program on the robot
+
+#### **WebSocket connection fails?**
+- Verify VEX VSCode extension WebSocket server is running on port 7071
+- **Important**: Use your computer's IP address (not 'localhost') in VEX extension settings
+- Ensure robot brain device ID is correct and current
+
+#### **Robot not responding?**
+- Check that RGB-template based program is running on the robot
+- Verify the VEX ontroller is connected is connected to the computer via USB cable
+- Ensure the robot brain and controller are properly paired
