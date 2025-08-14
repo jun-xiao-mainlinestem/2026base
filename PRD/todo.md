@@ -1,5 +1,5 @@
 # steps to create a clean open repository
-- new v5 project (named rgb_template)
+- new v5 project (named rgb_sample)
 - add .gitignore file
 - commit and pubblish in github
 - copy src, doc, include, and RGB_web_simple folder
