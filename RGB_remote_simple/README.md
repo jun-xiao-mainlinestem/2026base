@@ -6,13 +6,14 @@ A simple, single-file HTML web application for controlling VEX robots remotely.
 
 - **Single HTML file** - no build process, no dependencies
 - **Three command types**: Drive, Turn, Set Heading
-- **Enable/disable interface** - command section only active when connected
 - **Mobile-friendly** - works on smartphones and tablets
 
 
 ## How to Use
 
 ### Get Your Computer's IP Address
+
+**Open Terminal/Command Prompt and run:**
 
 #### On Mac:
 ```bash
@@ -23,6 +24,8 @@ ipconfig getifaddr en0
 ```cmd
 ipconfig
 ```
+
+**Look for your IP address (usually starts with 192.168.x.x or 10.0.x.x)**
 
 ### Setup VEX Extension
 
@@ -56,16 +59,20 @@ ipconfig
 
 ### Start the Web Server
 
+**Open Terminal/Command Prompt and run:**
+
 ```bash
 cd RGB_remote_simple
 python3 -m http.server 8000
 ```
 
+**You should see: "Serving HTTP on 0.0.0.0 port 8000..."**
+
 ## Mobile Device Usage
 Ensure your mobile device is on **the same WiFi network** as your computer.
 
 
-### Open in Browser
+### Open the Browser
 Navigate to: `http://YOUR_IP_ADDRESS:8000`
 
 **Example:** `http://192.168.1.100:8000`

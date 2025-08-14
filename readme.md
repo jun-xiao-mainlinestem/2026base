@@ -66,7 +66,7 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
   - The controller will vibrate and display warning messages if any motors are disconnected or overheated (temperature limit: 50°C). Check motor connections and temperatures immediately when alerts occur.
   - The controller will vibrate and display the "end game" message near end game.
 - **(Experimental) Remotely Control the Robot** 
-  - Follow step-by-step (setup instructions)[doc/remote_setup_guide.md] to enable Websocket Server in VS Code VEX Extension, start the sample web application on your local computer and access the application via mobile devices.
+  - Follow step-by-step [setup instructions](RGB_remote_simple/README.MD) to enable Websocket Server in VS Code VEX Extension, start the sample web application on your local computer and access the application via mobile devices.
   - To disable this feature, simply comment out the line in the main loop in `main.cpp`.
 
 
