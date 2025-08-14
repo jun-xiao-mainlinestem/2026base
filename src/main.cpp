@@ -94,7 +94,7 @@ void pollCommandMessages()
 
   controller(primary).rumble(".");
   printControllerScreen(command.c_str());
-  
+
   // Parse command
   size_t spacePos = command.find(' ');
   std::string cmd = command.substr(0, spacePos);
@@ -102,9 +102,9 @@ void pollCommandMessages()
 
   // Execute command
   if (cmd == "drive") {
-    chassis.driveDistance(atof(params.c_str()));
+    chassis.driveDistance(atof(params.c_str()), 6);
   } else if (cmd == "turn") {
-    chassis.turnToHeading(atof(params.c_str()));
+    chassis.turnToHeading(atof(params.c_str()), 6);
   } else if (cmd == "set_heading") {
     chassis.setHeading(atof(params.c_str()));
   }
