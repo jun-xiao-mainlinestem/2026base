@@ -24,13 +24,13 @@ This library is designed specifically for teams who are getting started with VEX
 The project is organized into the following directories:
 
 *   `src/`: Main source code
-    *   `main.cpp`: Entry point, competition control, and button mappings.
-    *   `robot-config.cpp`: Configuration for drivetrain motors, sensors, and other subsystems.
-    *   `autons.cpp`: Autonomous routines.
-    *   `rgb-template/`: Library code.
+    *   `main.cpp`: Entry point, competition control, and button mappings
+    *   `robot-config.cpp`: Configuration for drivetrain motors, sensors, and other subsystems
+    *   `autons.cpp`: Autonomous routines
+    *   `rgb-template/`: Library code
 *   `include/`: Header files
-*   `doc/`: Additional documentation.
-*   `RGB_web_simple/`: sample web app.
+*   `doc/`: Additional documentation
+*   `RGB_web_simple/`: Sample web app
 
 
 
@@ -52,11 +52,11 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
 ### Driver Control ([main.cpp](src/main.cpp))
 
 *   **Button Functions:** Write your button functions
-*   **Button Bindings:** In the `setupButtonMapping()` function, map event handlers of the buttons to the functions
+*   **Button Bindings:** In the `setupButtonMapping()` function, map event handlers of the buttons to the functions.
 
 ## Test Sample Program
 - **Build Project and Run Program:**
-  - Download the program to the brain and use game controller to select the program slot and run the program
+  - Download the program to the brain and use game controller to select the program slot and run the program.
 - **Drive Mode:**
   - Double Arcade Drive (default): Use left stick to turn and right stick to drive forward/backward
   - Single Arcade Drive: Use left stick to turn and drive forward/backward
