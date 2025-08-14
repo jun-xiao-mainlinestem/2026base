@@ -49,3 +49,5 @@ Though the web app looks ok. It's just too complicated. I would like to have a s
 3. no node.js and all the dependancy. 
 
 Do not generate the code. just explain to me how.
+
+I would like to create a voice control mobile app in 'voice-control-robot' folder. Here is what you need to do. Read index.html in the RGB_web_simple folder and read the test.html in the voice-control-robot folder. Create a similar simple html with javascript style and CSS like the index.html. Ask the user for device ID and connect to the websocket server. Once connected allow the user to use the microphone to dictate a short sentence. Display the recognized text. Make the UI and code as simple as possible. As a first test, parse the user input to see if it includes 'red' and 'go'. If so, send the message "red go" to the websocket server. Put the generated html and markdown document inside the 'voice-control-robot' folder. Do not modify anything outside that folder.

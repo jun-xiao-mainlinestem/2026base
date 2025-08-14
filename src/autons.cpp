@@ -18,12 +18,10 @@ void sampleAuton1() {
 
 // The second autonomous routine.
 void sampleAuton2() {
-//  awp(); return;
-  chassis.setHeading(0);
-  chassis.driveDistance(12, 6);
-  chassis.turnToHeading(90, 6);
-  chassis.turnToHeading(0, 6);
+  chassis.setHeading(180); // place the robot backwards
   chassis.driveDistance(-12, 6);
+  chassis.turnToHeading(0, 6);
+  chassis.driveDistance(12, 6);
 }
 
 // A long autonomous routine, e.g. skill.

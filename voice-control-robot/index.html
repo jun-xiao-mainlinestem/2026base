@@ -1,71 +1,343 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Voice Input Test</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      padding: 2em;
-    }
-    #log {
-      margin-top: 1em;
-      padding: 1em;
-      background: #f2f2f2;
-      border-radius: 8px;
-      min-height: 100px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Control Robot</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 16px;
+            font-family: system-ui, -apple-system, sans-serif;
+            line-height: 1.5;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .section {
+            margin-bottom: 24px;
+            padding: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        
+        button {
+            background: #007bff;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            width: 100%;
+            cursor: pointer;
+            margin-bottom: 8px;
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .disabled {
+            opacity: 0.5;
+        }
+        
+        .status-text {
+            padding: 12px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 14px;
+            min-height: 20px;
+        }
+        
+        .voice-status {
+            padding: 12px;
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            border-radius: 4px;
+            margin-bottom: 16px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        h2 {
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+        
+        .mic-button {
+            background: #28a745;
+            font-size: 18px;
+        }
+        
+        .mic-button.listening {
+            background: #dc3545;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+    </style>
 </head>
 <body>
-  <h1>🎤 Voice Command Test</h1>
-  <p>Click the button and speak.</p>
-  <button id="start">Start Listening</button>
-  <div id="log">Status: Not started.</div>
+    <div class="container">
+        <!-- Connection Section -->
+        <div class="section" id="connectionSection">
+            <h2>Connect to Robot</h2>
+            <div class="form-group">
+                <input type="text" id="deviceId" placeholder="Device ID" inputmode="numeric">
+            </div>
+            <button id="connectBtn" onclick="connect()">Connect</button>
+        </div>
+        
+        <!-- Voice Control Section -->
+        <div class="section" id="voiceSection">
+            <h2>Voice Control</h2>
+            <div class="voice-status" id="voiceStatus">
+                Click the microphone button and speak
+            </div>
+            <button id="micBtn" class="mic-button" onclick="toggleMicrophone()" disabled>
+                🎤 Start Listening
+            </button>
+            <div class="form-group">
+                <label>Recognized Text:</label>
+                <div id="recognizedText" class="status-text">
+                    No speech detected yet
+                </div>
+            </div>
+            <div style="font-size: 12px; color: #666; margin-top: 16px; padding: 8px; background: #f8f9fa; border-radius: 4px;">
+                <strong>💡 Microphone Permission Tips:</strong><br>
+                • First time users: Browser will ask for microphone permission<br>
+                • If blocked: Click the microphone icon in your browser's address bar<br>
+                • Refresh the page after allowing permissions<br>
+                • Use Chrome, Edge, or Safari for best compatibility<br>
+                • <strong>Note:</strong> Some browsers require HTTPS for microphone access
+            </div>
+        </div>
+        
+        <!-- Status Section -->
+        <div class="section" id="statusSection">
+            <h2>Command Status</h2>
+            <div id="commandStatus" class="status-text">
+                No commands sent yet
+            </div>
+        </div>
+    </div>
 
-  <script>
-    const logDiv = document.getElementById('log');
-    const startButton = document.getElementById('start');
-
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-    if (!SpeechRecognition) {
-      logDiv.textContent = '❌ SpeechRecognition not supported in this browser.';
-    } else {
-      const recognition = new SpeechRecognition();
-      recognition.lang = 'en-US';
-      recognition.continuous = false;
-      recognition.interimResults = false;
-
-      recognition.onstart = () => {
-        logDiv.textContent = '🎙️ Listening... Speak now.';
-      };
-
-      recognition.onerror = (event) => {
-        logDiv.textContent = `❗ Error: ${event.error}`;
-        console.error(event);
-      };
-
-      recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript.trim();
-        const confidence = event.results[0][0].confidence;
-        logDiv.innerHTML = `<strong>Heard:</strong> ${transcript} <br><strong>Confidence:</strong> ${Math.round(confidence * 100)}%`;
-        console.log('Transcript:', transcript);
-      };
-
-      recognition.onend = () => {
-        logDiv.innerHTML += '<br>✅ Done listening.';
-      };
-
-      startButton.addEventListener('click', () => {
-        try {
-          recognition.start();
-        } catch (e) {
-          logDiv.textContent = '⚠️ Already started.';
+    <script>
+        let websocket = null;
+        let recognition = null;
+        let isListening = false;
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            toggleVoiceSection(false);
+            setupSpeechRecognition();
+        });
+        
+        function setupSpeechRecognition() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            
+            if (!SpeechRecognition) {
+                document.getElementById('voiceStatus').textContent = '❌ Speech recognition not supported in this browser';
+                return;
+            }
+            
+            // Check if mediaDevices is available
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                document.getElementById('voiceStatus').textContent = '❌ Microphone access not supported in this browser. Try Chrome, Edge, or Safari.';
+                return;
+            }
+            
+            recognition = new SpeechRecognition();
+            recognition.lang = 'en-US';
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            
+            recognition.onstart = function() {
+                isListening = true;
+                const micBtn = document.getElementById('micBtn');
+                micBtn.textContent = '🛑 Stop Listening';
+                micBtn.classList.add('listening');
+                document.getElementById('voiceStatus').textContent = '🎙️ Listening... Speak now!';
+            };
+            
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript.trim();
+                const confidence = event.results[0][0].confidence;
+                
+                document.getElementById('recognizedText').textContent = transcript;
+                document.getElementById('voiceStatus').textContent = `✅ Heard: "${transcript}" (${Math.round(confidence * 100)}% confidence)`;
+                
+                // Check for voice commands
+                checkVoiceCommands(transcript);
+            };
+            
+            recognition.onerror = function(event) {
+                if (event.error === 'not-allowed') {
+                    document.getElementById('voiceStatus').textContent = '❌ Microphone access denied. Please allow microphone permissions and refresh the page.';
+                } else if (event.error === 'no-speech') {
+                    document.getElementById('voiceStatus').textContent = '❌ No speech detected. Please try again.';
+                } else {
+                    document.getElementById('voiceStatus').textContent = `❌ Error: ${event.error}`;
+                }
+                resetMicrophone();
+            };
+            
+            recognition.onend = function() {
+                resetMicrophone();
+            };
         }
-      });
-    }
-  </script>
+        
+        function resetMicrophone() {
+            isListening = false;
+            const micBtn = document.getElementById('micBtn');
+            micBtn.textContent = '🎤 Start Listening';
+            micBtn.classList.remove('listening');
+            document.getElementById('voiceStatus').textContent = 'Click the microphone button and speak';
+        }
+        
+        async function toggleMicrophone() {
+            if (!recognition) return;
+            
+            if (isListening) {
+                recognition.stop();
+            } else {
+                // Try to start recognition directly first (fallback method)
+                try {
+                    recognition.start();
+                    return; // If successful, exit early
+                } catch (directError) {
+                    // If direct start fails, try permission check method
+                    console.log('Direct start failed, trying permission check:', directError);
+                }
+                
+                // Check if mediaDevices is available
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    document.getElementById('voiceStatus').textContent = '❌ Microphone access not supported in this browser. Try Chrome, Edge, or Safari.';
+                    return;
+                }
+                
+                // Check microphone permissions first
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    stream.getTracks().forEach(track => track.stop()); // Stop the stream after permission check
+                    
+                    // Permission granted, start recognition
+                    recognition.start();
+                } catch (permissionError) {
+                    if (permissionError.name === 'NotAllowedError') {
+                        document.getElementById('voiceStatus').textContent = '❌ Microphone access denied. Please allow microphone permissions in your browser and try again.';
+                    } else if (permissionError.name === 'NotFoundError') {
+                        document.getElementById('voiceStatus').textContent = '❌ No microphone found. Please connect a microphone and try again.';
+                    } else {
+                        document.getElementById('voiceStatus').textContent = `❌ Microphone error: ${permissionError.message}`;
+                    }
+                }
+            }
+        }
+        
+        function checkVoiceCommands(transcript) {
+            const lowerText = transcript.toLowerCase();
+            
+            // Check if text contains 'red' and 'go'
+            if (lowerText.includes('red') && lowerText.includes('go')) {
+                sendVoiceCommand('red go');
+            }
+        }
+        
+        function sendVoiceCommand(command) {
+            if (!websocket || websocket.readyState !== WebSocket.OPEN) {
+                document.getElementById('commandStatus').textContent = '❌ Not connected to robot';
+                return;
+            }
+            
+            websocket.send(command + '\n');
+            const timestamp = new Date().toLocaleTimeString();
+            document.getElementById('commandStatus').textContent = `[${timestamp}] Sent: ${command}`;
+        }
+        
+        function connect() {
+            const deviceId = document.getElementById('deviceId').value.trim();
+            if (!deviceId) {
+                alert('Please enter the device ID');
+                return;
+            }
+            
+            // Get IP address from current page URL
+            const currentURL = window.location.href;
+            const url = new URL(currentURL);
+            const ipAddress = url.hostname;
+            
+            const connectBtn = document.getElementById('connectBtn');
+            connectBtn.disabled = true;
+            connectBtn.textContent = 'Connecting...';
+            
+            // Create WebSocket connection
+            websocket = new WebSocket(`ws://${ipAddress}:7071/vexrobotics.vexcode/device?id=${deviceId}`);
+            
+            websocket.onopen = function() {
+                connectBtn.textContent = 'Connected';
+                connectBtn.disabled = true;
+                document.getElementById('connectionSection').style.display = 'none';
+                toggleVoiceSection(true);
+            };
+            
+            websocket.onclose = function() {
+                connectBtn.textContent = 'Connect';
+                connectBtn.disabled = false;
+                toggleVoiceSection(false);
+            };
+            
+            websocket.onerror = function() {
+                connectBtn.textContent = 'Connect';
+                connectBtn.disabled = false;
+                toggleVoiceSection(false);
+            };
+        }
+        
+        function toggleVoiceSection(enabled) {
+            const voiceSection = document.getElementById('voiceSection');
+            const statusSection = document.getElementById('statusSection');
+            const micBtn = document.getElementById('micBtn');
+            
+            if (enabled) {
+                voiceSection.classList.remove('disabled');
+                statusSection.classList.remove('disabled');
+                micBtn.disabled = false;
+            } else {
+                voiceSection.classList.add('disabled');
+                statusSection.classList.add('disabled');
+                micBtn.disabled = true;
+            }
+        }
+    </script>
 </body>
 </html>
