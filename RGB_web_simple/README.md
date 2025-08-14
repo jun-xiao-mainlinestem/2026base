@@ -25,9 +25,9 @@ ipconfig
 #### - Configure WebSocket Server
 1. **Open VS Code** with the VEX Extension installed
 2. **Access VEX Extension Settings**:
-   - Click the gear icon (⚙️) at the bottom left of VS Code
+   - Click the gear icon (⚙️) at the bottom left of VS Code and select 'Settings'
    - Type 'vex' in the search box
-   - Look for VEX Extension settings
+   - Scroll down the list to vexrobotics.vexcode.WebsocketServer
 3. **Enable WebSocket Server**:
    - Check the box to enable the WebSocket server (see [screen](vex-vscode-settings.png))
    - Set the IP address (use your computer's IP address)
@@ -41,7 +41,8 @@ ipconfig
    - Download any RGB template-based program to your robot
    - Make sure the program is running on the robot
 3. **Find Device ID**:
-   - Click the VEX icon in the left sidebar of VS Code
+   - Click the VEX icon in the left sidebar of VS Code UI
+   - Expand the VEX Device Info view
    - Look for your robot's Brain Device ID as shown in the [screen](device-id.png)
    - **Important**: This ID changes every time you restart VS Code
 
@@ -52,10 +53,9 @@ ipconfig
 
 ### Start the Web Server
 
-**Open Terminal/Command Prompt and run:**
+**Open Terminal/Command Prompt at folder `RGB_web_simple` and run:**
 
 ```bash
-cd RGB_remote_simple
 python3 -m http.server 8000
 ```
 
@@ -100,9 +100,9 @@ Once connected, the command section becomes active:
 #### **WebSocket connection fails?**
 - Verify VEX VSCode extension WebSocket server is running on port 7071
 - **Important**: Use your computer's IP address (not 'localhost') in VEX extension settings
-- Ensure robot brain device ID is correct and current
+- Try restarting VS Code and ensure robot brain device ID is correct and current
 
 #### **Robot not responding?**
 - Check that RGB-template based program is running on the robot
-- Verify the VEX ontroller is connected is connected to the computer via USB cable
+- Verify the VEX controller is connected is connected to the computer via USB cable
 - Ensure the robot brain and controller are properly paired
