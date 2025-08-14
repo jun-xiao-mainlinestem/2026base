@@ -76,7 +76,7 @@ class CommandLineInterface {
     const config: WebSocketConfig = {
       id: deviceId,
       port: '7071',
-      ip: 'localhost'
+      ip: '192.168.86.21'
     };
 
     this.websocket = new VEXWebSocket(config);

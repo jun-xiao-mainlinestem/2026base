@@ -25,7 +25,7 @@ export class WebSocketManager {
       this.updateStatus({ connected: false, connecting: true, error: undefined });
 
               try {
-          const wsUrl = `ws://${config.ipAddress}:7071/vexrobotics.vexcode/device?id=${config.deviceId}`;
+          const wsUrl = `ws://localhost:7071/vexrobotics.vexcode/device?id=${config.deviceId}`;
           this.socket = new WebSocket(wsUrl);
 
         this.socket.onopen = () => {

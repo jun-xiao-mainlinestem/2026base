@@ -41,11 +41,10 @@ A sample web application for remote control of VEX robots through websocket conn
 
 ### Connecting to a Robot
 
-1. Enter the robot's IP address (e.g., `192.168.1.100`)
-2. Enter a device ID (e.g., `5567`)
-3. Click "Connect"
+1. Enter the device ID (e.g., `5567`)
+2. Click "Connect"
 
-**Note:** The application uses port 7071 by default for WebSocket connections.
+**Note:** The application connects to `localhost:7071` by default for WebSocket connections.
 
 ### Sending Commands
 

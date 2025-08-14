@@ -40,4 +40,12 @@ The Command Interface is simplifed as
 - **Turn Command**: heading (0-360°)
 - **Set Heading Command**: heading (0-360°)
 
-in drive.cpp, update the processCommand function to interpret the text sent from the remote control web app and preform the coresponding drive actions
+in drive.cpp, update the processCommand function to interpret the text sent from the remote control web app and preform the coresponding drive actions.
+
+Though the web app looks ok. It's just too complicated. I would like to have a simple web page that serve the same function. show me how in markdown. Here is the requirement.
+
+1. the whole app should be a single html with some javascript.
+2. the web server starts simply with shell comand "python3 -m http.server"
+3. no node.js and all the dependancy. 
+
+Do not generate the code. just explain to me how.

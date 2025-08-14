@@ -26,24 +26,7 @@ export class RemoteControlApp {
       connectionForm.addEventListener('submit', (e) => this.handleConnectionSubmit(e));
     }
 
-    // IP address and device ID input changes for URL preview
-    const ipAddressInput = document.getElementById('ipAddress') as HTMLInputElement;
-    const deviceIdInput = document.getElementById('deviceId') as HTMLInputElement;
-    
-    if (ipAddressInput && deviceIdInput) {
-      const updateURLPreview = () => {
-        const ip = ipAddressInput.value.trim();
-        const id = deviceIdInput.value.trim();
-        if (ip && id) {
-          this.uiManager.showURLPreview(ip, id);
-        } else {
-          this.uiManager.hideURLPreview();
-        }
-      };
-      
-      ipAddressInput.addEventListener('input', updateURLPreview);
-      deviceIdInput.addEventListener('input', updateURLPreview);
-    }
+
 
     // Command type selection
     const commandTypeSelect = document.getElementById('command-type') as HTMLSelectElement;
@@ -65,22 +48,20 @@ export class RemoteControlApp {
     const formData = new FormData(form);
     
     const config: ConnectionConfig = {
-      ipAddress: formData.get('ipAddress') as string,
       deviceId: formData.get('deviceId') as string
     };
 
-    if (!config.ipAddress || !config.deviceId) {
-      this.uiManager.showError('Please enter both IP address and device ID');
+    if (!config.deviceId) {
+      this.uiManager.showError('Please enter the device ID');
       return;
     }
 
     // Show the WebSocket URL before attempting connection
-    this.uiManager.showWebSocketURL(config.ipAddress, config.deviceId);
+    this.uiManager.showWebSocketURL(config.deviceId);
 
     try {
       await this.websocketManager.connect(config);
       this.uiManager.hideConnectionForm();
-      this.uiManager.hideURLPreview(); // Hide the URL preview
       this.uiManager.showCommandForm(); // Show the command form
     } catch (error) {
       // Keep the URL visible when connection fails

@@ -1,5 +1,4 @@
 export interface ConnectionConfig {
-  ipAddress: string;
   deviceId: string;
 }
 

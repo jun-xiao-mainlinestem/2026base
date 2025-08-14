@@ -7,7 +7,7 @@ This project provides a lightweight C++ template for VEX V5 robotics competition
 
 This library is designed specifically for teams who are getting started with VEX V5 c++ programming and do **NOT** have odometry (tracking wheel) setups. Advanced high school teams often use comprehensive libraries like [JAR-Template](https://github.com/JacksonAreaRobotics/JAR-Template) and [LemLib](https://github.com/LemLib/LemLib) that provide features such as path following and pure pursuit. In contrast, this template focuses on simplicity and ease of use, allowing teams to quickly get their robot operational without the complexity of advanced positioning systems.
 
-It provides essential PID driving controls, a simple autonomous code structure, and a straightforward robot configuration that allows teams to quickly extend and adapt the core functionality to their specific needs. The built-in test mode allows teams to step through and test all of their autonomous routines during driver control, providing an alternative way to debug and iterate on their logic without having to re-build mulitple programs or use the field switch. Finally, the companion **web application** for robot remote driving via form or speech input on mobile devices add a fun and interactive dimension to controlling a VEX robot beyond V5RC competitions.
+It provides essential PID driving controls, a simple autonomous code structure, and a straightforward robot configuration that allows teams to quickly extend and adapt the core functionality to their specific needs. The built-in test mode allows teams to step through and test all of their autonomous routines during driver control, providing an alternative way to debug and iterate on their logic without having to re-build mulitple programs or use the field switch. Finally, the included sample web application for robot remote driving via form or speech input on mobile devices adds a fun and interactive dimension to controlling a VEX robot beyond V5RC competitions.
 
 ## Installation
 *   **Prerequisites:** Before you begin, make sure:
@@ -65,13 +65,9 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
 - **Automatic Motor Health and Game Time Monitoring**: 
   - The controller will vibrate and display warning messages if any motors are disconnected or overheated (temperature limit: 50°C). Check motor connections and temperatures immediately when alerts occur.
   - The controller will vibrate and display the "end game" message near end game.
-- **(Optional) Remotely Control the Robot:**
-    - Enable Websocket Server in VS Code VEX Extension 
-    - Connect the controller to the computer via USB and download the program to the brain.
-    - Find the device ID of the brain and the IP address of the computer.
-    - Open the companion website on your mobile device (on the same wifi network).
-    - For detailed step-by-step setup instructions, see [remote control setup Guide](doc/remote_setup_guide.md).
-    - To disable this feature, simply comment out the line in the main loop in `main.cpp`.
+- **(Experimental) Remotely Control the Robot** 
+  - Follow step-by-step (setup instructions)[doc/remote_setup_guide.md] to enable Websocket Server in VS Code VEX Extension, start the sample web application on your local computer and access the application via mobile devices.
+  - To disable this feature, simply comment out the line in the main loop in `main.cpp`.
 
 
 ## Autonomous Routines ([autons.cpp](src/autons.cpp))

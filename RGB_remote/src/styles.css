@@ -204,46 +204,7 @@ body {
     background-color: #fef2f2;
 }
 
-/* URL Preview */
-.url-preview {
-    margin: 20px 0;
-    padding: 15px;
-    background-color: #f0f9ff;
-    border: 2px solid #bae6fd;
-    border-radius: 10px;
-    border-left: 4px solid #0369a1;
-}
 
-.url-preview-text {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 8px;
-}
-
-.url-preview-text strong {
-    color: #0369a1;
-    font-size: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.url-preview-text code {
-    background-color: #1e293b;
-    color: #e2e8f0;
-    padding: 8px 12px;
-    border-radius: 6px;
-    font-family: 'Courier New', monospace;
-    font-size: 0.9rem;
-    word-break: break-all;
-    border: 1px solid #334155;
-}
-
-.url-preview-help {
-    font-size: 0.9rem;
-    color: #0369a1;
-    font-style: italic;
-}
 
 /* Buttons */
 .btn {
@@ -472,15 +433,7 @@ body {
         padding: 8px 12px; /* Increased padding */
     }
     
-    .url-preview {
-        margin: 15px 0;
-        padding: 12px;
-    }
-    
-    .url-preview-text code {
-        font-size: 0.85rem;
-        padding: 6px 10px;
-    }
+
     
     /* Ensure minimum touch target sizes */
     .form-group input,

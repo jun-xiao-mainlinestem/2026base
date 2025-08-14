@@ -28,8 +28,8 @@ export class UIManager {
     }
   }
 
-  showWebSocketURL(ipAddress: string, deviceId: string): void {
-    const url = `ws://${ipAddress}:7071/vexrobotics.vexcode/device?id=${deviceId}`;
+  showWebSocketURL(deviceId: string): void {
+    const url = `ws://localhost:7071/vexrobotics.vexcode/device?id=${deviceId}`;
     
     // Create or update the URL display
     let urlDisplay = document.getElementById('websocket-url-display');
@@ -54,23 +54,7 @@ export class UIManager {
     `;
   }
 
-  showURLPreview(ipAddress: string, deviceId: string): void {
-    const urlPreview = document.getElementById('url-preview');
-    const urlPreviewCode = document.getElementById('url-preview-code');
-    
-    if (urlPreview && urlPreviewCode) {
-      const url = `ws://${ipAddress}:7071/vexrobotics.vexcode/device?id=${deviceId}`;
-      urlPreviewCode.textContent = url;
-      urlPreview.style.display = 'block';
-    }
-  }
 
-  hideURLPreview(): void {
-    const urlPreview = document.getElementById('url-preview');
-    if (urlPreview) {
-      urlPreview.style.display = 'none';
-    }
-  }
 
   hideConnectionForm(): void {
     if (this.connectionFormElement) {
@@ -82,9 +66,6 @@ export class UIManager {
     if (urlDisplay) {
       urlDisplay.remove();
     }
-    
-    // Hide URL preview when hiding connection form
-    this.hideURLPreview();
   }
 
   showCommandForm(): void {
@@ -217,9 +198,6 @@ export class UIManager {
   }
 
   showConnectionError(message: string): void {
-    // Show error notification but keep the URL visible
-    this.showError(message);
-    
     // Update the URL display to show it's a failed connection
     const urlDisplay = document.getElementById('websocket-url-display');
     if (urlDisplay) {
