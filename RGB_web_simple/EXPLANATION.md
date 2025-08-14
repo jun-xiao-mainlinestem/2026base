@@ -212,11 +212,10 @@ button:disabled {
 
 **Process**:
 1. **Validate connection**: Ensure WebSocket is open
-2. **Parse parameters**: Extract values from input fields
-3. **Format command**: Create command string with newline
-4. **Send command**: Transmit via WebSocket
-5. **Update status**: Show timestamp and command
-6. **Reset inputs**: Clear distance input for drive commands
+2. **Format command**: Create command string with newline
+3. **Send command**: Transmit via WebSocket
+4. **Update status**: Show timestamp and command
+5. **Reset inputs**: Clear distance input for drive commands
 
 **Command Format**:
 - `drive <distance>\n`
