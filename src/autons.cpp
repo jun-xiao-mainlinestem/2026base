@@ -1,5 +1,5 @@
 #include "vex.h"
-int currentAutonSelection = -1;        // Current auton selection
+int currentAutonSelection = 0;        // Current auton selection
 int autonTestStep = 0;                // Current step in auton
 
 void awp(){
@@ -160,8 +160,11 @@ void endgameTimer() {
   while (Brain.Timer.time(sec) < END_GAME_SECONDS) {
     wait(500, msec);
   }
-  printControllerScreen("end game");
-  controller1.rumble("-");
+  if (enableEndGameTimer)
+  {
+    printControllerScreen("end game");
+    controller1.rumble("-");
+  }
 
   // Checks the motors health every 60 seconds in drive practice
   while(true)
@@ -178,7 +181,7 @@ void exitAuton()
     // Clears the brain timer.
   Brain.Timer.clear();
     // Starts the end game timer thread.
-  if (enableEndGameTimer) thread endgameTimer_thread = thread(endgameTimer);
+  thread endgameTimer_thread = thread(endgameTimer);
   if (!chassis.joystickTouched) {
     //TODO: some macto actions
   }

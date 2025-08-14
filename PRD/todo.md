@@ -9,6 +9,7 @@
     - clean auton.cpp, remove macro_mode, remove quick test
     - remove unused motors and sensors from robot-config.cpp and h
     - remove setupTeamColor and color sorting
+    - fix bug of custom test
 
 - build the project to see if there is any error
 - test drive and test button pressing
@@ -18,5 +19,6 @@
 
 
 # code to add 
-- In exitAuton, add immediate actions right at the start of the driver control.
+- 
+In exitAuton, add immediate actions right at the start of the driver control.
 
