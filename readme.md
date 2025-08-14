@@ -1,7 +1,7 @@
 # RGB BOTS template
 From Haverford Robotics Team 169 (The Cavalry) and RGB Bots Team 99009A (the little red pony).
 
-This project provides a lightweight C++ template for VEX V5 robotics. It offers a modular architecture and a simple library for PID driving control and autonomous code structure, allowing teams to quickly get their robot operational and adapt the core functionality to their needs. The built-in test mode allows teams to step through and test all of their autonomous routines during driver control, providing a unique way to debug and iterate without having to rebuild multiple programs or require the field switch. Finally, the included sample web application for controlling the robot in real time on mobile devices adds a fun and interactive dimension to VEX robot beyond V5RC competitions (see [short demo video](doc/web_control.MOV)).
+This project provides a lightweight C++ template for VEX V5 robotics. It offers a modular architecture and a simple library for PID driving control and autonomous code structure, allowing teams to quickly get their robot operational and adapt the core functionality to their needs. The built-in test mode allows teams to step through and test all of their autonomous routines during driver control, providing a unique way to debug and iterate without having to rebuild multiple programs or require the field switch. Finally, the included sample web application for controlling the robot in real time on mobile devices adds a fun and interactive dimension to VEX robot beyond V5RC competitions (see [short demo video](https://youtube.com/shorts/rn8VEuGWva8).
 
 ## Target Audience
 
@@ -85,7 +85,7 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
     - When in test mode, press the `A button` to run the selected auton or current step.
     - When in test mode, press the `Right/Left buttons` to cycle through the list of autonomous routines and press the `Up/Down buttons` to navigate through individual steps of the current auton.
     - At any time, to abort the auton driving, simply move the joystick.
-    - See the complete action flow in [Test Auton Button Flow Explanation](doc/test_auton_buttons.md) and the [demo video](doc/test_autons.mov).
+    - See the complete action flow in [Test Auton Button Flow Explanation](doc/test_auton_buttons.md) and the [demo video](https://youtu.be/W6ql04Aj_xQ).
 
 
 ## Programming Interfaces of the library
