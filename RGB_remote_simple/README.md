@@ -20,7 +20,7 @@ ipconfig
 
 **Look for your IP address (usually starts with 192.168.x.x or 10.0.x.x)**
 
-### Setup VEX Extension
+### Setup VS Code VEX Extension
 
 #### - Configure WebSocket Server
 1. **Open VS Code** with the VEX Extension installed
@@ -60,6 +60,10 @@ python3 -m http.server 8000
 ```
 
 **You should see: "Serving HTTP on 0.0.0.0 port 8000..."**
+
+> **Note**: If you get an error like "command not found" or "python3 is not recognized", you need to install Python first:
+> - **Mac**: Download from [python.org](https://python.org) or use `brew install python3`
+> - **Windows**: Download from [python.org](https://python.org) or use Microsoft Store
 
 ## Mobile Device Usage
 Ensure your mobile device is on **the same WiFi network** as your computer.
