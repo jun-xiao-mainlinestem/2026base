@@ -1,13 +1,6 @@
 # Simple RGB Remote Control
 
-A simple, single-file HTML web application for controlling VEX robots remotely.
-
-## Features
-
-- **Single HTML file** - no build process, no dependencies
-- **Three command types**: Drive, Turn, Set Heading
-- **Mobile-friendly** - works on smartphones and tablets
-
+A simple mobile web app for controlling VEX robots.
 
 ## How to Use
 
@@ -29,7 +22,7 @@ ipconfig
 
 ### Setup VEX Extension
 
-#### 1. Configure WebSocket Server
+#### - Configure WebSocket Server
 1. **Open VS Code** with the VEX Extension installed
 2. **Access VEX Extension Settings**:
    - Click the gear icon (⚙️) at the bottom left of VS Code
@@ -40,7 +33,7 @@ ipconfig
    - Set the IP address (use your computer's IP address)
    - Leave the port as '7071' (default)
 
-#### 2. Get Your Robot's Device ID
+#### - Get Your Robot's Device ID
 1. **Connect Your Robot**:
    - Connect VEX V5 Controller to computer via USB
    - Ensure the controller is paired with the VEX Brain
@@ -52,7 +45,7 @@ ipconfig
    - Look for your robot's Brain Device ID as shown in the [screen](device-id.png)
    - **Important**: This ID changes every time you restart VS Code
 
-#### 3. Verify Setup
+#### - Verify Setup
 - WebSocket server should be running on port 7071
 - Robot should be running an RGB template program
 - Note down the Device ID for use in the web app
