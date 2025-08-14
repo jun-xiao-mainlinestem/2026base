@@ -2,8 +2,8 @@
 - new v5 project (named rgb_sample)
 - add .gitignore file
 - commit and pubblish in github
-- copy src, doc, include, and RGB_web_simple folder
 
+- copy src, doc, include, and RGB_web_simple folder
 - modify the code
     - delete button_control.md
     - clean auton.cpp, remove macro_mode, remove quick test
