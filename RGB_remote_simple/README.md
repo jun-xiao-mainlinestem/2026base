@@ -76,7 +76,6 @@ Navigate to: `http://YOUR_IP_ADDRESS:8000`
 
 ### Connect to Robot
 
--  Enter your web server's IP address
 -  Enter your robot's Device ID
 -  Click "Connect"
 

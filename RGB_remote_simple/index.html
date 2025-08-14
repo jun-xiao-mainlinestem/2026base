@@ -84,9 +84,6 @@
         <div class="section" id="connectionSection">
             <h2>Connect to Robot</h2>
             <div class="form-group">
-                <input type="text" id="ipAddress" placeholder="IP Address" inputmode="decimal">
-            </div>
-            <div class="form-group">
                 <input type="text" id="deviceId" placeholder="Device ID" inputmode="numeric">
             </div>
             <button id="connectBtn" onclick="connect()">Connect</button>
@@ -130,12 +127,16 @@
         });
         
         function connect() {
-            const ipAddress = document.getElementById('ipAddress').value.trim();
             const deviceId = document.getElementById('deviceId').value.trim();
-            if (!ipAddress || !deviceId) {
-                alert('Please enter both IP address and device ID');
+            if (!deviceId) {
+                alert('Please enter the device ID');
                 return;
             }
+            
+            // Get IP address from current page URL
+            const currentURL = window.location.href;
+            const url = new URL(currentURL);
+            const ipAddress = url.hostname;
             
             const connectBtn = document.getElementById('connectBtn');
             connectBtn.disabled = true;
