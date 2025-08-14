@@ -43,7 +43,8 @@ ipconfig
 3. **Find Device ID**:
    - Click the VEX icon in the left sidebar of VS Code UI
    - Expand the VEX Device Info view
-   - Look for your robot's Brain Device ID as shown in the [screen](device-id.png)
+   - Look for your websocket info as shown in the [screen](device-id.png)
+   - Note the device ID you will use later with the web app
    - **Important**: This ID changes every time you restart VS Code
 
 #### - Verify Setup
