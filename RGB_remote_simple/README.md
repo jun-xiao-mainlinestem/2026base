@@ -25,16 +25,35 @@ ipconfig
 ```
 
 ### Setup VEX Extension
-1. **Configure WebSocket Server**:
-   - Open VS Code with VEX Extension
-   - Go to VEX Extension settings by clicking the 'settings' icon at the bottom left of the UI and typing 'vex' in the search box.
-   - Enable the websocket server, enter the ip address and leave the port as '7071'. See the [image](vex-vscode-settings.png).
 
-2. **Get your Device ID**:
-   - Connect VEX V5 Controller via USB to the computer and remotely paired with the VEX Brain 
-   - Download and run any RGB template based program on the robot
-   - Get to the VEX device view by clicking on the 'vex' icon at the left bar. View [VEX device info](https://kb.vex.com/hc/en-us/articles/8608865978644-VS-Code-UI-Overview-for-V5)
-   - Note the Brain Device ID for the WebSocket URL in the format of `ws://localhost:7071/vexrobotics.vexcode/device?id=YOUR_DEVICE_ID'. See the [image](device-id.png). Please note that every time you exit and restart VSCode, the id will change.
+#### 1. Configure WebSocket Server
+1. **Open VS Code** with the VEX Extension installed
+2. **Access VEX Extension Settings**:
+   - Click the gear icon (⚙️) at the bottom left of VS Code
+   - Type 'vex' in the search box
+   - Look for VEX Extension settings
+3. **Enable WebSocket Server**:
+   - Check the box to enable the WebSocket server
+   - Set the IP address (use your computer's IP address)
+   - Leave the port as '7071' (default)
+   - Save the settings
+
+#### 2. Get Your Robot's Device ID
+1. **Connect Your Robot**:
+   - Connect VEX V5 Controller to computer via USB
+   - Ensure the controller is paired with the VEX Brain
+2. **Load and Run Program**:
+   - Download any RGB template-based program to your robot
+   - Make sure the program is running on the robot
+3. **Find Device ID**:
+   - Click the VEX icon in the left sidebar of VS Code
+   - Look for your robot's Brain Device ID as shown in the [image](device-id.png)
+   - **Important**: This ID changes every time you restart VS Code
+
+#### 3. Verify Setup
+- WebSocket server should be running on port 7071
+- Robot should be running an RGB template program
+- Note down the Device ID for use in the web app
 
 ### Start the Web Server
 
@@ -75,29 +94,12 @@ The app sends these commands to your robot:
 - `turn <heading>\n`
 - `set_heading <heading>\n`
 
-## Requirements
-
-- **Web Server**: Python 3 (or any HTTP server)
-- **Robot**: VEX V5 with WebSocket server running on port 7071
-- **Browser**: Modern web browser with WebSocket support
-- **Network**: Devices must be on the same local network
-
-## File Structure
-
-```
-RGB_remote_simple/
-└── index.html          # Single file with everything embedded
-```
 
 ## Troubleshooting
-
-### **Can't connect from mobile?**
-- Ensure both devices are on the same WiFi network
-- Check your computer's firewall settings
-- Verify the IP address is correct
-
-### **Connection fails?**
-- Verify VEX VSCode extension WebSocket server is running on port 7071
+**Can't connect from mobile?**
+- Ensure the computer and mobile device are on the same WiFi network
+- Check the computer's firewall settings
+- Verify the computer IP address is correct
+- Verify robot brain device ID is correct
+- Verify VEX VSCode extension WebSocket server is running on port 7071 with the IP address (not 'localhost')
 - Run RGB-template based program on the robot
-- Check computer IP address and robot brain device ID
-- Ensure network connectivity between devices
