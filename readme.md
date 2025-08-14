@@ -129,7 +129,7 @@ This API turns the robot to a specific heading using a PID controller.
 chassis.turnToHeading(90);
 
 // Slower, more accurate turn
-chassis.turnToHeading(90, 6);
+chassis.turnToHeading(-90, 6);
 ```
 
 ### `driveDistance(...)`
@@ -140,7 +140,7 @@ This API drives the robot a specific distance using a PID controller, with optio
 
 1.  `driveDistance(float distance)`: Drives the specified distance with default parameters.
 2.  `driveDistance(float distance, float driveMaxVoltage)`: Limits the maximum voltage for driving.
-3.  `driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage)`: Drives while turning a specific heading (curved drive). **For consistent result, choose a lower heading voltage less than 6V.**
+3.  `driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage)`: Drives while turning a specific heading (curved drive). **For consistent result, choose a lower headingMaxVoltage less than 6V.**
 
 **Examples:**
 
