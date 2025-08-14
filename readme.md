@@ -1,13 +1,11 @@
 # RGB BOTS template
 From Haverford Robotics Team 169 (The Cavalry) and RGB Bots Team 99009A (the little red pony).
 
-This project provides a lightweight C++ template for VEX V5 robotics competition and beyond, featuring a modular architecture, a library for autonomous driving control and a companion web application for robot remote driving via form or speech input.
+This project provides a lightweight C++ template for VEX V5 robotics. It offers a modular architecture and a simple library for PID driving control and autonomous code structure, allowing teams to quickly get their robot operational and adapt the core functionality to their needs. The built-in test mode allows teams to step through and test all of their autonomous routines during driver control, providing a unique way to debug and iterate without having to rebuild multiple programs or require the field switch. Finally, the included sample web application for controlling the robot via form or speech input on mobile devices adds a fun and interactive dimension to VEX robot beyond V5RC competitions (see [sample video]()).
 
 ## Target Audience
 
 This library is designed specifically for teams who are getting started with VEX V5 c++ programming and do **NOT** have odometry (tracking wheel) setups. Advanced high school teams often use comprehensive libraries like [JAR-Template](https://github.com/JacksonAreaRobotics/JAR-Template) and [LemLib](https://github.com/LemLib/LemLib) that provide features such as path following and pure pursuit. In contrast, this template focuses on simplicity and ease of use, allowing teams to quickly get their robot operational without the complexity of advanced positioning systems.
-
-It provides essential PID driving controls, a simple autonomous code structure, and a straightforward robot configuration that allows teams to quickly extend and adapt the core functionality to their specific needs. The built-in test mode allows teams to step through and test all of their autonomous routines during driver control, providing an alternative way to debug and iterate on their logic without having to re-build mulitple programs or use the field switch. Finally, the included sample web application for robot remote driving via form or speech input on mobile devices adds a fun and interactive dimension to controlling a VEX robot beyond V5RC competitions.
 
 ## Installation
 *   **Prerequisites:** Before you begin, make sure:
@@ -106,6 +104,9 @@ This is the most basic drive function. It sets the voltage for the left and righ
 // Drive forward at half speed for 1 second
 chassis.driveWithVoltage(6, 6);
 wait(1000, msec);
+// rotate slowly for 1 second
+chassis.driveWithVoltage(-4, 4);
+wait(1000, msec);
 chassis.stop(coast);
 ```
 
@@ -144,8 +145,8 @@ This API drives the robot a specific distance using a PID controller, with optio
 // Drive forward 24 inches
 chassis.driveDistance(24);
 
-// Drive forward 24 inches with a maximum voltage of 8
-chassis.driveDistance(24, 8);
+// Drive backward 24 inches with a maximum voltage of 8
+chassis.driveDistance(-24, 8);
 
 // Drive forward 24 inches while turning to a heading of 45 degrees
 chassis.driveDistance(24, 10, 45, 4);
