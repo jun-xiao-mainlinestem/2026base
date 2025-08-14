@@ -233,6 +233,14 @@
                 websocket.send(commandString);
                 const timestamp = new Date().toLocaleTimeString();
                 document.getElementById('commandStatus').textContent = `[${timestamp}] Sent: ${commandString.trim()}`;
+                
+                // Reset distance input to 0 for drive command
+                if (commandType === 'drive') {
+                    const distanceInput = document.getElementById('distance');
+                    if (distanceInput) {
+                        distanceInput.value = '0';
+                    }
+                }
             }
         }
     </script>
