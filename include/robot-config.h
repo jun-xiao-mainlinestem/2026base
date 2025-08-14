@@ -7,6 +7,8 @@ extern motor rollerTop;
 // optical sensor for team color detection
 extern optical teamOptical;
 extern bool teamIsRed;
+// distance sensor at the front
+extern distance frontDistance;
 
 void inTake();
 void outTake();

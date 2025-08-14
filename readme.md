@@ -1,7 +1,7 @@
 # RGB BOTS template
 From Haverford Robotics Team 169 (The Cavalry) and RGB Bots Team 99009A (the little red pony).
 
-This project provides a lightweight C++ template for VEX V5 robotics. It offers a modular architecture and a simple library for PID driving control and autonomous code structure, allowing teams to quickly get their robot operational and adapt the core functionality to their needs. The built-in test mode allows teams to step through and test all of their autonomous routines during driver control, providing a unique way to debug and iterate without having to rebuild multiple programs or require the field switch. Finally, the included sample web application for controlling the robot via form or speech input on mobile devices adds a fun and interactive dimension to VEX robot beyond V5RC competitions (see [sample video]()).
+This project provides a lightweight C++ template for VEX V5 robotics. It offers a modular architecture and a simple library for PID driving control and autonomous code structure, allowing teams to quickly get their robot operational and adapt the core functionality to their needs. The built-in test mode allows teams to step through and test all of their autonomous routines during driver control, providing a unique way to debug and iterate without having to rebuild multiple programs or require the field switch. Finally, the included sample web application for controlling the robot in real time on mobile devices adds a fun and interactive dimension to VEX robot beyond V5RC competitions (see [sample video]()).
 
 ## Target Audience
 
@@ -69,7 +69,7 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
 - **(Experimental) Control the Robot with Mobile Devices** 
   - Follow step-by-step [setup instructions](RGB_remote_simple/README.md) to enable WebSocket Server in VSCode VEX Extension, start the sample web server on your local computer and control the robot program on mobile devices.
   - To disable this feature, simply comment out the line `pollCommandMessages();` in the main loop in `main.cpp`.
-  - To extend this feature for more robot commands (or voice control), edit the [web app](RGB_web_simple/EXPLANATION.md) to send additional messages as well as the `pollCommandMessages` function in [main.cpp](src/main.cpp) to parse additional messages.
+  - To extend this feature for more robot commands, edit the [web app](RGB_web_simple/EXPLANATION.md) to send additional messages as well as the `pollCommandMessages` function in [main.cpp](src/main.cpp) to parse additional messages.
 
 ## Autonomous Routines ([autons.cpp](src/autons.cpp))
 
@@ -157,7 +157,7 @@ chassis.driveDistance(24, 10, 45, 4);
 
 ### `setHeading(...)`
 
-This API set the robot to a specific heading.
+This API set the robot to a specific heading, e.g. when the auton routine starts.
 
 **Examples:**
 

@@ -39,6 +39,7 @@ bool teamIsRed = true;
 
 // optical sensor for color sorting
 optical ballOptical = optical(PORT15);
+distance frontDistance = distance(PORT18);
 
 void inTake() {
   rollerBottom.spin(forward, 12, volt);
