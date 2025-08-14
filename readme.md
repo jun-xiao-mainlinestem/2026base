@@ -91,8 +91,8 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
 ## Programming Interfaces of the library
 
 ### Voltage Limits
-**Important:** The VEX V5 brain operates on a 12V system. All voltage-based functions have a maximum voltage of 12V.
-**Recommended range**: 3V to 10V for precise control.
+- **Important:** The VEX V5 brain operates on a 12V system. All voltage-based functions have a maximum voltage of 12V.
+- **Recommended range**: 3V to 10V for precise control.
 
 ### Drive APIs ([drive.h](include/rgb-template/drive.h))
 The `Drive` class provides a set of APIs to control the robot's movement.
