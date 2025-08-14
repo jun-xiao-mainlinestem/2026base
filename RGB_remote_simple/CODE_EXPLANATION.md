@@ -3,14 +3,11 @@
 This document provides a comprehensive explanation of the `index.html` file for the Simple RGB Remote Control web application.
 
 ## Table of Contents
-1. [Overview](#overview)
-2. [HTML Structure](#html-structure)
-3. [CSS Styling](#css-styling)
-4. [JavaScript Functionality](#javascript-functionality)
-5. [WebSocket Communication](#websocket-communication)
-6. [User Interface Flow](#user-interface-flow)
-7. [Code Architecture](#code-architecture)
-8. [Key Features](#key-features)
+- [Overview](#overview)
+- [HTML Structure](#html-structure)
+- [CSS Styling](#css-styling)
+- [JavaScript Functionality](#javascript-functionality)
+- [Code Architecture](#code-architecture)
 
 ## Overview
 
@@ -158,44 +155,6 @@ body {
 - Subtle borders for visual separation
 - Rounded corners for modern appearance
 
-#### Form Elements
-```css
-input, select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-    box-sizing: border-box;
-}
-```
-
-**Features**:
-- Full-width inputs for mobile
-- 12px padding for touch-friendly targets
-- 16px font size prevents iOS zoom
-- Border-box sizing for consistent dimensions
-
-#### Buttons
-```css
-button {
-    background: #007bff;
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    width: 100%;
-    cursor: pointer;
-}
-```
-
-**Features**:
-- Bootstrap-style blue color
-- Full-width buttons for mobile
-- Touch-friendly padding
-- Hover and disabled states
-
 #### Disabled State
 ```css
 .disabled {
@@ -214,28 +173,6 @@ button:disabled {
 - Gray background for disabled buttons
 
 ## JavaScript Functionality
-
-### Global Variables
-```javascript
-let websocket = null;
-```
-
-**Purpose**: Stores WebSocket connection instance
-**Scope**: Global for access across all functions
-
-### Initialization
-```javascript
-document.addEventListener('DOMContentLoaded', function() {
-    updateCommandForm();
-    toggleCommandSection(false);
-});
-```
-
-**What Happens**:
-1. **Wait for DOM**: Ensures all elements are loaded
-2. **Initialize form**: Sets up command parameter inputs
-3. **Disable sections**: Command section starts disabled
-
 ### Core Functions
 
 #### 1. `connect()`
@@ -245,12 +182,7 @@ document.addEventListener('DOMContentLoaded', function() {
 1. **Validate input**: Check device ID is provided
 2. **Auto-detect IP**: Extract IP from current page URL
 3. **Create WebSocket**: Connect to robot server
-4. **Handle events**: Manage connection lifecycle
 
-**Key Features**:
-- **Automatic IP detection**: No manual IP entry needed
-- **Connection state management**: Button text and state changes
-- **Error handling**: Graceful fallback on connection failure
 
 #### 2. `toggleCommandSection(enabled)`
 **Purpose**: Enable/disable command interface based on connection state
@@ -270,7 +202,6 @@ document.addEventListener('DOMContentLoaded', function() {
 1. **Get command type**: Read dropdown selection
 2. **Generate HTML**: Create appropriate input fields
 3. **Update DOM**: Replace parameter section content
-4. **Maintain state**: Preserve disabled/enabled status
 
 **Command Types**:
 - **Drive**: Distance input (-100 to +100 inches)
@@ -291,50 +222,8 @@ document.addEventListener('DOMContentLoaded', function() {
 - `drive <distance>\n`
 - `turn <heading>\n`
 - `set_heading <heading>\n`
+- **Newline termination**: `\n` ensures proper parsing
 
-### WebSocket Event Handlers
-
-#### `onopen`
-```javascript
-websocket.onopen = function() {
-    connectBtn.textContent = 'Connected';
-    connectBtn.disabled = true;
-    document.getElementById('connectionSection').style.display = 'none';
-    toggleCommandSection(true);
-};
-```
-
-**Actions**:
-- Update button to show "Connected"
-- Hide connection section
-- Enable command interface
-
-#### `onclose`
-```javascript
-websocket.onclose = function() {
-    connectBtn.textContent = 'Connect';
-    connectBtn.disabled = false;
-    toggleCommandSection(false);
-};
-```
-
-**Actions**:
-- Reset button to "Connect"
-- Re-enable connection section
-- Disable command interface
-
-#### `onerror`
-```javascript
-websocket.onerror = function() {
-    connectBtn.textContent = 'Connect';
-    connectBtn.disabled = false;
-    toggleCommandSection(false);
-};
-```
-
-**Actions**:
-- Same as `onclose` for consistent behavior
-- Ensures UI returns to connectable state
 
 ## WebSocket Communication
 
@@ -350,50 +239,6 @@ ws://{IP_ADDRESS}:7071/vexrobotics.vexcode/device?id={DEVICE_ID}
 - **Path**: VEX robotics WebSocket endpoint
 - **Query**: Device ID for robot identification
 
-### Message Format
-**Outgoing (to robot)**:
-- `drive 12\n` - Drive 12 inches forward
-- `turn 90\n` - Turn to 90 degrees
-- `set_heading 180\n` - Set current heading to 180 degrees
-
-**Features**:
-- **Newline termination**: `\n` ensures proper parsing
-- **Simple format**: Easy to parse on robot side
-- **Parameter validation**: Input constraints prevent invalid values
-
-### Connection Lifecycle
-1. **Initial**: WebSocket is null
-2. **Connecting**: Button shows "Connecting..."
-3. **Connected**: Interface switches to command mode
-4. **Disconnected**: Returns to connection mode
-5. **Error**: Graceful fallback to connection mode
-
-## User Interface Flow
-
-### 1. Initial State
-- **Connection section**: Visible and enabled
-- **Command section**: Visible but disabled (grayed out)
-- **Status section**: Visible but disabled
-- **User action**: Enter device ID and click Connect
-
-### 2. Connection Process
-- **Button state**: Changes to "Connecting..."
-- **WebSocket**: Attempts connection to robot
-- **Success**: Interface transitions to command mode
-- **Failure**: Returns to connection mode
-
-### 3. Command Mode
-- **Connection section**: Hidden
-- **Command section**: Fully enabled
-- **Status section**: Enabled for command history
-- **User action**: Select command type, enter parameters, send
-
-### 4. Command Execution
-- **Command sent**: Via WebSocket to robot
-- **Status updated**: Shows timestamp and command
-- **Input reset**: Distance input resets to 0 (drive only)
-- **Ready**: Interface ready for next command
-
 ## Code Architecture
 
 ### Design Patterns
@@ -401,7 +246,6 @@ ws://{IP_ADDRESS}:7071/vexrobotics.vexcode/device?id={DEVICE_ID}
 #### 1. **Event-Driven Architecture**
 - **DOM events**: Button clicks, form changes
 - **WebSocket events**: Connection state changes
-- **User interactions**: Drive interface behavior
 
 #### 2. **State Management**
 - **Connection state**: WebSocket connection status
@@ -413,12 +257,3 @@ ws://{IP_ADDRESS}:7071/vexrobotics.vexcode/device?id={DEVICE_ID}
 - **CSS**: Presentation and styling
 - **JavaScript**: Behavior and logic
 
-### Code Organization
-
-#### **Function Groups**
-- **Connection management**: `connect()`, WebSocket handlers
-- **UI control**: `toggleCommandSection()`, `updateCommandForm()`
-- **Command processing**: `sendCommand()`
-
-#### **Data Flow**
-**User input** → **Function calls** → **WebSocket** → **Robot**
