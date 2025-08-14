@@ -53,8 +53,6 @@ private:
 
   // The default brake type for the drivetrain.
   vex::brakeType stopMode = coast;
-  
-  FILE* serialPort = nullptr;
 
   // The motor group for the left side of the drivetrain.
   motor_group leftDrive;
@@ -129,7 +127,4 @@ public:
   void stop(vex::brakeType mode);
 
   void checkStatus();
-
-  void pollRemoteCommand();
-  void processCommand(const std::string& command);
 };

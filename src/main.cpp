@@ -67,12 +67,63 @@ void setupButtonMapping() {
 }
 
 
-// ----------------------------------------------------------------------------
-//                                Main
-// ----------------------------------------------------------------------------
-//
-// Main will set up the competition functions and callbacks.
-//
+
+// ------------------------------------------------------------------------
+//               Only change code below this line when necessary
+// ------------------------------------------------------------------------
+  
+FILE* serialPort = nullptr;
+void pollCommandMessages()
+{
+  if (serialPort == nullptr) {
+    serialPort = fopen("/dev/serial1", "r+");
+    if (serialPort == nullptr) return;
+  }
+
+  char buffer[256];
+  if (fgets(buffer, sizeof(buffer), serialPort) != nullptr) {
+    std::string line(buffer);
+    // Skip empty lines or lines with only whitespace
+    if (line.find_first_not_of(" \t\r\n") != std::string::npos) {
+      // Remove leading/trailing whitespace and newlines
+      std::string trimmedCommand = line;
+      trimmedCommand.erase(0, trimmedCommand.find_first_not_of(" \t\r\n"));
+      trimmedCommand.erase(trimmedCommand.find_last_not_of(" \t\r\n") + 1);
+      
+      if (trimmedCommand.empty()) {
+          return;
+      }
+      
+      controller(primary).rumble(".");
+      printControllerScreen(trimmedCommand.c_str());
+        
+      // Find the first space to separate command from parameters
+      size_t spacePos = trimmedCommand.find(' ');
+      // Extract command (first word)
+      std::string cmd = trimmedCommand.substr(0, spacePos);
+      // Extract parameters (everything after the first space)
+      std::string params = trimmedCommand.substr(spacePos + 1);
+      
+      if (cmd == "drive") {
+          // Format: drive <distance>
+          float distance = atof(params.c_str());
+          chassis.driveDistance(distance);
+      }
+      else if (cmd == "turn") {
+          // Format: turn <heading>
+          float heading = atof(params.c_str());
+          chassis.turnToHeading(heading);
+      }
+      else if (cmd == "set_heading") {
+          // Format: set_heading <heading>
+          float heading = atof(params.c_str());
+          chassis.setHeading(heading);
+      }
+      chassis.stop(coast);
+    }
+  }
+}
+
 int main() {
   // Register the autonomous and driver control functions.
   Competition.autonomous(autonomous);
@@ -90,7 +141,7 @@ int main() {
   // Prevent main from exiting with an infinite loop.
   while (true) {
     // comment out the following line to disable remote command processing
-    chassis.pollRemoteCommand();
+    pollCommandMessages();
     wait(200, msec);
   }
 }

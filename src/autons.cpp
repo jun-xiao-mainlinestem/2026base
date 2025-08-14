@@ -78,6 +78,7 @@ char const * autonMenuText[] = {
 // ----------------------------------------------------------------------------
 //                 Only change code below this line when necessary
 // ----------------------------------------------------------------------------
+
 int autonNum;                         // Total number of autons, automatically calculated based on the size of the autonMenuText array
 bool autonTestMode = false;           // Indicates if in test mode
 bool exitAutonMenu = false;           // Flag to exit the autonomous menu
