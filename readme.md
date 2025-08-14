@@ -13,7 +13,7 @@ This library is designed specifically for teams who are getting started with VEX
     - (Optional) You have the [GitHub](https://github.com/) account and extension in VS Code installed.
     - (Optional) If you are using Mac with Apple silicon: [install Rosetta](https://support.apple.com/en-us/102527) to simulate Intel chip if errors show up with VEX extension.
 *   **Download and Open the Project:** 
-    *   Download [the source code as a ZIP file](https://docs.github.com/en/get-started/start-your-journey/downloading-files-from-github) from xxx. Unzip and extract the downloaded files to a local folder.
+    *   Download [the source code as a ZIP file](). Unzip and extract the downloaded files to a local folder.
     *   In VSCode, go to `File > Open Folder` and select the extracted folder.
     *  (Optional) Or follow the instructions to [pull the repository](doc/how_to_clone_and_pull_with_vscode.md) from github using VSCode.
 *   **(Optional) If the project cannot build correctly**: 
@@ -30,6 +30,9 @@ The project is organized into the following directories:
     *   `rgb-template/`: Library code.
 *   `include/`: Header files
 *   `doc/`: Additional documentation.
+*   `RGB_web_simple/`: sample web app.
+
+
 
 ## Configuration
 
@@ -41,32 +44,32 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
 *   **Drive Mode:** Set `DRIVE_MODE` to `0` for double arcade control, `1` for single arcade control, `2` for tank control, or `3` for mecanum control.
 *   **Other Motors and Sensors:** Define your motors and sensors for other subsystems such as intake or lift.
 *   **Number of Total Motors:** Set `NUMBER_OF_MOTORS` to total number of motors to allow the program to automatically check for disconnected or overheated motors. 
-*   **Helper Functions:** Write helper functions to control the subsystems and declare those functions in [robot-config.h](include/robot-config.h).
+*   **(optional) Helper Functions:** Write helper functions to control the subsystems and declare those functions in [robot-config.h](include/robot-config.h).
 *   **(Optional) Wheel Size and Gear Ratio:**
     *  For correct auton driving distance measurement, find the Drive constructor in `robot-config.cpp` and update the wheel diameter and gear ratio parameters
 *   **(Optional) Drive Constants:** If needed, adjust any of constants for the drivetrain in the `setChassisDefaults()` function. For example, adjust the `kTurnDampingFactor` value in `setArcadeConstants()` to control turn sensitivity - lower values make turning less sensitive, higher values make turning more sensitive. 
 
 ### Driver Control ([main.cpp](src/main.cpp))
 
-*   **Button Functions:** Create button functions by using the helper functions in  [robot-config.cpp](src/robot-config.cpp)
-*   **Button Bindings:** In the `setupButtonMapping()` function, map controller buttons to the functions.
+*   **Button Functions:** Write your button functions
+*   **Button Bindings:** In the `setupButtonMapping()` function, map event handlers of the buttons to the functions
 
 ## Test Sample Program
 - **Build Project and Run Program:**
-  - Download the program to the brain and use game controller to select the program slot and run the program.
+  - Download the program to the brain and use game controller to select the program slot and run the program
 - **Drive Mode:**
   - Double Arcade Drive (default): Use left stick to turn and right stick to drive forward/backward
   - Single Arcade Drive: Use left stick to turn and drive forward/backward
   - Tank Drive: Use left stick for left side motors, right stick for right side motors  
   - Mecanum Drive: Use left stick for forward/backward and turning, right stick for strafing
-  - Change drive mode for different drivers: Press the controller's `Left button` within 5 seconds of program startup to switch modes.
+  - Change drive mode for different drivers: Press the controller's `Left button` within 5 seconds of program startup to switch modes
 - **Automatic Motor Health and Game Time Monitoring**: 
   - The controller will vibrate and display warning messages if any motors are disconnected or overheated (temperature limit: 50°C). Check motor connections and temperatures immediately when alerts occur.
   - The controller will vibrate and display the "end game" message near end game.
 - **(Experimental) Control the Robot with Mobile Devices** 
   - Follow step-by-step [setup instructions](RGB_remote_simple/README.md) to enable WebSocket Server in VSCode VEX Extension, start the sample web server on your local computer and control the robot program on mobile devices.
   - To disable this feature, simply comment out the line `pollCommandMessages();` in the main loop in `main.cpp`.
-  - To extend this feature for more robot commands (or voice control), edit the [web app](RGB_remote_simple/index.html) to send additional messages as well as the `pollCommandMessages` function in `main.cpp` to parse additional messages.
+  - To extend this feature for more robot commands (or voice control), edit the [web app](RGB_web_simple/index.html) to send additional messages as well as the `pollCommandMessages` function in `main.cpp` to parse additional messages.
 
 ## Autonomous Routines ([autons.cpp](src/autons.cpp))
 
