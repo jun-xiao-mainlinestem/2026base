@@ -32,12 +32,12 @@ class RobotController: ObservableObject {
         // Trim whitespace from IP address to prevent invalid URLs
         let cleanIpAddress = ipAddress.trimmingCharacters(in: .whitespacesAndNewlines)
         
-        // Ensure proper WebSocket URL format
+        // Ensure proper WebSocket URL format for VEX Robotics
         let urlString: String
         if cleanIpAddress == "localhost" {
             urlString = "ws://localhost:7071"
         } else {
-            urlString = "ws://\(cleanIpAddress):7071"
+            urlString = "ws://\(cleanIpAddress)/vexrobotics.vexcode/device?id=\(deviceId)"
         }
         
         print("RobotController: Attempting to connect to: \(urlString)")

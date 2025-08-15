@@ -108,4 +108,5 @@ Received message from client: vol 0 0
 
 in general, it is working, but not I would like for the mapping. let me explain. you only sent command when there is a angle change (large enough for 1v differnce). the base vol for left and right drivetrain when it is flat should be 0, 0. If I tilt forward 30 and left 30 degree, the left voltage should be 6+6 = 12v, the right side should be 6-6 = 0v. If I tilt just left 30 degree, the left voltage should be +6, the right side should be 6v.
 
-the forward/backward tilt will add or minus 
+read the documents. Create a document what clearly state everything we did to set up the project (Xcode), setup the phone, and the UI, the interaction (how the 'drive' with tilting phone works), all the techinal details of how the app works. The intended reader of the document is a developer so that developer can read the document and develop the exact same app. 
+

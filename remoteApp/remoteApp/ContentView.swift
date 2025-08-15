@@ -63,12 +63,8 @@ struct ConnectionScreen: View {
                     .foregroundColor(.blue)
                 
                 Text("VEX Robot Control")
-                    .font(.largeTitle)
+                    .font(.title)
                     .fontWeight(.bold)
-                
-                Text("Connect to your robot to get started")
-                    .font(.title3)
-                    .foregroundColor(.secondary)
             }
             
             // Connection Form

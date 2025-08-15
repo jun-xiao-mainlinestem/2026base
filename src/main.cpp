@@ -103,13 +103,24 @@ void pollCommandMessages()
   // Execute command
   if (cmd == "drive") {
     chassis.driveDistance(atof(params.c_str()), 6);
+    chassis.stop(coast);
   } else if (cmd == "turn") {
     chassis.turnToHeading(atof(params.c_str()), 6);
+    chassis.stop(coast);
   } else if (cmd == "set_heading") {
     chassis.setHeading(atof(params.c_str()));
+  } else if (cmd == "vol") {
+    // Parse vol command: "vol <left_voltage> <right_voltage>"
+    size_t firstSpace = params.find(' ');
+    if (firstSpace != std::string::npos) {
+      std::string leftVolStr = params.substr(0, firstSpace);
+      std::string rightVolStr = params.substr(firstSpace + 1);
+      
+      double leftVoltage = atof(leftVolStr.c_str());
+      double rightVoltage = atof(rightVolStr.c_str());
+      chassis.driveWithVoltage(leftVoltage, rightVoltage);
+    }
   }
-  
-  chassis.stop(coast);
 }
 
 int main() {
