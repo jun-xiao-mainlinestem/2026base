@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Required Permissions -->
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app needs access to the microphone to recognize speech commands for robot control.</string>
+	
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>This app uses speech recognition to convert your voice commands into robot control instructions.</string>
+	
+	<!-- Device Capabilities -->
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>magnetometer</string>
+		<string>gyroscope</string>
+		<string>accelerometer</string>
+	</array>
+	
+	<!-- Interface Orientation -->
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+</dict>
+</plist>
+
+<!-- 
+INSTRUCTIONS:
+This is a template file. You need to add these permissions to your Xcode project:
+
+1. Open your project in Xcode
+2. Select your target (remoteApp)
+3. Go to "Info" tab
+4. Add the permission keys manually:
+   - Privacy - Microphone Usage Description
+   - Privacy - Speech Recognition Usage Description
+   - Required device capabilities
+   - Supported interface orientations
+
+OR
+
+1. Find your Info.plist file in Xcode
+2. Right-click → "Open As" → "Source Code"
+3. Copy the key-value pairs from this template into your Info.plist
+-->

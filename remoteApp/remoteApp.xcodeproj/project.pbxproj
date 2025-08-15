@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		3729E6D22E4F7D3000C93965 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3729E6D12E4F7D3000C93965 /* CoreMotion.framework */; };
+		3729E6D42E4F7D5200C93965 /* Speech.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3729E6D32E4F7D5200C93965 /* Speech.framework */; };
+		3729E6D62E4F7D6000C93965 /* Network.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3729E6D52E4F7D5F00C93965 /* Network.framework */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		374DD9F22E4F7425004BA0CA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -24,14 +30,30 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3729E6D12E4F7D3000C93965 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		3729E6D32E4F7D5200C93965 /* Speech.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Speech.framework; path = System/Library/Frameworks/Speech.framework; sourceTree = SDKROOT; };
+		3729E6D52E4F7D5F00C93965 /* Network.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Network.framework; path = System/Library/Frameworks/Network.framework; sourceTree = SDKROOT; };
 		374DD9E42E4F7423004BA0CA /* remoteApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = remoteApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		374DD9F12E4F7425004BA0CA /* remoteAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = remoteAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		374DD9FB2E4F7425004BA0CA /* remoteAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = remoteAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		37076EF92E4F9D31008F0A1D /* Exceptions for "remoteApp" folder in "remoteApp" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 374DD9E32E4F7423004BA0CA /* remoteApp */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		374DD9E62E4F7423004BA0CA /* remoteApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				37076EF92E4F9D31008F0A1D /* Exceptions for "remoteApp" folder in "remoteApp" target */,
+			);
 			path = remoteApp;
 			sourceTree = "<group>";
 		};
@@ -52,6 +74,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3729E6D42E4F7D5200C93965 /* Speech.framework in Frameworks */,
+				3729E6D22E4F7D3000C93965 /* CoreMotion.framework in Frameworks */,
+				3729E6D62E4F7D6000C93965 /* Network.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,12 +97,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3729E6D02E4F7D3000C93965 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3729E6D52E4F7D5F00C93965 /* Network.framework */,
+				3729E6D32E4F7D5200C93965 /* Speech.framework */,
+				3729E6D12E4F7D3000C93965 /* CoreMotion.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		374DD9DB2E4F7423004BA0CA = {
 			isa = PBXGroup;
 			children = (
 				374DD9E62E4F7423004BA0CA /* remoteApp */,
 				374DD9F42E4F7425004BA0CA /* remoteAppTests */,
 				374DD9FE2E4F7425004BA0CA /* remoteAppUITests */,
+				3729E6D02E4F7D3000C93965 /* Frameworks */,
 				374DD9E52E4F7423004BA0CA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -395,13 +431,19 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = RF97CGCQLH;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = remoteApp/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app needs access to the microphone to recognize speech commands for robot control.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "This app needs access to the microphone to recognize speech commands for robot control.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -422,13 +464,19 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = RF97CGCQLH;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = remoteApp/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This app needs access to the microphone to recognize speech commands for robot control.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "This app needs access to the microphone to recognize speech commands for robot control.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
