@@ -7,6 +7,8 @@ Motor and sensor definitions and helper functions
 from vex import *
 from .rgb_template.drive import Drive
 from vex import wait, MSEC, BRAKE, FORWARD, VoltageUnits, DEGREES, HOLD, COAST, DEGREES
+from vex import Motor, Ports, MotorGroup, Inertial, GearSetting, Brain, Controller
+
 
 # ------------------------------------------------------------------------
 #              Drivetrain definition

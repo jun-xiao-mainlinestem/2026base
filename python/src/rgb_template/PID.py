@@ -1,8 +1,4 @@
 #!/usr/bin/env python3
-"""
-PID Controller - Python Version (Simplified)
-Implements PID control for autonomous movement
-"""
 
 class PID:
     """PID controller class for autonomous movement control"""

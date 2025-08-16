@@ -1,8 +1,4 @@
 #!/usr/bin/env python3
-"""
-Drive Class - Python Version (Simplified)
-Handles drivetrain control, PID, and movement functions
-"""
 
 from vex import *
 import math

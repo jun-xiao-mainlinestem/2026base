@@ -1,8 +1,4 @@
 #!/usr/bin/env python3
-"""
-Autonomous Routines - Python Version (Simplified)
-Defines autonomous routines and testing framework
-"""
 
 from vex import *
 from .robot_config import chassis, brain
