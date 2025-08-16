@@ -92,11 +92,55 @@ Let's restart. I deleted the python code. I copied  simplified c++ code in the p
 
 
 
-title
-Introducing RGB-Template: A simple VS Code c++ V5 competition template and a fun web app for controlling VEX robot with smart phones.
+Title: Introducing RGB-Template: A Simple VS Code C++ V5 Competition Template + a Fun Web App for Controlling VEX Robot from a smartphone
 
-post
+[b][size=150]RGB-Template[/size][/b]
 
+[b]🎯 Target Audience[/b]
+RGB-Template is designed for teams just getting started with [b]VEX V5 C++ programming[/b]and [b]do NOT[/b] use odometry (tracking wheel) setups.
+
+The focus is on [b]simplicity and ease of use[/b], so you can get your robot up and running quickly without needing to dive into complex positioning systems.
+
+[b]⚙️ Features[/b]
+[list]
+[] [b]Simple PID drive control[/b] for consistent autonomous movement
+[] [b]Modular architecture[/b] for clean robot configuration and control structure
+[] [b]Built-in test mode[/b] that lets you step through and test all autonomous routines during driver control
+[] [b]Sample web app[/b] that allows real-time robot control from a smartphone
+[/list]
+
+[b]🎥 Demo Videos[/b]
+
+[youtube]rn8VEuGWva8[/youtube]
+
+[youtube]W6ql04Aj_xQ[/youtube]
+
+[b]📥 Download & Source Code[/b]
+👉 [url=https://github.com/ericjiangxiao/RGB_Template]RGB-Template on GitHub[/url]
+
+The code is [b]well-commented[/b] and includes documentation so you can easily follow along. Feel free to:
+[list]
+[] Adapt it for your own robot
+[] Extend the library with new features
+[*] Or simply borrow ideas to incorporate them into your own VEX library!
+[/list]
+
+[b]📚 Learning First[/b]
+RGB-Template is meant to be a [b]learning tool[/b]. While you can drop it onto a robot and run it, the real value comes from [b]understanding the code, experimenting with it, and adapting it[/b] to fit your team's workflow.
+
+Please don’t treat it as a “black box” to use in competition without knowing how it works. Instead:
+[list]
+[] Read through the comments and documentation
+[] Modify the PID constants, drive modes parameters, and button mappings to see how changes affect the robot
+[] Write your own autonomous routines using the provided APIs
+[] Explore the web app integration to understand how messages are sent and received
+[/list]
+
+The goal is to help new teams [b]learn C++ programming concepts[/b] and [b]build confidence[/b], not to replace the process of problem-solving and debugging.
+
+✅ Whether you’re a beginner team looking for a lightweight starting point or just curious about trying smartphone robot control, RGB-Template is here to make VEX coding and testing easier and more fun.
+
+Post:
 # RGB template
 ## Target Audience
 This library is designed specifically for teams who are getting started with VEX V5 c++ programming and do **NOT** have odometry (tracking wheel) setups. This template focuses on simplicity and ease of use, allowing teams to quickly get their robot operational without the complexity of advanced positioning systems.
@@ -116,10 +160,9 @@ https://www.youtube.com/shorts/rn8VEuGWva8
 https://www.youtube.com/watch?v=W6ql04Aj_xQ
 
 
-
 ## Download Source Code
 
 https://github.com/ericjiangxiao/RGB_Template
 
-Just follow the readme instructions and have fun coding VEX robots!
+The code are well commented and documentation to help you understand how it works.  Have fun adapting and extending the libary or simply borrow ideas to build your own VEX libary!
 
