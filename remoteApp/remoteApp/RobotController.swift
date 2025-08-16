@@ -240,8 +240,6 @@ class RobotController: ObservableObject {
             // Get absolute roll angle (left/right tilt)
             let rollDegrees = motion.attitude.roll * 180.0 / .pi
             self?.absoluteRollAngle = rollDegrees
-            
-            print("RobotController: Device pitch: \(pitchDegrees)°, Roll: \(rollDegrees)°")
         }
         
         print("RobotController: Motion manager setup complete")

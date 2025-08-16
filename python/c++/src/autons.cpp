@@ -1,70 +1,7 @@
 #include "vex.h"
 int currentAutonSelection = 0;        // Current auton selection
 int autonTestStep = 0;                // Current step in auton
-aivision::aiobjdesc aiOjbect = aivision::ALL_AIOBJS;
-aivision aiVision = aivision(PORT19, aiOjbect);
 
-distance frontDistance = distance(PORT18);
-void aiAction()
-{
-  chassis.driveWithVoltage(2, -2);
-  bool foundBlueBall = false;
-  while(controller1.ButtonX.pressing() && !foundBlueBall) {
-    aiVision.takeSnapshot(aivision::ALL_AIOBJS);
-    // Check if the blue ball is detected in the snapshot.
-    if (aiVision.objectCount > 0) {
-      // Iterate through all detected objects.
-      for (int i = 0; i < aiVision.objectCount; i++) {
-        aivision::object obj = aiVision.objects[i] ;
-        // Check if the object is a blue ball.
-        if (obj.id == 0) {
-          // Print the coordinates of the blue ball.
-            controller1.rumble(".");
-            char msg[50];
-          sprintf(msg, "Ball: x=%d, y=%d   ", obj.centerX, obj.centerY);
-          printControllerScreen(msg);
-          // Stop the robot and exit the loop.
-          chassis.stop(coast);
-          foundBlueBall = true;
-          break;
-        }
-      }
-      wait(20, msec);
-    }
-  }
-  chassis.stop(coast);
-}
-
-
-void awp()
-{
-  chassis.setHeading(0); 
-  chassis.driveDistance(25);
-  rollerBottom.spin(forward, 6, volt);
-  rollerTop.spin(forward, -6, volt);
-  wait(100, msec);
-  stopRollers();
-  chassis.turnToHeading(90);
-  inTake();
-  wait(200, msec);
-  chassis.driveDistance(13, 3);
-  wait(200, msec);
-  stopRollers();
-  chassis.turnToHeading(180);
-  chassis.driveDistance(24);
-  chassis.turnToHeading(90);
-  float d = frontDistance.objectDistance(inches);
-  chassis.driveDistance(d - 14);
-  chassis.turnToHeading(180);
-  wait(3, seconds);
-  chassis.turnToHeading(0);
-  chassis.driveDistance(12);
-
-}
-
-void quick_test() {
-  awp();
-}
 
 // The first autonomous routine.
 void sampleAuton1() {
@@ -115,10 +52,7 @@ void runAutonItem() {
   case 2:
     sampleSkill();
     break;
-  case -1:
-    quick_test();
-    break;
-  }
+    }
 }
 
 // The names of the autonomous routines to be displayed in the menu.
@@ -244,25 +178,10 @@ bool setupgyro() {
   return true;
 }
 
-void setupTeamColor(){
-  if (teamOptical.installed()) {
-    // Sets the team color based on the optical sensor.
-    if (teamOptical.color() == color::blue) {
-      teamIsRed = false;
-      printControllerScreen("team blue");
-    } else {
-      printControllerScreen("team red");
-    }
-    wait(1, seconds);
-  } 
-}
-
 // This function is called before the autonomous period starts.
 void pre_auton() {
   // Sets up the gyro.
   bool gyroSetupSuccess = setupgyro();
-  // Sets up the team color.
-  setupTeamColor();
 
   bool motorsSetupSuccess = true;
 
@@ -340,7 +259,6 @@ void buttonLeftAction()
   }
 }
 
-bool macroMode = false;
 
 void buttonDownAction()
 {
@@ -353,22 +271,6 @@ void buttonDownAction()
     sprintf(msg, "Step: %d", autonTestStep);
     printControllerScreen(msg);
   }
-
-  if (macroMode) return; // prevent re-entry
-  if (fabs(chassis.getHeading()) - 180 > 3) {
-    chassis.driveWithVoltage(-6, -6);
-    wait(100, msec);
-    chassis.turnToHeading(180);
-  }
-  if (!controller1.ButtonDown.pressing()) return;
-  
-  macroMode = true;
-  // This is a placeholder for future actions triggered by Button Down.
-  // safty check to prevent running the code if the distance reading is not valid.
-  // Matchload balls when the Button Down is pressed and hold.
-  // end matchloading and turn around to score when the Button Down is released.
-  macroMode = false;
-  chassis.stop(coast);
 }
 
 void buttonUpAction()
@@ -408,4 +310,34 @@ void registerAutonTestButtons()
   controller1.ButtonDown.pressed(buttonDownAction);
   controller1.ButtonUp.pressed(buttonUpAction);
   controller1.ButtonA.pressed(buttonAAction);
+}
+
+
+bool checkMotors(int motorCount, int temperatureLimit) {
+  int count = 0;
+  int t = 0;
+  for (int i = 0; i < 20; i++) {
+    motor m = motor(i);
+    if (m.installed()) {
+      count++;
+      t = m.temperature(celsius);
+      if (t > temperatureLimit) {
+        controller(primary).Screen.print("motor %d is %dC           ", i + 1, t);
+        controller(primary).rumble("---");
+        return false;
+      }
+    }
+  }
+  if (count < motorCount) {
+    controller(primary).Screen.print("%d motor is disconnected      ", motorCount - count);
+    controller(primary).rumble("---");
+    return false;
+  }
+  return true;
+}
+
+void printControllerScreen(const char* message) {
+  char padded[25];
+  snprintf(padded, sizeof(padded), "%-24s", message);
+  controller(primary).Screen.print("%s", padded);
 }

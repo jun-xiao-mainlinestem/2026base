@@ -58,10 +58,6 @@ struct ConnectionScreen: View {
         VStack(spacing: 30) {
             // Header
             VStack(spacing: 10) {
-                Image(systemName: "robot")
-                    .font(.system(size: 80))
-                    .foregroundColor(.blue)
-                
                 Text("VEX Robot Control")
                     .font(.title)
                     .fontWeight(.bold)

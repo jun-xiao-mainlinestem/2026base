@@ -87,26 +87,39 @@ Speed levels please with slow, medium, fast (forward/backward). map to voltage 3
 
 now, let's test the drive UI in the simulator. for the moment, show the drive UI immediately. and which send drive command simply shown on the screen, ignore the websocket part. I would like to test the sensitivty of tilt -> voltage. 
 
-the mapping is not what i wanted. let's just test the forward and backward command first. what i want is this
-1. use Integer number for voltage, not float.  
-2. when the phone is flat (right after the user click drive button), it sends the command vol 0, 0. 
-3. when the phone is tilt forward to certain threhold (e.g. 20 degree), it sends the command vol +3 +3
-4. if the phone changed its angle, but still within 0-20 degreee, do not sends any command.
-5. if the phone change its angel to more than 20 degree, sends the command vol +6 +6.
-6. do similar things when the phone is tilted backward.
+Let's restart. I deleted the python code. I copied  simplified c++ code in the python/c++ folder. Please create python version of the c++ code. If possible, create the same subfolder structure. the vex python library documentation is at https://api.vex.com/v5/home/python/index.html.  If you need any clarification, ask me. Don't modifify any code outside the python folder. 
 
-the mapping is wrong. when I swing to a large angle and hold there. the message sent are.
-Received message from client: vol 0 0
-Received message from client: vol 6 6
-Received message from client: vol 0 0
 
-It should not send the last 'vol 0 0' message. 
 
-after i tap drive button, i quickly swing to a large angle and hold there, and then swing back to flat. here is the message sent.
 
-Received message from client: vol 0 0
+title
+Introducing RGB-Template: A simple VS Code c++ V5 competition template and a fun web app for controlling VEX robot with smart phones.
 
-in general, it is working, but not I would like for the mapping. let me explain. you only sent command when there is a angle change (large enough for 1v differnce). the base vol for left and right drivetrain when it is flat should be 0, 0. If I tilt forward 30 and left 30 degree, the left voltage should be 6+6 = 12v, the right side should be 6-6 = 0v. If I tilt just left 30 degree, the left voltage should be +6, the right side should be 6v.
+post
 
-read the documents. Create a document what clearly state everything we did to set up the project (Xcode), setup the phone, and the UI, the interaction (how the 'drive' with tilting phone works), all the techinal details of how the app works. The intended reader of the document is a developer so that developer can read the document and develop the exact same app. 
+# RGB template
+## Target Audience
+This library is designed specifically for teams who are getting started with VEX V5 c++ programming and do **NOT** have odometry (tracking wheel) setups. This template focuses on simplicity and ease of use, allowing teams to quickly get their robot operational without the complexity of advanced positioning systems.
+
+## Features
+- a simple library for PID driving control
+- a modular architecture for robot configuration and control code structure
+- a built-in test mode allows teams to step through and test all of their autonomous routines during driver control
+- a sample web app for controlling the robot in real time on mobile devices
+
+## Demo Videos
+
+Check out short demo videos here:  
+
+https://www.youtube.com/shorts/rn8VEuGWva8
+
+https://www.youtube.com/watch?v=W6ql04Aj_xQ
+
+
+
+## Download Source Code
+
+https://github.com/ericjiangxiao/RGB_Template
+
+Just follow the readme instructions and have fun coding VEX robots!
 

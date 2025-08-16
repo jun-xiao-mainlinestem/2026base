@@ -4,8 +4,8 @@
 		"json": 2
 	},
 	"project": {
-		"name": "test",
-		"description": "rgb base",
+		"name": "Aug test",
+		"description": "rgb test",
 		"creationDate": "Sun, 10 Aug 2025 16:30:28 GMT",
 		"platform": "V5",
 		"language": "cpp",

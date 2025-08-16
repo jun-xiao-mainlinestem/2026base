@@ -24,84 +24,25 @@ int DRIVE_MODE = 0;
 // ------------------------------------------------------------------------
 //        Other subsystems: motors, sensors and helper functions definition
 // ------------------------------------------------------------------------
-motor rollerBottom = motor(PORT11, ratio18_1, true);
-motor rollerMiddle = motor(PORT12, ratio18_1, true);
-motor rollerMiddle2 = motor(PORT14, ratio18_1, true);
-motor rollerTop = motor(PORT13, ratio6_1, true);
+motor roller = motor(PORT11, ratio18_1, true);
+
 
 // total number of motors, including drivetrain
-const int NUMBER_OF_MOTORS = 10;
+const int NUMBER_OF_MOTORS = 7;
 
-// (optional) intall an optical sensor right next to the license plate
-// teamIsRed variable will be automatically set to false if blue license plate is detected
-optical teamOptical = optical(PORT8);
-bool teamIsRed = true;
-
-// optical sensor for color sorting
-optical ballOptical = optical(PORT15);
 
 void inTake() {
-  rollerBottom.spin(forward, 12, volt);
-  rollerMiddle.stop(hold);
-  rollerMiddle2.spin(forward,-12, volt);
-  rollerTop.stop(coast);
+  roller.spin(forward, 12, volt);
 }
 
 void outTake() {
-  rollerBottom.spin(forward, -12, volt);
-  rollerMiddle.spin(forward, -12, volt);
-  rollerTop.stop(coast);
+  roller.spin(forward, -12, volt);
 }
 
 void stopRollers() {
   // Stops the roller motors.
-  rollerBottom.stop(brake);
-  rollerMiddle.stop(brake);
-  rollerMiddle2.stop(brake);
-  rollerTop.stop(brake);
-  if (ballOptical.installed()) ballOptical.setLightPower(0, percent);
+  roller.stop(brake);
 }
-
-void scoreMiddle() {
-  rollerBottom.spin(forward, 6, volt);
-  rollerMiddle.spin(forward, -12, volt);
-  rollerMiddle2.spin(forward, 12, volt);
-  rollerTop.spin(forward, -6, volt);
-}
-
-void scoreLong() {
-  rollerBottom.spin(forward, 12, volt);
-  rollerMiddle.spin(forward, -12, volt);
-  rollerMiddle2.spin(forward, 12, volt);
-  rollerTop.spin(forward, 12, volt);
-}
-
-void ejectBalls() {
-  scoreMiddle();
-}
-
-void colorSort()
-{
-  // Checks if the optical sensor is installed.
-  if (ballOptical.installed()) {    
-    ballOptical.setLightPower(100, percent);
-    // Get the detected ball color
-    color detectedColor = ballOptical.color();    
-    if (detectedColor == color::red) {
-      printControllerScreen("red ball");
-    } 
-    if (detectedColor == color::blue) {
-      printControllerScreen("blue ball");
-    }     
-
-    // If the ball color does not match the team color, eject it
-    if ((teamIsRed && detectedColor == color::blue) || (!teamIsRed && detectedColor == color::red)) {
-      ejectBalls();
-      wait(0.5, sec); // Wait for the rollers to finish ejecting the ball
-      inTake();
-    } 
-  }
-} 
 
 // ------------------------------------------------------------------------
 //               Only change code below this line when necessary
@@ -201,4 +142,5 @@ void usercontrol(void) {
     wait(20, msec);
    } 
 }
+
 
