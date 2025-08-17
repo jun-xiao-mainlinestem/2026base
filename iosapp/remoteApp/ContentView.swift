@@ -58,7 +58,7 @@ struct ConnectionScreen: View {
         VStack(spacing: 30) {
             // Header
             VStack(spacing: 10) {
-                Text("VEX Robot Control")
+                Text("VEX Robot Remote")
                     .font(.title)
                     .fontWeight(.bold)
             }
