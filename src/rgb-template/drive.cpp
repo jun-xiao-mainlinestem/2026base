@@ -69,22 +69,11 @@ void Drive::turnToHeading(float heading) {
   turnToHeading(heading, turnMaxVoltage);
 }
 
-void Drive::turnToHeading(float heading, float turnMaxVoltage) {
-  turnToHeading(heading, turnMaxVoltage, false, turnSettleError, turnSettleTime);
-}
-
-/*
- * Turns the robot to a specified angle using PID control.
- * - heading: Target heading to turn to (in degrees).
- * - turn_max_voltage: Maximum voltage for the turn 
- * - chaining: If false, stops the robot at the end; if true, allows chaining.
- * - settle_error: error range for start calcuating the settle time.
- * - settle_time: settle time for existing the PID loop (in milliseconds).
- */
-
-void Drive::turnToHeading(float heading, float turnMaxVoltage, bool chaining, float settleError, float settleTime) {
+void Drive::turnToHeading(float heading, float turnMaxVoltage, float earlyExitFactor) {
+  if (earlyExitFactor > 5) earlyExitFactor = 5;
+  if (earlyExitFactor < 1) earlyExitFactor = 1;
   desiredHeading = normalize360(heading);
-  PID turnPID(normalize180(heading - getHeading()), turnKp, turnKi, turnKd, turnStarti, settleError, settleTime, turnTimeout);
+  PID turnPID(normalize180(heading - getHeading()), turnKp, turnKi, turnKd, turnStarti, turnSettleError*earlyExitFactor , turnSettleTime/earlyExitFactor, turnTimeout);
   while (!turnPID.isDone() && !drivetrainNeedsStopped) {
     float error = normalize180(heading - getHeading());
     float output = turnPID.compute(error);
@@ -92,28 +81,27 @@ void Drive::turnToHeading(float heading, float turnMaxVoltage, bool chaining, fl
     driveWithVoltage(output, -output);
     wait(10, msec);
   }
-  if (!chaining || drivetrainNeedsStopped) {
+  if (earlyExitFactor == 1)
+  {
     leftDrive.stop(hold);
     rightDrive.stop(hold);
   }
 }
 
 void Drive::driveDistance(float distance) {
-  driveDistance(distance, driveMaxVoltage, desiredHeading, headingMaxVoltage, false, driveSettleError, driveSettleTime);
+  driveDistance(distance, driveMaxVoltage, desiredHeading, headingMaxVoltage);
 }
 
 void Drive::driveDistance(float distance, float driveMaxVoltage) {
-  driveDistance(distance, driveMaxVoltage, desiredHeading, headingMaxVoltage, false, driveSettleError, driveSettleTime);
+  driveDistance(distance, driveMaxVoltage, desiredHeading, headingMaxVoltage);
 }
 
-void Drive::driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage) {
-  driveDistance(distance, driveMaxVoltage, heading, headingMaxVoltage, false, driveSettleError, driveSettleTime);
-
-}
-
-void Drive::driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage, bool chaining, float driveSettleError, float driveSettleTime) {
+void Drive::driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage,  float earlyExitFactor)
+{
+  if (earlyExitFactor > 5) earlyExitFactor = 5;
+  if (earlyExitFactor < 1) earlyExitFactor = 1;
   desiredHeading = normalize360(heading);
-  PID drivePID(distance, driveKp, driveKi, driveKd, driveStarti, driveSettleError, driveSettleTime, driveTimeout);
+  PID drivePID(distance, driveKp, driveKi, driveKd, driveStarti, driveSettleError * earlyExitFactor, driveSettleTime/earlyExitFactor, driveTimeout);
   PID headingPID(normalize180(desiredHeading - getHeading()), headingKp, headingKd);
   float startAveragePosition = (getLeftPositionIn() + getRightPositionIn()) / 2.0;
   float averagePosition = startAveragePosition;
@@ -130,11 +118,13 @@ void Drive::driveDistance(float distance, float driveMaxVoltage, float heading, 
     driveWithVoltage(driveOutput + headingOutput, driveOutput - headingOutput);
     wait(10, msec);
   }
-  if (!chaining || drivetrainNeedsStopped) {
+  if (earlyExitFactor == 1)
+  {
     leftDrive.stop(hold);
     rightDrive.stop(hold);
   }
 }
+
 
 double curveFunction(double x, double curveScale) {
   return (powf(2.718, -(curveScale / 10)) + powf(2.718, (fabs(x) - 100) / 10) * (1 - powf(2.718, -(curveScale / 10)))) * x;

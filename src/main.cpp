@@ -10,7 +10,7 @@ competition Competition;
 
 // This function is called when the L1 button is pressed.
 void sampleButtonL1Action() {
-  inTake();
+  intake();
   
   // Wait until the button is released to stop the rollers.
   while(controller1.ButtonL1.pressing()) {

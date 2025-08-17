@@ -37,10 +37,12 @@ const int NUMBER_OF_MOTORS = 10;
 optical teamOptical = optical(PORT8);
 bool teamIsRed = true;
 
+// distance sensor at the front
+distance frontDistance = distance(PORT16);
 // optical sensor for color sorting
 optical ballOptical = optical(PORT15);
 
-void inTake() {
+void intake() {
   rollerBottom.spin(forward, 12, volt);
   rollerMiddle.stop(hold);
   rollerMiddle2.spin(forward,-12, volt);
@@ -98,7 +100,7 @@ void colorSort()
     if ((teamIsRed && detectedColor == color::blue) || (!teamIsRed && detectedColor == color::red)) {
       ejectBalls();
       wait(0.5, sec); // Wait for the rollers to finish ejecting the ball
-      inTake();
+      intake();
     } 
   }
 } 

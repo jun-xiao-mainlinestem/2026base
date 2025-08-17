@@ -22,3 +22,17 @@
 - 
 In exitAuton, add immediate actions right at the start of the driver control.
 
+# fixes
+- autons.cpp remove duplicate runAutonTest and print timer %1.f
+- test_auton_button.md remove duplicated runAutonTest
+- drive.cpp driveDistance and turnHeading always stop.
+
+# private feature
+- chaining    
+```cpp
+// Turns the robot to a specific heading without stopping.
+    // earlyExitFactor should between 1-5
+  void turnToHeading(float heading, float turnMaxVoltage, float earlyExitFactor);
+      // Drives the robot a specific distance without stopping.
+  void driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage,  float earlyExitFactor);
+```

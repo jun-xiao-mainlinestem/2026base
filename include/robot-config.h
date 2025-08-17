@@ -10,7 +10,7 @@ extern bool teamIsRed;
 // distance sensor at the front
 extern distance frontDistance;
 
-void inTake();
+void intake();
 void outTake();
 void stopRollers();
 void scoreMiddle();

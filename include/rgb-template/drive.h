@@ -64,11 +64,10 @@ private:
   // Gets the position of the right side of the drivetrain in inches.
   float getRightPositionIn();
   
-  // Turns the robot to a specific heading with advanced options.
-  void turnToHeading(float heading, float turnMaxVoltage, bool chaining, float settleError = 5, float settleTime = 50);
 
-  // Drives the robot a specific distance with advanced options.
-  void driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage, bool chaining, float driveSettleError=2, float driveSettleTime=50) ;
+  // Drives the robot a specific distance while significantly slowing down when approaching target
+  void driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage, float slowDownDistance, float slowDownVoltage);
+
 
 public: 
   // The inertial sensor.
@@ -90,15 +89,11 @@ public:
 
   // Turns the robot to a specific heading.
   void turnToHeading(float heading);
-  // Turns the robot to a specific heading with a maximum voltage.
-  void turnToHeading(float heading, float turnMaxVoltage);
 
   // Drives the robot a specific distance.
   void driveDistance(float distance);
   // Drives the robot a specific distance with a maximum voltage.
   void driveDistance(float distance, float driveMaxVoltage);
-  // Drives the robot a specific distance while turning to a heading.
-  void driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage);
 
   // A flag to indicate if the drivetrain needs to be stopped.
   bool drivetrainNeedsStopped = false;
@@ -127,4 +122,10 @@ public:
   void stop(vex::brakeType mode);
 
   void checkStatus();
+
+    // earlyExitFactor: nonstopping if greater than 1. Maxium is 5.
+  void turnToHeading(float heading, float turnMaxVoltage, float earlyExitFactor = 1);
+    // earlyExitFactor: nonstopping if greater than 1. Maxium is 5.
+  void driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage,  float earlyExitFactor = 1);
+
 };

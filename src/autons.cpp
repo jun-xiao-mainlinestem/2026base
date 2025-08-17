@@ -1,34 +1,22 @@
 #include "vex.h"
-int currentAutonSelection = 0;        // Current auton selection
+int currentAutonSelection = -1;        // Current auton selection
 int autonTestStep = 0;                // Current step in auton
 
-void awp()
-{
-  chassis.setHeading(0); 
-  chassis.driveDistance(25);
-  rollerBottom.spin(forward, 6, volt);
-  rollerTop.spin(forward, -6, volt);
-  wait(100, msec);
-  stopRollers();
-  chassis.turnToHeading(90);
-  inTake();
-  wait(200, msec);
-  chassis.driveDistance(13, 3);
-  wait(200, msec);
-  stopRollers();
-  chassis.turnToHeading(180);
-  chassis.driveDistance(24);
-  chassis.turnToHeading(90);
-  float d = frontDistance.objectDistance(inches);
-  chassis.driveDistance(d - 14);
-  chassis.turnToHeading(180);
-  wait(3, seconds);
-  chassis.turnToHeading(0);
-  chassis.driveDistance(12);
-}
-
 void quick_test() {
-  awp();
+  //awp();
+// solo_test();
+  /*
+  chassis.setHeading(180);
+  chassis.turnToHeading(90, 10, 4);
+  float d = frontDistance.objectDistance(inches);
+  chassis.driveDistance(d - 14); */
+
+  /*
+  chassis.setHeading(180);
+  chassis.driveDistance(32, 10, 90, 6, 3);
+  float d = frontDistance.objectDistance(inches);
+  chassis.driveDistance(d - 14); 
+  */
 }
 
 // The first autonomous routine.
@@ -244,21 +232,6 @@ void pre_auton() {
 // ----------------------------------------------------------------------------
 //                 For testing autonomous steps
 // ----------------------------------------------------------------------------
-bool runAutonTest()
-{
-  if (!autonTestMode) return false;
-
-  // If in test mode, run the selected autonomous routine for testing and displays the run time.
-  controller(primary).rumble(".");
-  double t1 = Brain.Timer.time(sec);
-  runAutonItem(); 
-  double t2 = Brain.Timer.time(sec);
-  char timeMsg[30];
-  sprintf(timeMsg, "run time: %.0f", t2-t1);
-  printControllerScreen(timeMsg);
-  chassis.stop(coast);
-  return true;
-}
 
 bool continueAutonStep()
 {
@@ -359,7 +332,7 @@ void buttonAAction()
     runAutonItem(); 
     double t2 = Brain.Timer.time(sec);
     char timeMsg[30];
-    sprintf(timeMsg, "run time: %.0f", t2-t1);
+    sprintf(timeMsg, "run time: %.1f", t2-t1);
     printControllerScreen(timeMsg);
     chassis.stop(coast);
   }

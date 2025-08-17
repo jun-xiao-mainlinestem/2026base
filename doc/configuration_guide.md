@@ -129,7 +129,7 @@ The program automatically monitors motor health and will alert the driver if:
 Add helper functions for your subsystems:
 
 ```cpp
-void inTake() {
+void intake() {
     intakeMotor.spin(forward, 100, percent);
 }
 
@@ -144,7 +144,7 @@ void stopRollers() {
 Open `include/robot-config.h` and add function declarations so that `main.cpp` or `autons.cpp` can call the functions:
 
 ```cpp
-void inTake();
+void intake();
 void stopRollers();
 // Add other function declarations
 ```
@@ -160,7 +160,7 @@ Add button functions for your subsystems:
 
 ```cpp
 void buttonL1Action() {
-    inTake();
+    intake();
     while(controller1.ButtonL1.pressing()) {
         wait(20, msec);
     }
