@@ -42,6 +42,11 @@ distance frontDistance = distance(PORT16);
 // optical sensor for color sorting
 optical ballOptical = optical(PORT15);
 
+void rollerTest(){
+  rollerMiddle2.spin(forward, -12, volt);
+  rollerMiddle.spin(forward,-12, volt);
+}
+
 void intake() {
   rollerBottom.spin(forward, 12, volt);
   rollerMiddle.stop(hold);
