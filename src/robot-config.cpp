@@ -42,9 +42,19 @@ distance frontDistance = distance(PORT16);
 // optical sensor for color sorting
 optical ballOptical = optical(PORT15);
 
+// match load piston
+digital_out piston = digital_out(Brain.ThreeWirePort.A);
+
+void setPiston(bool state){
+  controller1.rumble(".");
+  piston.set(state);
+}
+
 void rollerTest(){
-  rollerMiddle2.spin(forward, -12, volt);
-  rollerMiddle.spin(forward,-12, volt);
+  rollerBottom.spin(forward, -12, volt);
+  rollerMiddle.spin(forward, -12, volt);
+  rollerMiddle2.spin(forward,12, volt);
+  rollerTop.spin(forward, -12, volt);
 }
 
 void intake() {

@@ -18,7 +18,7 @@ void scoreMiddle();
 void scoreLong();
 
 void colorSort();
-
+void setPiston(bool state);
 // ------------------------------------------------------------------------
 //               Only change code below this line when necessary
 // ------------------------------------------------------------------------

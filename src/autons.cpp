@@ -216,9 +216,10 @@ void pre_auton() {
   bool gyroSetupSuccess = setupgyro();
   // Sets up the team color.
   setupTeamColor();
+  
+  setPiston(false);
 
   bool motorsSetupSuccess = true;
-
   // Checks the motors.
   motorsSetupSuccess = checkMotors(NUMBER_OF_MOTORS);
   //set the parameters for the chassis
