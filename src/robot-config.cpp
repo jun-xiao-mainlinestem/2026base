@@ -1,5 +1,7 @@
 #include "vex.h"
 using namespace vex;
+brain Brain;
+controller controller1 = controller(primary);
 
 // ------------------------------------------------------------------------
 //              Drivetrain definition
@@ -42,13 +44,14 @@ distance frontDistance = distance(PORT16);
 // optical sensor for color sorting
 optical ballOptical = optical(PORT15);
 
+
 // match load piston
-digital_out piston = digital_out(Brain.ThreeWirePort.A);
+digital_out piston = digital_out(Brain.ThreeWirePort.B);
 
 void setPiston(bool state){
   controller1.rumble(".");
   piston.set(state);
-}
+} 
 
 void rollerTest(){
   rollerBottom.spin(forward, -12, volt);
@@ -58,15 +61,16 @@ void rollerTest(){
 }
 
 void intake() {
-  rollerBottom.spin(forward, 12, volt);
-  rollerMiddle.stop(hold);
-  rollerMiddle2.spin(forward,-12, volt);
+  rollerBottom.spin(forward, -12, volt);
+  rollerMiddle.spin(forward, -12, volt);
+  rollerMiddle2.spin(forward, 12, volt);
   rollerTop.stop(coast);
 }
 
 void outTake() {
-  rollerBottom.spin(forward, -12, volt);
-  rollerMiddle.spin(forward, -12, volt);
+  rollerBottom.spin(forward, 12, volt);
+  rollerMiddle.spin(forward, 12, volt);
+  rollerMiddle2.stop(coast);
   rollerTop.stop(coast);
 }
 
@@ -80,17 +84,17 @@ void stopRollers() {
 }
 
 void scoreMiddle() {
-  rollerBottom.spin(forward, 6, volt);
-  rollerMiddle.spin(forward, -12, volt);
+  rollerBottom.spin(forward, -12, volt);
+  rollerMiddle.spin(forward, 12, volt);
   rollerMiddle2.spin(forward, 12, volt);
-  rollerTop.spin(forward, -6, volt);
+  rollerTop.stop(coast);
 }
 
 void scoreLong() {
-  rollerBottom.spin(forward, 12, volt);
+  rollerBottom.spin(forward, -12, volt);
   rollerMiddle.spin(forward, -12, volt);
   rollerMiddle2.spin(forward, 12, volt);
-  rollerTop.spin(forward, 12, volt);
+  rollerTop.spin(forward, -12, volt);
 }
 
 void ejectBalls() {
@@ -124,9 +128,6 @@ void colorSort()
 //               Only change code below this line when necessary
 // ------------------------------------------------------------------------
 
-// A global instance of brain used for printing to the V5 Brain screen
-brain Brain;
-controller controller1 = controller(primary);
 
 Drive chassis(
   //Left Motors:

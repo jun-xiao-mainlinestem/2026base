@@ -23,9 +23,7 @@
 In exitAuton, add immediate actions right at the start of the driver control.
 
 # fixes
-- autons.cpp remove duplicate runAutonTest and print timer %1.f
-- test_auton_button.md remove duplicated runAutonTest
-- drive.cpp driveDistance and turnHeading always stop.
+- declare brain at the top.
 
 # private feature
 - chaining    
@@ -36,3 +34,19 @@ In exitAuton, add immediate actions right at the start of the driver control.
       // Drives the robot a specific distance without stopping.
   void driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage,  float earlyExitFactor);
 ```
+# hardare
+- descore horn
+- two-side piston
+- middle roller motor placement and speed up
+- cable management
+- opponent ball basket
+- own ball baskset (plastic, cart board)
+- 
+
+# software
+- tune PID (fast, normal)
+- autons
+- button mapping
+- pre-auton read/write to sd card
+- rotation sensor to select auton
+

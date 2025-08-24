@@ -8,6 +8,13 @@ using namespace vex;
 // This object is used to register callbacks for the autonomous and driver control periods.
 competition Competition;
 
+bool matchLoaderDown = false;
+void buttonBAction() {
+  matchLoaderDown = !matchLoaderDown;
+  // toggle the matchloader position
+  setPiston(matchLoaderDown);
+}
+
 void buttonYAction(){
   rollerTest();
     while(controller1.ButtonY.pressing()) {
@@ -28,7 +35,6 @@ void sampleButtonL1Action() {
   stopRollers();
 }
 
-bool matchLoaderDown = false;
 void buttonL2Action() {
   if(controller1.ButtonL1.pressing()) 
   {
@@ -73,6 +79,8 @@ void setupButtonMapping() {
   controller1.ButtonR1.pressed(buttonR1Action);
   controller1.ButtonR2.pressed(buttonR2Action);
   controller1.ButtonY.pressed(buttonYAction);
+  controller1.ButtonB.pressed(buttonBAction);
+
 }
 
 
