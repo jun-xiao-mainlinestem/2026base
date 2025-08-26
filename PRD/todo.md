@@ -35,16 +35,18 @@ In exitAuton, add immediate actions right at the start of the driver control.
   void driveDistance(float distance, float driveMaxVoltage, float heading, float headingMaxVoltage,  float earlyExitFactor);
 ```
 # hardare
+- matchload refine
 - descore horn
 - two-side piston
-- middle roller motor placement and speed up
+- middle roller motor placement and speed up (done)
 - cable management
 - opponent ball basket
 - own ball baskset (plastic, cart board)
-- 
+- 6 wheel drivetrain 
 
 # software
 - tune PID (fast, normal)
+- color sort
 - autons
 - button mapping
 - pre-auton read/write to sd card

@@ -62,7 +62,7 @@ void rollerTest(){
 
 void intake() {
   rollerBottom.spin(forward, -12, volt);
-  rollerMiddle.spin(forward, -12, volt);
+  rollerMiddle.spin(forward, 12, volt);
   rollerMiddle2.spin(forward, 12, volt);
   rollerTop.stop(coast);
 }
