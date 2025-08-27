@@ -11,6 +11,7 @@ extern bool teamIsRed;
 extern distance frontDistance;
 
 void rollerTest();
+bool toggleMatchLoad();
 void intake();
 void outTake();
 void stopRollers();
@@ -18,7 +19,6 @@ void scoreMiddle();
 void scoreLong();
 
 void colorSort();
-void setPiston(bool state);
 // ------------------------------------------------------------------------
 //               Only change code below this line when necessary
 // ------------------------------------------------------------------------

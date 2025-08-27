@@ -216,8 +216,6 @@ void pre_auton() {
   bool gyroSetupSuccess = setupgyro();
   // Sets up the team color.
   setupTeamColor();
-  
-  setPiston(false);
 
   bool motorsSetupSuccess = true;
   // Checks the motors.
@@ -338,6 +336,8 @@ void buttonAAction()
     chassis.stop(coast);
   }
 }
+
+
 
 // Register the controller button callbacks for autonomous testing.
 void registerAutonTestButtons()

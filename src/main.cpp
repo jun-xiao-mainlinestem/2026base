@@ -8,11 +8,12 @@ using namespace vex;
 // This object is used to register callbacks for the autonomous and driver control periods.
 competition Competition;
 
-bool matchLoaderDown = false;
-void buttonBAction() {
-  matchLoaderDown = !matchLoaderDown;
-  // toggle the matchloader position
-  setPiston(matchLoaderDown);
+void buttonXAction(){
+  rollerTest();
+    while(controller1.ButtonX.pressing()) {
+    wait (20, msec);
+  }
+  stopRollers();
 }
 
 void buttonYAction(){
@@ -24,43 +25,32 @@ void buttonYAction(){
 }
 
 // This function is called when the L1 button is pressed.
-void sampleButtonL1Action() {
+void buttonL1Action() {
   intake();
-  
+
   // Wait until the button is released to stop the rollers.
   while(controller1.ButtonL1.pressing()) {
-    if(controller1.ButtonL2.pressing()) colorSort();
+    if(controller1.ButtonR2.pressing()) outTake();
+    colorSort();
     wait (20, msec);
   }
   stopRollers();
 }
 
 void buttonL2Action() {
-  if(controller1.ButtonL1.pressing()) 
-  {
-    matchLoaderDown = !matchLoaderDown;
-    // toggle the matchloader position
-    return;
-  }
-  outTake();
+  scoreLong();
+
   // Wait until the button is released to stop the rollers.
   while(controller1.ButtonL2.pressing()) {
+    if(controller1.ButtonR2.pressing()) scoreMiddle();
+    colorSort();
     wait (20, msec);
   }
+
   stopRollers();
 }
 
 void buttonR1Action() {
-  chassis.stop(hold);
-  if(controller1.ButtonR2.pressing()) scoreMiddle();
-  else scoreLong();
-
-  // Wait until the button is released to stop the rollers.
-  while(controller1.ButtonR1.pressing()) {
-    wait (20, msec);
-  }
-  chassis.stop(coast);
-  stopRollers();
 }
 
 void buttonR2Action()
@@ -73,14 +63,29 @@ void buttonR2Action()
   chassis.stop(coast);
 }
 
+
+void buttonXAction() {
+  bool state = toggleMatchLoad();
+  if(!state) {
+    return;
+  }
+  intake();
+  chassis.driveDistance(30, 8);
+  wait(1.5, sec);
+  chassis.driveDistance(-30, 8);
+  toggleMatchLoad();
+}
+
+void buttonAAction() {
+  
+}
+
 void setupButtonMapping() {
-  controller1.ButtonL1.pressed(sampleButtonL1Action);
+  controller1.ButtonL1.pressed(buttonL1Action);
   controller1.ButtonL2.pressed(buttonL2Action);
   controller1.ButtonR1.pressed(buttonR1Action);
   controller1.ButtonR2.pressed(buttonR2Action);
   controller1.ButtonY.pressed(buttonYAction);
-  controller1.ButtonB.pressed(buttonBAction);
-
 }
 
 

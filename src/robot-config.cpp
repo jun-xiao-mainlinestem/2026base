@@ -26,9 +26,9 @@ int DRIVE_MODE = 0;
 // ------------------------------------------------------------------------
 //        Other subsystems: motors, sensors and helper functions definition
 // ------------------------------------------------------------------------
-motor rollerBottom = motor(PORT11, ratio18_1, true);
+motor rollerBottom = motor(PORT11, ratio18_1, false);
 motor rollerMiddle = motor(PORT12, ratio18_1, true);
-motor rollerMiddle2 = motor(PORT14, ratio18_1, true);
+motor rollerSort = motor(PORT14, ratio18_1, true);
 motor rollerTop = motor(PORT13, ratio6_1, true);
 
 // total number of motors, including drivetrain
@@ -44,33 +44,32 @@ distance frontDistance = distance(PORT16);
 // optical sensor for color sorting
 optical ballOptical = optical(PORT15);
 
-
 // match load piston
-digital_out piston = digital_out(Brain.ThreeWirePort.B);
+digital_out matchLoadPiston = digital_out(Brain.ThreeWirePort.B);
+digital_out hornPiston = digital_out(Brain.ThreeWirePort.C);
 
-void setPiston(bool state){
-  controller1.rumble(".");
-  piston.set(state);
-} 
+bool matchLoadOn = false;
+
+bool toggleMatchLoad(){
+  matchLoadOn = !matchLoadOn;
+  matchLoadPiston.set(matchLoadOn);
+  return matchLoadOn;
+}
 
 void rollerTest(){
-  rollerBottom.spin(forward, -12, volt);
-  rollerMiddle.spin(forward, -12, volt);
-  rollerMiddle2.spin(forward,12, volt);
-  rollerTop.spin(forward, -12, volt);
 }
 
 void intake() {
-  rollerBottom.spin(forward, -12, volt);
+  rollerBottom.spin(forward, 12, volt);
   rollerMiddle.spin(forward, 12, volt);
-  rollerMiddle2.spin(forward, 12, volt);
+  rollerSort.spin(forward, 12, volt);
   rollerTop.stop(coast);
 }
 
 void outTake() {
-  rollerBottom.spin(forward, 12, volt);
-  rollerMiddle.spin(forward, 12, volt);
-  rollerMiddle2.stop(coast);
+  rollerBottom.spin(forward, -12, volt);
+  rollerMiddle.spin(forward, -12, volt);
+  rollerSort.stop(hold);
   rollerTop.stop(coast);
 }
 
@@ -78,28 +77,25 @@ void stopRollers() {
   // Stops the roller motors.
   rollerBottom.stop(brake);
   rollerMiddle.stop(brake);
-  rollerMiddle2.stop(brake);
+  rollerSort.stop(brake);
   rollerTop.stop(brake);
   if (ballOptical.installed()) ballOptical.setLightPower(0, percent);
 }
 
 void scoreMiddle() {
-  rollerBottom.spin(forward, -12, volt);
-  rollerMiddle.spin(forward, 12, volt);
-  rollerMiddle2.spin(forward, 12, volt);
+  rollerBottom.spin(forward, 12, volt);
+  rollerMiddle.spin(forward, -12, volt);
+  rollerSort.spin(forward, 12, volt);
   rollerTop.stop(coast);
 }
 
 void scoreLong() {
-  rollerBottom.spin(forward, -12, volt);
-  rollerMiddle.spin(forward, -12, volt);
-  rollerMiddle2.spin(forward, 12, volt);
-  rollerTop.spin(forward, -12, volt);
+  rollerBottom.spin(forward, 12, volt);
+  rollerMiddle.spin(forward, 12, volt);
+  rollerSort.spin(forward, 12, volt);
+  rollerTop.spin(forward, 12, volt);
 }
 
-void ejectBalls() {
-  scoreMiddle();
-}
 
 void colorSort()
 {
@@ -117,7 +113,7 @@ void colorSort()
 
     // If the ball color does not match the team color, eject it
     if ((teamIsRed && detectedColor == color::blue) || (!teamIsRed && detectedColor == color::red)) {
-      ejectBalls();
+      rollerSort.spin(forward, -12, volt);
       wait(0.5, sec); // Wait for the rollers to finish ejecting the ball
       intake();
     } 
