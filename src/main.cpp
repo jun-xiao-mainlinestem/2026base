@@ -8,21 +8,14 @@ using namespace vex;
 // This object is used to register callbacks for the autonomous and driver control periods.
 competition Competition;
 
-void buttonXAction(){
-  rollerTest();
-    while(controller1.ButtonX.pressing()) {
-    wait (20, msec);
-  }
-  stopRollers();
-}
-
-void buttonYAction(){
+/*void buttonYAction(){
   rollerTest();
     while(controller1.ButtonY.pressing()) {
     wait (20, msec);
   }
   stopRollers();
 }
+*/
 
 // This function is called when the L1 button is pressed.
 void buttonL1Action() {
@@ -63,7 +56,6 @@ void buttonR2Action()
   chassis.stop(coast);
 }
 
-
 void buttonXAction() {
   bool state = toggleMatchLoad();
   if(!state) {
@@ -76,8 +68,21 @@ void buttonXAction() {
   toggleMatchLoad();
 }
 
-void buttonAAction() {
-  
+void buttonYAction() {
+  bool state = toggleHorn();
+  if(state){
+    chassis.stop(hold);
+  }
+  else{
+    chassis.stop(coast);
+  }
+}
+
+void buttonBAction()
+{
+  controller1.rumble("..");
+  rollerMiddle.stop(hold);
+  chassis.driveDistance(16, 12, 0, 6);
 }
 
 void setupButtonMapping() {
@@ -85,9 +90,11 @@ void setupButtonMapping() {
   controller1.ButtonL2.pressed(buttonL2Action);
   controller1.ButtonR1.pressed(buttonR1Action);
   controller1.ButtonR2.pressed(buttonR2Action);
+  controller1.ButtonX.pressed(buttonXAction);
   controller1.ButtonY.pressed(buttonYAction);
-}
+  controller1.ButtonB.pressed(buttonBAction);
 
+}
 
 
 // ------------------------------------------------------------------------
@@ -154,7 +161,10 @@ int main() {
   registerAutonTestButtons();
 
   // Set up other button mapping for the controller
-  setupButtonMapping();
+  if (DRIVE_MODE != -1) setupButtonMapping();
+
+  unsigned char str[] = "Geeks";
+  Brain.SDcard.savefile("test.txt", str, sizeof(str));
 
   // Run the pre-autonomous function.
   pre_auton();
@@ -162,7 +172,7 @@ int main() {
   // Prevent main from exiting with an infinite loop.
   while (true) {
     // comment out the following line to disable remote command processing
-    pollCommandMessages();
+   // pollCommandMessages();
     wait(200, msec);
   }
 }

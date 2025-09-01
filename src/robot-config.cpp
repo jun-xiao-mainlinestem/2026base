@@ -20,6 +20,7 @@ motor rightMotor3 = motor(PORT6, ratio18_1, true);
 inertial inertial1 = inertial(PORT10);
 
 // 0: double arcade drive, 1: single aracde, 2: tank drive, 3: mecanum drive
+// -1: disable drive
 int DRIVE_MODE = 0;
 
 
@@ -31,8 +32,10 @@ motor rollerMiddle = motor(PORT12, ratio18_1, true);
 motor rollerSort = motor(PORT14, ratio18_1, true);
 motor rollerTop = motor(PORT13, ratio6_1, true);
 
+
+
 // total number of motors, including drivetrain
-const int NUMBER_OF_MOTORS = 10;
+const int NUMBER_OF_MOTORS = 9;
 
 // (optional) intall an optical sensor right next to the license plate
 // teamIsRed variable will be automatically set to false if blue license plate is detected
@@ -49,11 +52,17 @@ digital_out matchLoadPiston = digital_out(Brain.ThreeWirePort.B);
 digital_out hornPiston = digital_out(Brain.ThreeWirePort.C);
 
 bool matchLoadOn = false;
-
 bool toggleMatchLoad(){
   matchLoadOn = !matchLoadOn;
   matchLoadPiston.set(matchLoadOn);
   return matchLoadOn;
+}
+
+bool hornOn = false;
+bool toggleHorn(){
+  hornOn = !hornOn;
+  hornPiston.set(hornOn);
+  return hornOn;
 }
 
 void rollerTest(){

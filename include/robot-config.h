@@ -12,6 +12,7 @@ extern distance frontDistance;
 
 void rollerTest();
 bool toggleMatchLoad();
+bool toggleHorn();
 void intake();
 void outTake();
 void stopRollers();
@@ -19,6 +20,7 @@ void scoreMiddle();
 void scoreLong();
 
 void colorSort();
+
 // ------------------------------------------------------------------------
 //               Only change code below this line when necessary
 // ------------------------------------------------------------------------
@@ -30,6 +32,7 @@ extern controller controller1;
 class Drive;
 // A global instance of the Drive class.
 extern Drive chassis;
+extern int DRIVE_MODE;
 
 extern const int NUMBER_OF_MOTORS;
 
