@@ -1,0 +1,2 @@
+auton = 1
+drive_mode = 1

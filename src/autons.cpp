@@ -210,6 +210,82 @@ void setupTeamColor(){
   } 
 }
 
+
+/**
+ * @brief Trim leading and trailing whitespace from a string.
+ * @param str The string to trim.
+ * @return A pointer to the trimmed string.
+ */
+char* trim_whitespace(char* str) {
+    char* end;
+    // Trim leading whitespace
+    while (isspace((unsigned char)*str)) {
+        str++;
+    }
+    if (*str == 0) {
+        return str; // All whitespace
+    }
+    // Trim trailing whitespace
+    end = str + strlen(str) - 1;
+    while (end > str && isspace((unsigned char)*end)) {
+        end--;
+    }
+    *(end + 1) = 0;
+    return str;
+}
+
+void loadChassisParameters()
+{
+  // load parameters from the SD card
+  if (Brain.SDcard.isInserted()) {
+    if (Brain.SDcard.exists("parameters.txt")) {
+      printControllerScreen("load param from SD");
+    } 
+    // open the file for reading
+    uint8_t  myReadBuffer[1000];  
+    int32_t  size = Brain.SDcard.loadfile("parameters.txt", myReadBuffer, sizeof(myReadBuffer));
+    wait(0.5, seconds);
+
+    const char* file_content = "auton = 1\ndrive_mode = 1\n";
+    int size = strlen(file_content);
+    memcpy(myReadBuffer, file_content, size);
+        // A temporary buffer to hold each line as we process it
+    char line_buffer[256];
+    char* buffer_ptr = (char*)myReadBuffer;
+    char* line_end;
+
+    // Process the buffer line by line
+    while ((line_end = strchr(buffer_ptr, '\n')) != NULL) {
+        // Copy the current line into the line_buffer
+        int line_len = line_end - buffer_ptr;
+        strncpy(line_buffer, buffer_ptr, line_len);
+        line_buffer[line_len] = '\0';
+
+        // Find the position of the '=' character
+        char* equals_sign = strchr(line_buffer, '=');
+        if (equals_sign != NULL) {
+            // Null-terminate the key part of the string
+            *equals_sign = '\0';
+            
+            // Extract the key and value strings
+            char* key = trim_whitespace(line_buffer);
+            char* value_str = trim_whitespace(equals_sign + 1);
+
+            // Check if the line is for 'auton' and 'drive_mode'
+            if (strcmp(key, "auton") == 0) {
+                currentAutonSelection = atoi(value_str);
+            } else if (strcmp(key, "drive_mode") == 0) {
+                DRIVE_MODE = atoi(value_str);
+            }
+        }
+        
+        // Move the pointer to the start of the next line
+        buffer_ptr = line_end + 1;
+    }
+
+  }
+}
+
 // This function is called before the autonomous period starts.
 void pre_auton() {
   // Sets up the gyro.
@@ -222,6 +298,9 @@ void pre_auton() {
   motorsSetupSuccess = checkMotors(NUMBER_OF_MOTORS);
   //set the parameters for the chassis
   setChassisDefaults();
+
+  // load parameters from the SD card
+  loadChassisParameters();
   // Shows the autonomous menu.
   if(gyroSetupSuccess && motorsSetupSuccess) showAutonMenu();
 }

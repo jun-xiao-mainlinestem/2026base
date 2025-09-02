@@ -8,3 +8,5 @@ void exitAuton();
 
 bool continueAutonStep();
 void registerAutonTestButtons();
+
+extern int currentAutonSelection;

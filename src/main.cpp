@@ -14,6 +14,9 @@ competition Competition;
     wait (20, msec);
   }
   stopRollers();
+    unsigned char str[] = "Geeks";
+  Brain.SDcard.savefile("test.txt", str, sizeof(str));
+
 }
 */
 
@@ -163,8 +166,6 @@ int main() {
   // Set up other button mapping for the controller
   if (DRIVE_MODE != -1) setupButtonMapping();
 
-  unsigned char str[] = "Geeks";
-  Brain.SDcard.savefile("test.txt", str, sizeof(str));
 
   // Run the pre-autonomous function.
   pre_auton();
