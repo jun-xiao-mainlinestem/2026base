@@ -431,7 +431,7 @@ class Drive:
 
 
 '''
-This is where your custom code goes.
+This is where custom code goes.
 '''
 
 # Drivetrain definition
@@ -483,6 +483,7 @@ def button_r2_action():
 
 def button_r1_action():
     chassis.turn_to_heading(chassis.get_heading() + 180)
+    chassis.drive_distance(12, 8, 90, 4)
 
 def setup_button_mapping():
     """Set up button mappings for the controller."""
@@ -517,7 +518,7 @@ def run_auton_item():
 
 
 '''
-this is where the custom code ends
+this is where custom code ends
 '''
 
 # Global state variables
@@ -571,8 +572,7 @@ def check_motors(motor_count, temperature_limit=50):
 
 def print_controller_screen(message):
     """Print a message to the controller screen."""
-   # padded = f"{message:<24}"
-    controller_1.screen.print(message)
+    controller_1.screen.print('{:<24}'.format(message))
 
 
 def autonomous():

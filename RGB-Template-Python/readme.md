@@ -1,11 +1,19 @@
-# RGB BOTS template
+# RGB BOTS Python Template 
 From Haverford Robotics Team 169X (The Cavalry) and RGB Bots Team 99009A (the little red pony).
 
-This project provides a simple Python template for VEX V5 robotics. It offers APIs for PID based automonous driving control and auton screen selections,  supports tank, arcade and mecanum drive mode, and automatically checks motor health. The library is designed specifically for middle school teams who are beginning their journey with VRC Python programming.
+This project provides a simple Python template for VEX V5 robotics. It offers APIs for PID based automonous driving control and auton screen selections,  supports tank, arcade and mecanum drive mode, and automatically checks motor health. The library is designed specifically for middle school teams who are beginning their journey with VEX Python programming.
+
+## Installation
+*   **Prerequisites:** Before you begin, make sure:
+    - You have [VSCode with VEX extension](https://kb.vex.com/hc/en-us/categories/360002333191-V5?sc=vs-code-extension) installed.
+*   **Dowload Source Code:** 
+    - Download main.py from the github repository 
+    - [Create a new v5 Python project](https://kb.vex.com/hc/en-us/articles/20146074601748-Creating-VS-Code-Projects-for-V5#:~:text=Select%20the%20'New%20Project'%20button,and%20select%20the%20corresponding%20icon.)
+    - Copy downloaded main.py to the project and overwrite the existing one
 
 ## Configuration
 
-For detailed step-by-step configuration instructions, see [Configuration Guide](doc/configuration_guide.md).
+For detailed step-by-step configuration instructions, see [Configuration Guide](configuration_guide.md).
 
 ## How to Tune PID Parameters
 - Set kp, kd and ki all to zero
@@ -19,7 +27,7 @@ For detailed step-by-step configuration instructions, see [Configuration Guide](
 - **Important:** The VEX V5 brain operates on a 12V system. All voltage-based functions have a maximum voltage of 12V.
 - **Recommended range**: 3V to 10V for precise control.
 
-### Drive APIs (drive.py)
+### Drive APIs
 The `Drive` class provides a set of APIs to control the robot's movement.
 
 ### `drive_with_voltage(left_voltage, right_voltage)`

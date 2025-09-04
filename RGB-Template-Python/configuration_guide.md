@@ -8,10 +8,9 @@ This guide provides step-by-step instructions for configuring your VEX V5 robot 
 
 This section is **mandatory** - you must configure your drivetrain for the robot to function properly.
 
-### Step 1: Open main.py and locate the motor definitions
+### Step 1: Configure Motor Ports
 
-### Step 2: Configure Motor Ports
-Find the motor definitions and update the port numbers and motor directions:
+Open main.py and locate the motor definitions and update the port numbers and motor directions:
 
 ```python
 # Left side motors
@@ -30,7 +29,7 @@ inertial_1 = vex.Inertial(vex.Ports.PORT10)
 
 **Action:** Replace `vex.Ports.PORT1`, `vex.Ports.PORT2`, etc. with your actual motor port numbers. Make sure the *motor directions* (True/False) are correct. If you have a 4-motor setup, simply assign the `left_motor3`, `right_motor3` to unused ports.
 
-### Step 3 (optional): Set Drive Mode
+### Step 2 Set Drive Mode
 Locate the drive mode setting:
 
 ```python
@@ -44,7 +43,7 @@ DRIVE_MODE = 0
 - `2` for **Tank Drive** (left stick for left side, right stick for right side)
 - `3` for **Mecanum Drive** (four-wheel independent control for strafing)
 
-### Step 4 (optional): Configure Wheel Size and Gear Ratio
+### Step 3: Configure Wheel Size and Gear Ratio
 Find the Drive constructor in `main.py` and update the wheel diameter and gear ratio parameters:
 
 ```python
@@ -80,7 +79,7 @@ NUMBER_OF_MOTORS = 6
 **Action:** Update to match your total number of motors.
 
 **⚠️ Motor Monitoring System:**
-The program automatically monitors motor health and will alert the driver if:
+The program automatically check motor health at the start and will alert the driver if:
 - **Disconnected motors**: Controller vibrates with "---" pattern and displays "X motor is disconnected"
 - **Overheated motors**: Controller vibrates with "---" pattern and displays "motor X is Y°C" (default temperature limit: 50°C)
 
@@ -91,7 +90,7 @@ The program automatically monitors motor health and will alert the driver if:
 
 
 ## Button Control Configuration 
-### Create Button Functions
+### Step 1: Create Button Functions
 Add button functions for your subsystems:
 
 ```python
@@ -105,7 +104,7 @@ def button_l1_action():
 
 **Action:** Create button functions for each action you want to control.
 
-### Map Buttons to Functions
+### Step 2: Map Buttons to Functions
 Find the button mapping section in the `setup_button_mapping()` function:
 
 ```python
@@ -177,6 +176,6 @@ auton_menu_text = ["auton1", "auton2"]
 3. **Buttons not working**: Verify button mappings in setup_button_mapping() function
 4. **Auton not running**: Check auton function names in run_auton_item()
 5. **Turn sensitivity too high/low**: Adjust arcade constants in set_chassis_defaults() function - higher values increase sensitivity, lower values decrease sensitivity
-6. **Controller vibrating with "---" pattern**: Check for disconnected or overheated motors - the system automatically monitors motor health via check_motors() function
-7. **Inertial sensor warnings**: If you don't have an inertial sensor, assign it to an unused port and ignore the warning
+6. **Controller vibrating with "---" pattern**: Check for disconnected or overheated motors - the system automatically check motor health via check_motors() function
+7. **Inertial sensor warnings**: If you don't have an inertial sensor, assign it to an unused port or simply ignore the warning
 
