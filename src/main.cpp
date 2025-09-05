@@ -27,7 +27,6 @@ void buttonL1Action() {
   // Wait until the button is released to stop the rollers.
   while(controller1.ButtonL1.pressing()) {
     if(controller1.ButtonR2.pressing()) outTake();
-    colorSort();
     wait (20, msec);
   }
   stopRollers();
@@ -38,15 +37,9 @@ void buttonL2Action() {
 
   // Wait until the button is released to stop the rollers.
   while(controller1.ButtonL2.pressing()) {
-    if(controller1.ButtonR2.pressing()) scoreMiddle();
-    colorSort();
     wait (20, msec);
   }
-
   stopRollers();
-}
-
-void buttonR1Action() {
 }
 
 void buttonR2Action()
@@ -59,44 +52,11 @@ void buttonR2Action()
   chassis.stop(coast);
 }
 
-void buttonXAction() {
-  bool state = toggleMatchLoad();
-  if(!state) {
-    return;
-  }
-  intake();
-  chassis.driveDistance(30, 8);
-  wait(1.5, sec);
-  chassis.driveDistance(-30, 8);
-  toggleMatchLoad();
-}
-
-void buttonYAction() {
-  bool state = toggleHorn();
-  if(state){
-    chassis.stop(hold);
-  }
-  else{
-    chassis.stop(coast);
-  }
-}
-
-void buttonBAction()
-{
-  controller1.rumble("..");
-  rollerMiddle.stop(hold);
-  chassis.driveDistance(16, 12, 0, 6);
-}
 
 void setupButtonMapping() {
   controller1.ButtonL1.pressed(buttonL1Action);
   controller1.ButtonL2.pressed(buttonL2Action);
-  controller1.ButtonR1.pressed(buttonR1Action);
   controller1.ButtonR2.pressed(buttonR2Action);
-  controller1.ButtonX.pressed(buttonXAction);
-  controller1.ButtonY.pressed(buttonYAction);
-  controller1.ButtonB.pressed(buttonBAction);
-
 }
 
 
@@ -161,11 +121,10 @@ int main() {
   Competition.drivercontrol(usercontrol);
 
   //comment out the following line to disable auton testing
-  registerAutonTestButtons();
+  if (DRIVE_MODE != -1) registerAutonTestButtons();
 
   // Set up other button mapping for the controller
   if (DRIVE_MODE != -1) setupButtonMapping();
-
 
   // Run the pre-autonomous function.
   pre_auton();

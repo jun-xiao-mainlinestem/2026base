@@ -247,7 +247,6 @@ void loadChassisParameters()
     wait(0.5, seconds);
 
     const char* file_content = "auton = 1\ndrive_mode = 1\n";
-    int size = strlen(file_content);
     memcpy(myReadBuffer, file_content, size);
         // A temporary buffer to hold each line as we process it
     char line_buffer[256];

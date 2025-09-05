@@ -7,17 +7,17 @@ controller controller1 = controller(primary);
 //              Drivetrain definition
 // ------------------------------------------------------------------------
 //If you only have 4  motors (or mecanum drive), assign leftMotor3, rightMotor3 to unused ports.
-motor leftMotor1 = motor(PORT1, ratio6_1, true);
+motor leftMotor1 = motor(PORT1, ratio18_1, true);
 motor leftMotor2 = motor(PORT2, ratio6_1, true);
-motor leftMotor3 = motor(PORT3, ratio18_1, false);
+motor leftMotor3 = motor(PORT11, ratio6_1, true);
 
-motor rightMotor1 = motor(PORT4, ratio6_1, false);
+motor rightMotor1 = motor(PORT4, ratio18_1, false);
 motor rightMotor2 = motor(PORT5, ratio6_1, false);
-motor rightMotor3 = motor(PORT6, ratio18_1, true);
+motor rightMotor3 = motor(PORT12, ratio6_1, false);
 
 // inertial sensor for auton turning and heading
 // If you do not have an inertial sensor, assign it to an unused port. Ignore the warning at the start of the program.
-inertial inertial1 = inertial(PORT10);
+inertial inertial1 = inertial(PORT13);
 
 // 0: double arcade drive, 1: single aracde, 2: tank drive, 3: mecanum drive
 // -1: disable drive
@@ -27,25 +27,19 @@ int DRIVE_MODE = 0;
 // ------------------------------------------------------------------------
 //        Other subsystems: motors, sensors and helper functions definition
 // ------------------------------------------------------------------------
-motor rollerBottom = motor(PORT11, ratio18_1, false);
-motor rollerMiddle = motor(PORT12, ratio18_1, true);
-motor rollerSort = motor(PORT14, ratio18_1, true);
-motor rollerTop = motor(PORT13, ratio6_1, true);
+motor rollerBottom = motor(PORT10, ratio6_1, false);
+motor rollerTop = motor(PORT19, ratio18_1, false);
 
+optical teamOptical = optical(PORT8);
 
 
 // total number of motors, including drivetrain
-const int NUMBER_OF_MOTORS = 9;
+const int NUMBER_OF_MOTORS = 8;
 
 // (optional) intall an optical sensor right next to the license plate
 // teamIsRed variable will be automatically set to false if blue license plate is detected
-optical teamOptical = optical(PORT8);
 bool teamIsRed = true;
 
-// distance sensor at the front
-distance frontDistance = distance(PORT16);
-// optical sensor for color sorting
-optical ballOptical = optical(PORT15);
 
 // match load piston
 digital_out matchLoadPiston = digital_out(Brain.ThreeWirePort.B);
@@ -65,69 +59,29 @@ bool toggleHorn(){
   return hornOn;
 }
 
-void rollerTest(){
-}
-
 void intake() {
   rollerBottom.spin(forward, 12, volt);
-  rollerMiddle.spin(forward, 12, volt);
-  rollerSort.spin(forward, 12, volt);
   rollerTop.stop(coast);
 }
 
 void outTake() {
   rollerBottom.spin(forward, -12, volt);
-  rollerMiddle.spin(forward, -12, volt);
-  rollerSort.stop(hold);
   rollerTop.stop(coast);
 }
 
 void stopRollers() {
   // Stops the roller motors.
   rollerBottom.stop(brake);
-  rollerMiddle.stop(brake);
-  rollerSort.stop(brake);
   rollerTop.stop(brake);
-  if (ballOptical.installed()) ballOptical.setLightPower(0, percent);
 }
 
-void scoreMiddle() {
-  rollerBottom.spin(forward, 12, volt);
-  rollerMiddle.spin(forward, -12, volt);
-  rollerSort.spin(forward, 12, volt);
-  rollerTop.stop(coast);
-}
 
 void scoreLong() {
   rollerBottom.spin(forward, 12, volt);
-  rollerMiddle.spin(forward, 12, volt);
-  rollerSort.spin(forward, 12, volt);
   rollerTop.spin(forward, 12, volt);
 }
 
 
-void colorSort()
-{
-  // Checks if the optical sensor is installed.
-  if (ballOptical.installed()) {    
-    ballOptical.setLightPower(100, percent);
-    // Get the detected ball color
-    color detectedColor = ballOptical.color();    
-    if (detectedColor == color::red) {
-      printControllerScreen("red ball");
-    } 
-    if (detectedColor == color::blue) {
-      printControllerScreen("blue ball");
-    }     
-
-    // If the ball color does not match the team color, eject it
-    if ((teamIsRed && detectedColor == color::blue) || (!teamIsRed && detectedColor == color::red)) {
-      rollerSort.spin(forward, -12, volt);
-      wait(0.5, sec); // Wait for the rollers to finish ejecting the ball
-      intake();
-    } 
-  }
-} 
 
 // ------------------------------------------------------------------------
 //               Only change code below this line when necessary

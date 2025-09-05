@@ -10,16 +10,13 @@ extern bool teamIsRed;
 // distance sensor at the front
 extern distance frontDistance;
 
-void rollerTest();
 bool toggleMatchLoad();
 bool toggleHorn();
 void intake();
 void outTake();
 void stopRollers();
-void scoreMiddle();
 void scoreLong();
 
-void colorSort();
 
 // ------------------------------------------------------------------------
 //               Only change code below this line when necessary

@@ -31,13 +31,13 @@ void awp()
 void solo_test_8_17(){
   chassis.setHeading(320);
   chassis.driveDistance(26, 10, 320, 6, 2);
-  scoreMiddle();
+//  scoreMiddle();
   chassis.driveDistance(30, 6);
   wait(1, sec);
   chassis.driveDistance(-10, 10, 43, 6, 2);
   stopRollers();
   chassis.turnToHeading(90, 10, 4);
-  scoreMiddle();
+//  scoreMiddle();
   chassis.driveDistance(46);
 
 }

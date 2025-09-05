@@ -51,4 +51,5 @@ In exitAuton, add immediate actions right at the start of the driver control.
 - button mapping
 - pre-auton read/write to sd card
 - rotation sensor to select auton
+- sd save parameter
 
