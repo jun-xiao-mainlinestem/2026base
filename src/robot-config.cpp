@@ -21,14 +21,14 @@ inertial inertial1 = inertial(PORT13);
 
 // 0: double arcade drive, 1: single aracde, 2: tank drive, 3: mecanum drive
 // -1: disable drive
-int DRIVE_MODE = 2;
+int DRIVE_MODE = 0;
 
 
 // ------------------------------------------------------------------------
 //        Other subsystems: motors, sensors and helper functions definition
 // ------------------------------------------------------------------------
 motor rollerBottom = motor(PORT10, ratio6_1, false);
-motor rollerTop = motor(PORT19, ratio18_1, false);
+motor rollerTop = motor(PORT19, ratio6_1, true);
 
 optical teamOptical = optical(PORT8);
 

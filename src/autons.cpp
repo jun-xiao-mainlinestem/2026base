@@ -295,13 +295,14 @@ void saveConfigParameters()
     
     // Save the parameters to the SD card
     int32_t result = Brain.SDcard.savefile("parameters.txt", (uint8_t*)parameter_buffer, strlen(parameter_buffer));
-    wait(0.5, seconds);
     
     if (result > 0) {
       printControllerScreen("param saved");
     } else {
       printControllerScreen("save failed");
     }
+    wait(1, seconds);
+
   } 
 }
 
