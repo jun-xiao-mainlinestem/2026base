@@ -21,7 +21,7 @@ inertial inertial1 = inertial(PORT13);
 
 // 0: double arcade drive, 1: single aracde, 2: tank drive, 3: mecanum drive
 // -1: disable drive
-int DRIVE_MODE = 0;
+int DRIVE_MODE = 2;
 
 
 // ------------------------------------------------------------------------
@@ -168,7 +168,8 @@ void usercontrol(void) {
       chassis.controlArcade(controller1.Axis3.position(), controller1.Axis4.position());
       break;
     case 2: // tank drive
-      chassis.controlTank(controller1.Axis3.position(), controller1.Axis2.position());      break;
+      chassis.controlTank(controller1.Axis3.position(), controller1.Axis2.position());    
+      break;
     case 3: // mecanum drive
       chassis.controlMecanum(controller1.Axis4.position(), controller1.Axis3.position(), controller1.Axis2.position(), controller1.Axis1.position(), leftMotor1, leftMotor2, rightMotor1, rightMotor2);
       break;

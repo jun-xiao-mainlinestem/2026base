@@ -89,6 +89,7 @@ char const * autonMenuText[] = {
 
 int autonNum;                         // Total number of autons, automatically calculated based on the size of the autonMenuText array
 bool autonTestMode = false;           // Indicates if in test mode
+bool configMode = false;              // Indicates if in configuration mode
 bool exitAutonMenu = false;           // Flag to exit the autonomous menu
 bool enableEndGameTimer = false;      // Flag to indicate if endgame timer is enabled 
 const int END_GAME_SECONDS = 85;      // Endgame reminder starts at 85 seconds
@@ -234,7 +235,7 @@ char* trim_whitespace(char* str) {
     return str;
 }
 
-void loadChassisParameters()
+void loadConfigParameters()
 {
   // load parameters from the SD card
   if (Brain.SDcard.isInserted()) {
@@ -246,9 +247,6 @@ void loadChassisParameters()
     int32_t  size = Brain.SDcard.loadfile("parameters.txt", myReadBuffer, sizeof(myReadBuffer));
     wait(0.5, seconds);
 
-    const char* file_content = "auton = 1\ndrive_mode = 1\n";
-    memcpy(myReadBuffer, file_content, size);
-        // A temporary buffer to hold each line as we process it
     char line_buffer[256];
     char* buffer_ptr = (char*)myReadBuffer;
     char* line_end;
@@ -285,6 +283,28 @@ void loadChassisParameters()
   }
 }
 
+void saveConfigParameters()
+{
+  // save parameters to the SD card
+  if (Brain.SDcard.isInserted()) {
+    printControllerScreen("save param to SD");
+    
+    // Create the parameter string with current values
+    char parameter_buffer[256];
+    sprintf(parameter_buffer, "auton = %d\ndrive_mode = %d\n", currentAutonSelection, DRIVE_MODE);
+    
+    // Save the parameters to the SD card
+    int32_t result = Brain.SDcard.savefile("parameters.txt", (uint8_t*)parameter_buffer, strlen(parameter_buffer));
+    wait(0.5, seconds);
+    
+    if (result > 0) {
+      printControllerScreen("param saved");
+    } else {
+      printControllerScreen("save failed");
+    }
+  } 
+}
+
 // This function is called before the autonomous period starts.
 void pre_auton() {
   // Sets up the gyro.
@@ -299,7 +319,7 @@ void pre_auton() {
   setChassisDefaults();
 
   // load parameters from the SD card
-  loadChassisParameters();
+  loadConfigParameters();
   // Shows the autonomous menu.
   if(gyroSetupSuccess && motorsSetupSuccess) showAutonMenu();
 }
@@ -340,8 +360,13 @@ void buttonRightAction()
 
 void buttonLeftAction()
 {
-  if ((Brain.Timer.time(sec) < 5)) {
+  if ((Brain.Timer.time(sec) < 5 && !configMode)) {
     // If the button is pressed within 5 seconds of starting the program, change the drive mode.
+    changeDriveMode();
+    configMode = true;
+    return;
+  }
+  if (configMode) {
     changeDriveMode();
     return;
   }
@@ -401,6 +426,10 @@ void buttonUpAction()
 
 void buttonAAction()
 {
+  if (autonTestMode || configMode) 
+  {
+    saveConfigParameters();
+  }
   if (autonTestMode) 
   {
     // If in test mode, run the selected autonomous routine for testing and displays the run time.
